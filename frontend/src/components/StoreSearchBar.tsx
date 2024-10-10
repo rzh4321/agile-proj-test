@@ -4,7 +4,6 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
   CommandList,
 } from "@/components/ui/command";
 import {
@@ -12,43 +11,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, Plus, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
-import { useMyStores } from "@/context/StoresContext";
-
-function StoreItem({ store }: { store: Store }) {
-  const { addStore, removeStore, hasStore } = useMyStores();
-  const [isAdding, setIsAdding] = useState(false);
-
-  const handleAdd = () => {
-    setIsAdding(true);
-    addStore(store);
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 500);
-  };
-
-  return (
-    <CommandItem className="h-[100px] flex justify-between px-5">
-      <div>{store.name}</div>
-      {isAdding ? (
-        <Check className="text-green-500 w-[86px] animate-ping" />
-      ) : hasStore(store._id) ? (
-        <Button variant="destructive" onClick={() => removeStore(store._id)}>
-          Remove
-        </Button>
-      ) : (
-        <Button variant="add" onClick={handleAdd}>
-          Add <Plus className="ml-1" />
-        </Button>
-      )}
-    </CommandItem>
-  );
-}
+import SearchStoreItem from "./SearchStoreItem";
 
 function StatusList({ stores }: { stores: Store[] }) {
   return (
@@ -59,7 +28,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
-              <StoreItem store={store} />
+              <SearchStoreItem store={store} />
             </CommandList>
           ))}
         </CommandGroup>

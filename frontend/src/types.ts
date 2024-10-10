@@ -3,6 +3,8 @@ export type Store = {
   name: string;
   priceRange: string;
   category: string;
+  description: string;
+  image: string;
 };
 
 export type Filters = {

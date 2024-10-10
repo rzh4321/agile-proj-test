@@ -6,7 +6,8 @@ const StoreSchema = new Schema({
   },
   category: { type: String },
   priceRange: { type: String },
-  description: { type: String }
+  description: { type: String },
+  image: { type: String },
 });
 
 const Store = models.Store || model("Store", StoreSchema);

@@ -21,17 +21,15 @@ import { useMyStores } from "@/context/StoresContext";
 import { StoreIcon } from "lucide-react";
 
 function StoreItem({ store }: { store: Store }) {
-    // TODO: add confirm modal when removing store
-    const {removeStore} = useMyStores();
-
+  // TODO: add confirm modal when removing store
+  const { removeStore } = useMyStores();
 
   return (
     <CommandItem className="h-[100px] flex justify-between px-5">
-      <div>{store.name}</div>
-        <Button variant="destructive" onClick={() => removeStore(store._id)}>
-          Remove
-        </Button>
-      
+      <div className="text-2xl font-extrabold">{store.name}</div>
+      <Button variant="destructive" onClick={() => removeStore(store._id)}>
+        Remove
+      </Button>
     </CommandItem>
   );
 }
@@ -55,10 +53,9 @@ function StatusList({ stores }: { stores: Store[] }) {
 }
 
 export default function MyStoresButton() {
-    const {stores} = useMyStores();
+  const { stores } = useMyStores();
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  
 
   return (
     <>
@@ -70,7 +67,9 @@ export default function MyStoresButton() {
             className={cn("m-auto rounded-3xl bg-green-600 text-white")}
           >
             <StoreIcon />
-            <span className="ml-2 text-lg py-[2px] font-extrabold">{stores.length}</span>
+            <span className="ml-2 text-lg py-[2px] font-extrabold">
+              {stores.length}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">

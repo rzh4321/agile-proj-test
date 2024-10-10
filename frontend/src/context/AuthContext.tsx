@@ -22,17 +22,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   const verifyToken = async (): Promise<void> => {
+    console.log('in verifytoken, localstorage is ', localStorage);
     const token = localStorage.getItem("token");
     if (token) {
+      console.log('token detected in localstorage, verifying it in backend now...')
       try {
-        const response = await fetch("/api/verify-token", {
+        const response = await fetch("http://localhost:3001/auth/verify-token", {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
+          console.log('token authenticated. ur now authenticated')
           const userData: User = await response.json();
           setIsAuthenticated(true);
           setUser(userData);
         } else {
+          console.log('token NOT authenticaed. ur logged out now')
           // Token is invalid or expired
           logout();
         }
@@ -44,10 +48,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
+    console.log('refreshed page. calling verifytoken...')
     verifyToken();
   }, []);
 
   const login = (token: string): void => {
+    console.log('login called.  token stored to localstorage')
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
   };

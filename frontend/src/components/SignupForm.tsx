@@ -56,6 +56,7 @@ export default function SignupForm() {
         const { token } = await response.json();
         toast({
             description: "Signing up...",
+            duration: 1,
           })
         login(token);
         navigate('/');

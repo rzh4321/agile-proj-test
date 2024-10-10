@@ -11,8 +11,8 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import LoginForm from "./components/LoginForm.tsx";
 import SignupForm from "./components/SignupForm.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
-import App from "./App.tsx";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
+import Home from "./components/Home.tsx";
 
 
 const router = createBrowserRouter(
@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       <Route path="/signup" element={<SignupForm />} />
       </Route>
       <Route element={<ProtectedRoute requiresAuth={true} />}>
-        <Route index path="/" element={<App />} />
+        <Route index path="/" element={<Home />} />
       </Route>
     </>,
   ),

@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 import Navbar from "./Navbar";
 
-const ProtectedRoute = ({requiresAuth} : {requiresAuth : boolean}) => {
+const ProtectedRoute = ({ requiresAuth }: { requiresAuth: boolean }) => {
   const { isAuthenticated } = useAuth();
 
   // unauthenticated user attempting to access protected route
@@ -17,10 +17,10 @@ const ProtectedRoute = ({requiresAuth} : {requiresAuth : boolean}) => {
   else if (requiresAuth) {
     return (
       <>
-      <Navbar />
-      <Outlet />
+        <Navbar />
+        <Outlet />
       </>
-    )
+    );
   }
 
   return <Outlet />;

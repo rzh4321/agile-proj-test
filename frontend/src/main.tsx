@@ -13,15 +13,14 @@ import SignupForm from "./components/SignupForm.tsx";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "./components/Home.tsx";
-
+import { StoreProvider } from "./context/StoresContext.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
-          <Route element={<ProtectedRoute requiresAuth={false} />}>
-
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/signup" element={<SignupForm />} />
+      <Route element={<ProtectedRoute requiresAuth={false} />}>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/signup" element={<SignupForm />} />
       </Route>
       <Route element={<ProtectedRoute requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
@@ -33,8 +32,10 @@ const router = createBrowserRouter(
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
+      <StoreProvider>
       <Toaster />
       <RouterProvider router={router} />
+      </StoreProvider>
     </AuthProvider>
   </StrictMode>,
 );

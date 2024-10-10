@@ -31,8 +31,8 @@ const formSchema = z.object({
 });
 
 export default function SignupForm() {
-    const { login } = useAuth();
-    const navigate = useNavigate();
+  const { login } = useAuth();
+  const navigate = useNavigate();
   const [pending, setPending] = useState(false);
   const { toast } = useToast();
 
@@ -47,30 +47,32 @@ export default function SignupForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setPending(true);
-    const response = await fetch('http://localhost:3001/auth/signup', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: values.username, password: values.password }),
+    const response = await fetch("http://localhost:3001/auth/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+      }),
     });
     if (response.ok) {
-        const { token } = await response.json();
-        toast({
-            description: "Signing up...",
-            duration: 1,
-          })
-        login(token);
-        navigate('/');
-      } else {
-        const { message } = await response.json();
-        toast({
-            variant: "destructive",
-            title: "Sign up failed",
-            description: message,
-          });
-        setPending(false);
-      }
+      const { token } = await response.json();
+      toast({
+        description: "Signing up...",
+        duration: 1,
+      });
+      login(token);
+      navigate("/");
+    } else {
+      const { message } = await response.json();
+      toast({
+        variant: "destructive",
+        title: "Sign up failed",
+        description: message,
+      });
+      setPending(false);
     }
-
+  }
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -140,7 +142,8 @@ export default function SignupForm() {
                     </FormControl>
                     <FormMessage />
                     <FormDescription>
-                      {form.getValues("password") && form.getValues("password").length < 6
+                      {form.getValues("password") &&
+                      form.getValues("password").length < 6
                         ? "Password must be at least 6 characters."
                         : ""}
                     </FormDescription>

@@ -32,8 +32,8 @@ const formSchema = z.object({
 export default function LoginForm() {
   const [pending, setPending] = useState(false);
   const navigate = useNavigate();
-  const {login} = useAuth();
-  const {toast} = useToast();
+  const { login } = useAuth();
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,29 +46,32 @@ export default function LoginForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setPending(true);
-    const response = await fetch('http://localhost:3001/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: values.username, password: values.password }),
+    const response = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        username: values.username,
+        password: values.password,
+      }),
     });
     if (response.ok) {
-        const { token } = await response.json();
-        toast({
-            description: "Logging in...",
-            duration: 1,
-          });
-        login(token);
-        navigate('/');
-      } else {
-        const {message} = await response.json();
-        toast({
-            variant: "destructive",
-            title: "Log in failed",
-            description: message,
-          });
-          setPending(false);
-      }
+      const { token } = await response.json();
+      toast({
+        description: "Logging in...",
+        duration: 1,
+      });
+      login(token);
+      navigate("/");
+    } else {
+      const { message } = await response.json();
+      toast({
+        variant: "destructive",
+        title: "Log in failed",
+        description: message,
+      });
+      setPending(false);
     }
+  }
 
   return (
     <div className="h-screen flex items-center justify-center">

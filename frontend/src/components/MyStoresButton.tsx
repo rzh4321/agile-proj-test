@@ -12,40 +12,26 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Check, Plus, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
 import { useMyStores } from "@/context/StoresContext";
+import { StoreIcon } from "lucide-react";
 
 function StoreItem({ store }: { store: Store }) {
-  const { addStore, removeStore, hasStore } = useMyStores();
-  const [isAdding, setIsAdding] = useState(false);
+    // TODO: add confirm modal when removing store
+    const {removeStore} = useMyStores();
 
-  const handleAdd = () => {
-    setIsAdding(true);
-    addStore(store);
-    setTimeout(() => {
-      setIsAdding(false);
-    }, 500);
-  };
 
   return (
     <CommandItem className="h-[100px] flex justify-between px-5">
       <div>{store.name}</div>
-      {isAdding ? (
-        <Check className="text-green-500 w-[86px] animate-ping" />
-      ) : hasStore(store._id) ? (
         <Button variant="destructive" onClick={() => removeStore(store._id)}>
           Remove
         </Button>
-      ) : (
-        <Button variant="add" onClick={handleAdd}>
-          Add <Plus className="ml-1" />
-        </Button>
-      )}
+      
     </CommandItem>
   );
 }
@@ -55,7 +41,7 @@ function StatusList({ stores }: { stores: Store[] }) {
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
-        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandEmpty>You have not added any stores.</CommandEmpty>
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
@@ -68,9 +54,11 @@ function StatusList({ stores }: { stores: Store[] }) {
   );
 }
 
-export default function StoreSearchBar({ stores }: { stores: Store[] }) {
+export default function MyStoresButton() {
+    const {stores} = useMyStores();
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  
 
   return (
     <>
@@ -79,10 +67,10 @@ export default function StoreSearchBar({ stores }: { stores: Store[] }) {
           <Button
             variant="outline"
             role="combobox"
-            className={cn("justify-between w-60 m-auto mt-10")}
+            className={cn("m-auto rounded-3xl bg-green-600 text-white")}
           >
-            Search Stores
-            <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <StoreIcon />
+            <span className="ml-2 text-lg py-[2px] font-extrabold">{stores.length}</span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">

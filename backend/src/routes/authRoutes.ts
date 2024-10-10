@@ -57,7 +57,7 @@ router.post('/signup', async (req : any, res : any ) => {
       // Create and sign JWT
       const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
   
-      res.status(201).json({ token });
+      res.status(201).json({ token, username });
     } catch (error) {
       res.status(500).json({ message: error });
     }
@@ -83,7 +83,7 @@ router.post('/login', async (req : any, res : any) => {
     // Create and sign JWT
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
 
-    res.json({ token });
+    res.json({ token, username });
   } catch (error) {
     res.status(500).json({ message: error });
   }

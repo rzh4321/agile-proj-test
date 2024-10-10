@@ -55,10 +55,10 @@ export default function LoginForm() {
       }),
     });
     if (response.ok) {
-      const { token } = await response.json();
+      const { token, username } = await response.json();
       toast({
-        description: "Logging in...",
-        duration: 1,
+        description: `Welcome back, ${username}`,
+        duration: 1000,
       });
       login(token);
       navigate("/");

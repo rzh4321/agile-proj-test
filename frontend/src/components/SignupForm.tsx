@@ -56,10 +56,10 @@ export default function SignupForm() {
       }),
     });
     if (response.ok) {
-      const { token } = await response.json();
+      const { token, username } = await response.json();
       toast({
-        description: "Signing up...",
-        duration: 1,
+        description: `Welcome, ${username}!`,
+        duration: 1000,
       });
       login(token);
       navigate("/");

@@ -20,10 +20,7 @@ export default function Navbar() {
 
         {/* Logout button at the end */}
         <div className="w-1/3 flex justify-end">
-          <Button
-            variant={"destructive"}
-            onClick={logout}
-          >
+          <Button variant={"destructive"} onClick={logout}>
             Log Out
           </Button>
         </div>

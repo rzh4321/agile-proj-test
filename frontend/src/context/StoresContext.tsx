@@ -23,19 +23,24 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   });
 
   const addStore = useCallback((newStore: Store) => {
-    setStores(prevStores => [...prevStores, newStore]);
+    setStores((prevStores) => [...prevStores, newStore]);
   }, []);
 
   const removeStore = useCallback((id: string) => {
-    setStores(prevStores => prevStores.filter(store => store._id !== id));
+    setStores((prevStores) => prevStores.filter((store) => store._id !== id));
   }, []);
 
-  const hasStore = useCallback((id: string) => {
-    return stores.some(store => store._id === id);
-  }, [stores]);
+  const hasStore = useCallback(
+    (id: string) => {
+      return stores.some((store) => store._id === id);
+    },
+    [stores],
+  );
 
   return (
-    <StoreContext.Provider value={{ stores, addStore, removeStore, hasStore, filters, setFilters }}>
+    <StoreContext.Provider
+      value={{ stores, addStore, removeStore, hasStore, filters, setFilters }}
+    >
       {children}
     </StoreContext.Provider>
   );

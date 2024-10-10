@@ -33,8 +33,8 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <AuthProvider>
       <StoreProvider>
-      <Toaster />
-      <RouterProvider router={router} />
+        <Toaster />
+        <RouterProvider router={router} />
       </StoreProvider>
     </AuthProvider>
   </StrictMode>,

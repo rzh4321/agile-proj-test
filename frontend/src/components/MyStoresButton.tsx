@@ -4,7 +4,6 @@ import {
   CommandEmpty,
   CommandGroup,
   CommandInput,
-  CommandItem,
   CommandList,
 } from "@/components/ui/command";
 import {
@@ -19,20 +18,8 @@ import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
 import { useMyStores } from "@/context/StoresContext";
 import { StoreIcon } from "lucide-react";
+import MyStoresItem from "./MyStoresItem";
 
-function StoreItem({ store }: { store: Store }) {
-  // TODO: add confirm modal when removing store
-  const { removeStore } = useMyStores();
-
-  return (
-    <CommandItem className="h-[100px] flex justify-between px-5">
-      <div className="text-2xl font-extrabold">{store.name}</div>
-      <Button variant="destructive" onClick={() => removeStore(store._id)}>
-        Remove
-      </Button>
-    </CommandItem>
-  );
-}
 
 function StatusList({ stores }: { stores: Store[] }) {
   return (
@@ -43,7 +30,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
-              <StoreItem store={store} />
+              <MyStoresItem store={store} />
             </CommandList>
           ))}
         </CommandGroup>

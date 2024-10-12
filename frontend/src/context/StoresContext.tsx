@@ -56,7 +56,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     };
     
     const filterIsApplied = (filter: keyof Filters, value: string): boolean => {
-      console.log(filter)
       return filters[filter].includes(value);
     };
 

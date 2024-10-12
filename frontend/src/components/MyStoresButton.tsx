@@ -20,7 +20,6 @@ import { useMyStores } from "@/context/StoresContext";
 import { StoreIcon } from "lucide-react";
 import MyStoresItem from "./MyStoresItem";
 
-
 function StatusList({ stores }: { stores: Store[] }) {
   return (
     <Command>
@@ -49,9 +48,10 @@ export default function MyStoresButton() {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="outline"
             role="combobox"
-            className={cn("m-auto rounded-3xl bg-green-600 text-white")}
+            className={cn(
+              "m-auto rounded-3xl bg-green-600 border-green-700 text-white hover:bg-green-700 hover:text-slate-200",
+            )}
           >
             <StoreIcon />
             <span className="ml-2 text-lg py-[2px] font-extrabold">

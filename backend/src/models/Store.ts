@@ -8,6 +8,7 @@ const StoreSchema = new Schema({
   priceRange: { type: String },
   description: { type: String },
   image: { type: String },
+  brand: {type: String },
 });
 
 const Store = models.Store || model("Store", StoreSchema);

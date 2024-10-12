@@ -23,21 +23,23 @@ const priceRangeToDollarIcons: Record<PriceRange, number> = {
 };
 
 export default function MyStoresItem({ store }: { store: Store }) {
-      // TODO: add confirm modal when removing store
+  // TODO: add confirm modal when removing store
 
   const { removeStore } = useMyStores();
-
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <div>
-        <CommandItem className="h-[100px] flex justify-between px-5">
-      <div className="text-2xl font-extrabold">{store.name}</div>
-      <Button variant="destructive" onClick={() => removeStore(store._id)}>
-        Remove
-      </Button>
-    </CommandItem>
+          <CommandItem className="h-[100px] flex justify-between px-5">
+            <div className="text-2xl font-extrabold">{store.name}</div>
+            <Button
+              variant="destructive"
+              onClick={() => removeStore(store._id)}
+            >
+              Remove
+            </Button>
+          </CommandItem>
         </div>
       </DialogTrigger>
 
@@ -70,6 +72,10 @@ export default function MyStoresItem({ store }: { store: Store }) {
           <div>
             <span className="text-lg font-semibold">Category:</span>{" "}
             <span className={`font-bold text-lg`}>{store.category}</span>
+          </div>
+          <div>
+            <span className="text-lg font-semibold">Brand:</span>{" "}
+            <span className={`font-bold text-lg`}>{store.brand}</span>
           </div>
         </div>
         <DialogFooter>

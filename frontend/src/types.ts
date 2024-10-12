@@ -5,6 +5,7 @@ export type Store = {
   category: string;
   description: string;
   image: string;
+  brand: string;
 };
 
 export type Filters = {

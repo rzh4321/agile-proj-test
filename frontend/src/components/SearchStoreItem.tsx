@@ -99,6 +99,10 @@ export default function SearchStoreItem({ store }: { store: Store }) {
             <span className="text-lg font-semibold">Category:</span>{" "}
             <span className={`font-bold text-lg`}>{store.category}</span>
           </div>
+          <div>
+            <span className="text-lg font-semibold">Brand:</span>{" "}
+            <span className={`font-bold text-lg`}>{store.brand}</span>
+          </div>
         </div>
         <DialogFooter>
           <DialogClose asChild>

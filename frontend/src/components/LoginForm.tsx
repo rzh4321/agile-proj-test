@@ -78,12 +78,10 @@ export default function LoginForm() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col items-center gap-4 space-y-3"
+          className="flex flex-col items-center gap-4 space-y-3 w-[75vw]"
         >
           <div className="w-full flex-1 rounded-lg px-6 pb-4  md:w-96">
-            <h1 className="mb-3 text-2xl font-bold">
-              Sign in to Calm Companion
-            </h1>
+            <h1 className="mb-3 text-2xl font-bold">Sign in</h1>
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -142,7 +140,7 @@ export default function LoginForm() {
                 )}
               />
               <Button
-                className="my-4 flex h-10 w-full flex-row items-center justify-center rounded-md bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
+                className="my-4 flex h-10 border-blue-600 w-full flex-row items-center justify-center rounded-md bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 aria-disabled={pending}
                 disabled={pending}
               >

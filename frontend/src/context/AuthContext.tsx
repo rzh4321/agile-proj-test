@@ -1,10 +1,8 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 
 type User = {
-  // Define user properties here
   id: string;
   username: string;
-  // Add other user properties as needed
 };
 
 type AuthContextType = {
@@ -13,6 +11,7 @@ type AuthContextType = {
   login: (token: string) => void;
   logout: () => void;
   verifyToken: () => Promise<void>;
+  loading: boolean;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -20,8 +19,11 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+
 
   const verifyToken = async (): Promise<void> => {
+    setLoading(true); // auth status is loading
     console.log("in verifytoken, localstorage is ", localStorage);
     const token = localStorage.getItem("token");
     if (token) {
@@ -50,6 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         logout();
       }
     }
+    setLoading(false); // auth status is determined
   };
 
   useEffect(() => {
@@ -75,6 +78,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     login,
     logout,
     verifyToken,
+    loading,
   };
 
   return (

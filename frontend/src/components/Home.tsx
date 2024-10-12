@@ -11,14 +11,12 @@ export default function Home() {
   return (
     <main className="flex flex-col gap-10 px-5">
       <div className="flex flex-col gap-5">
-        {!loading && stores.length > 0 ? (
-          <StoreSearchBar stores={stores} />
-        ) : loading ? (
-          <Loader className="animate-spin" />
-        ) : error ? (
+        {error ? (
           <span>an error: {error}</span>
+        ) : !loading ? (
+          <StoreSearchBar stores={stores} />
         ) : (
-          <span>no stores in db</span>
+          <Loader className="animate-spin" />
         )}
         <MyStoresButton />
       </div>

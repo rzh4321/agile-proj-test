@@ -17,14 +17,17 @@ import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
 import { useMyStores } from "@/context/StoresContext";
-import { StoreIcon } from "lucide-react";
+import { StoreIcon, Trash } from "lucide-react";
 import MyStoresItem from "./MyStoresItem";
 
 function StatusList({ stores }: { stores: Store[] }) {
+  const {clearStores} = useMyStores();
   return (
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
+        {/* TODO: add confirm button */}
+        {stores.length > 0 && <Button variant={'destructive'} className="my-2 font-light" onClick={() => clearStores()}><Trash className="w-[15px] mr-1" />Clear</Button>}
         <CommandEmpty>You have not added any stores.</CommandEmpty>
         <CommandGroup>
           {stores.map((store) => (

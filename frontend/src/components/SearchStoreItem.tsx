@@ -14,8 +14,7 @@ import {
   DialogTrigger,
   DialogClose,
 } from "@/components/ui/dialog";
-
-type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
+import type { PriceRange } from "@/types";
 
 const priceRangeToDollarIcons: Record<PriceRange, number> = {
   Budget: 1,

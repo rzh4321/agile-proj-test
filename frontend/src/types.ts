@@ -9,6 +9,10 @@ export type Store = {
 };
 
 export type Filters = {
-  category: string;
-  priceRange: string;
+  category: string[];
+  priceRange: string[];
+  brand: string[];
 };
+
+export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
+

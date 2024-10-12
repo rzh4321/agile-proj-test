@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useCallback } from "react";
+import { createContext, useState, useContext } from "react";
 import type { Store, Filters } from "@/types";
 
 type StoreContextType = {
@@ -6,8 +6,10 @@ type StoreContextType = {
   hasStore: (id: string) => boolean;
   addStore: (store: Store) => void;
   removeStore: (id: string) => void;
+  clearStores: () => void;
   filters: Filters;
-  setFilters: React.Dispatch<React.SetStateAction<Filters>>;
+  toggleFilter: (filter: keyof Filters, value: string) => void;
+  filterIsApplied: (filter: keyof Filters, value: string) => boolean;
 };
 
 // Create the context
@@ -17,29 +19,58 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [stores, setStores] = useState<Store[]>([]);
   const [filters, setFilters] = useState<Filters>({
-    category: "",
-    priceRange: "Budget",
-    // ... initial filter values
+    category: [],
+    priceRange: [],
+    brand: [],
   });
 
-  const addStore = useCallback((newStore: Store) => {
+  const addStore = (newStore: Store) => {
     setStores((prevStores) => [...prevStores, newStore]);
-  }, []);
+  };
 
-  const removeStore = useCallback((id: string) => {
+  const removeStore = (id: string) => {
     setStores((prevStores) => prevStores.filter((store) => store._id !== id));
-  }, []);
+  };
 
-  const hasStore = useCallback(
+  const clearStores = () => {
+    setStores([]);
+  }
+
+  const hasStore = 
     (id: string) => {
       return stores.some((store) => store._id === id);
-    },
-    [stores],
-  );
+    }
+
+    const addFilter = (filter: keyof Filters, value: string) => {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: [...new Set([...prevFilters[filter], value])]
+      }));
+    };
+
+    const removeFilter = (filter: keyof Filters, value: string) => {
+      setFilters(prevFilters => ({
+        ...prevFilters,
+        [filter]: prevFilters[filter].filter(item => item !== value)
+      }));
+    };
+    
+    const filterIsApplied = (filter: keyof Filters, value: string): boolean => {
+      console.log(filter)
+      return filters[filter].includes(value);
+    };
+
+    const toggleFilter = (filter: keyof Filters, value: string) => {
+      if (filterIsApplied(filter, value)) {
+        removeFilter(filter, value);
+      } else {
+        addFilter(filter, value);
+      }
+    }
 
   return (
     <StoreContext.Provider
-      value={{ stores, addStore, removeStore, hasStore, filters, setFilters }}
+      value={{ stores, addStore, removeStore, clearStores, hasStore, filters, toggleFilter, filterIsApplied }}
     >
       {children}
     </StoreContext.Provider>

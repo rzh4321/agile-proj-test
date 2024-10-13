@@ -1,9 +1,54 @@
 import PriceRangeFilters from "./PriceRangeFilters";
-import BrandFilters from "./BrandFilters";
+import FiltersWithSearch from "./FiltersWithSearch";
 import { useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import { useMyStores } from "@/context/StoresContext";
 import type { Filters } from "@/types";
+
+const brandFilters = [
+  "Brand A",
+  "Brand B",
+  "TechMaster",
+  "EcoGear",
+  "LuxeStyle",
+  "InnoWave",
+  "PrimePulse",
+  "VitalVibe",
+  "NexaCore",
+  "ZenithZone",
+  "QuantumQuest",
+  "AeroFlex",
+  "SolarSpark",
+  "OmegaOasis",
+  "CyberSync",
+];
+
+const categoryFilters = [
+  "Clothing",
+  "Accessories",
+  "Art Galleries",
+  "Home Decor",
+  "Jewelry",
+  "Vintage & Thrift",
+  "Beauty & Cosmetics",
+  "Books & Stationery",
+  "Electronics",
+  "Footwear",
+  "Gourmet Food & Drinks",
+  "Health & Wellness",
+  "Lifestyle & Gifts",
+  "Menswear",
+  "Womenswear",
+  "Designer Boutiques",
+  "Streetwear",
+  "Furniture",
+  "Eyewear",
+  "Music & Vinyl",
+  "Outdoor & Sports",
+  "Pet Supplies",
+  "Kitchenware",
+  "Toys & Games",
+];
 
 export default function Filters({ currentFilter }: { currentFilter: string }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -44,12 +89,15 @@ export default function Filters({ currentFilter }: { currentFilter: string }) {
 
   // update search URL param
   const handleSearchURL = (filter: string, searchValue: string) => {
-    const currentURL = new URLSearchParams(searchParams);
+    const currentParams = new URLSearchParams(searchParams);
     if (searchValue !== "") {
-      currentURL.set(filter, searchValue);
+      console.log(filter, searchValue);
+
+      currentParams.set(filter, searchValue);
     } else {
-      currentURL.delete(filter);
+      currentParams.delete(filter);
     }
+    setSearchParams(currentParams);
   };
 
   useEffect(() => {
@@ -97,9 +145,25 @@ export default function Filters({ currentFilter }: { currentFilter: string }) {
     return <PriceRangeFilters handleFilterClick={handleFilterClick} />;
   else if (currentFilter === "Brand")
     return (
-      <BrandFilters
+      <FiltersWithSearch
         handleFilterClick={handleFilterClick}
         handleSearchURL={handleSearchURL}
+        urlFilterParam="brand"
+        urlSearchParam="brandSearch"
+        filters={brandFilters}
+        savedSearch={getFilterValuesFromURL("brandSearch")[0] || ""}
+      />
+    );
+  else if (currentFilter === "Category")
+    return (
+      <FiltersWithSearch
+        key={"category"} // needed to fix search bar being shared across filters
+        handleFilterClick={handleFilterClick}
+        handleSearchURL={handleSearchURL}
+        urlFilterParam="category"
+        urlSearchParam="categorySearch"
+        filters={categoryFilters}
+        savedSearch={getFilterValuesFromURL("categorySearch")[0] || ""}
       />
     );
 }

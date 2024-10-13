@@ -34,42 +34,50 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
 
   const clearStores = () => {
     setStores([]);
-  }
+  };
 
-  const hasStore = 
-    (id: string) => {
-      return stores.some((store) => store._id === id);
+  const hasStore = (id: string) => {
+    return stores.some((store) => store._id === id);
+  };
+
+  const addFilter = (filter: keyof Filters, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filter]: [...new Set([...prevFilters[filter], value])],
+    }));
+  };
+
+  const removeFilter = (filter: keyof Filters, value: string) => {
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filter]: prevFilters[filter].filter((item) => item !== value),
+    }));
+  };
+
+  const filterIsApplied = (filter: keyof Filters, value: string): boolean => {
+    return filters[filter].includes(value);
+  };
+
+  const toggleFilter = (filter: keyof Filters, value: string) => {
+    if (filterIsApplied(filter, value)) {
+      removeFilter(filter, value);
+    } else {
+      addFilter(filter, value);
     }
-
-    const addFilter = (filter: keyof Filters, value: string) => {
-      setFilters(prevFilters => ({
-        ...prevFilters,
-        [filter]: [...new Set([...prevFilters[filter], value])]
-      }));
-    };
-
-    const removeFilter = (filter: keyof Filters, value: string) => {
-      setFilters(prevFilters => ({
-        ...prevFilters,
-        [filter]: prevFilters[filter].filter(item => item !== value)
-      }));
-    };
-    
-    const filterIsApplied = (filter: keyof Filters, value: string): boolean => {
-      return filters[filter].includes(value);
-    };
-
-    const toggleFilter = (filter: keyof Filters, value: string) => {
-      if (filterIsApplied(filter, value)) {
-        removeFilter(filter, value);
-      } else {
-        addFilter(filter, value);
-      }
-    }
+  };
 
   return (
     <StoreContext.Provider
-      value={{ stores, addStore, removeStore, clearStores, hasStore, filters, toggleFilter, filterIsApplied }}
+      value={{
+        stores,
+        addStore,
+        removeStore,
+        clearStores,
+        hasStore,
+        filters,
+        toggleFilter,
+        filterIsApplied,
+      }}
     >
       {children}
     </StoreContext.Provider>

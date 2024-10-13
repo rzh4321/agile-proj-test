@@ -21,7 +21,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-
   const verifyToken = async (): Promise<void> => {
     setLoading(true); // auth status is loading
     console.log("in verifytoken, localstorage is ", localStorage);

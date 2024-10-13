@@ -15,4 +15,3 @@ export type Filters = {
 };
 
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
-

@@ -32,13 +32,17 @@ export default function FilterPage() {
           ))}
         </ul>
       </nav>
-      <main className="flex-1 p-6 overflow-y-auto h-fit">
+      <main className="flex-1 p-6 overflow-y-auto h-fit max-h-[calc(100vh-68px)]">
         <h1 className="text-3xl font-bold mb-4">{currentFilter}</h1>
         <p className="text-gray-600 mb-6">
           {filterDescriptions[currentFilter]}
         </p>
         <Filters currentFilter={currentFilter} />
-        <div className="my-8"><Button variant={'secondary'} onClick={() => navigate('/')}>Go Back</Button></div>
+        <div className="my-8">
+          <Button variant={"secondary"} onClick={() => navigate("/")}>
+            Go Back
+          </Button>
+        </div>
       </main>
     </div>
   );

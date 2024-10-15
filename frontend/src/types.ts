@@ -22,6 +22,8 @@ export type Store = {
   openingHours: string;
   ratingCount: number;
   websiteURI: string;
+  lat: number;
+  lng: number;
 };
 export type Filters = {
   category: string[];

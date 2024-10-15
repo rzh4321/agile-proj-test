@@ -4,6 +4,7 @@ import { Loader } from "lucide-react";
 import MyStoresButton from "./MyStoresButton";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
+import SoHoMap from "./SoHoMap";
 
 export default function Home() {
   const { stores, loading, error } = useStores();
@@ -23,7 +24,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-3">
         <div className="w-full h-[300px] border-2 border-black">
-          map placeholder
+          <SoHoMap />
         </div>
         <Button
           className="rounded-3xl bg-blue-400 hover:bg-blue-600 border-blue-500 h-12 font-extrabold text-lg text-white"

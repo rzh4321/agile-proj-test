@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
 import { useMyStores } from "@/context/StoresContext";
 import { StoreIcon, Trash } from "lucide-react";
-import MyStoresItem from "./MyStoresItem";
+import StoreItem from "./StoreItem";
 
 function StatusList({ stores }: { stores: Store[] }) {
   const { clearStores } = useMyStores();
@@ -41,7 +41,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
-              <MyStoresItem store={store} />
+              <StoreItem type="myStore" store={store} />
             </CommandList>
           ))}
         </CommandGroup>

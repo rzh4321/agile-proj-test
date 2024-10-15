@@ -17,7 +17,7 @@ import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
-import SearchStoreItem from "./SearchStoreItem";
+import StoreItem from "./StoreItem";
 
 function StatusList({ stores }: { stores: Store[] }) {
   return (
@@ -28,7 +28,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
-              <SearchStoreItem store={store} />
+              <StoreItem type="search" store={store} />
             </CommandList>
           ))}
         </CommandGroup>

@@ -25,10 +25,12 @@ export type Store = {
   lat: number;
   lng: number;
 };
-export type Filters = {
+export type FiltersType = {
   category: string[];
   priceRange: string[];
   brand: string[];
 };
+
+export type FilterStringTypes = "Brand" | "Price Range" | "Category";
 
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";

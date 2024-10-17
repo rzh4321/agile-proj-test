@@ -1,145 +1,101 @@
 import PriceRangeFilters from "./PriceRangeFilters";
 import FiltersWithSearch from "./FiltersWithSearch";
-import { useSearchParams } from "react-router-dom";
-import { useEffect } from "react";
 import { useMyStores } from "@/context/StoresContext";
-import type { Filters } from "@/types";
+import type { FiltersType } from "@/types";
 
 const brandFilters = [
-  "Brand A",
-  "Brand B",
-  "TechMaster",
-  "EcoGear",
-  "LuxeStyle",
-  "InnoWave",
-  "PrimePulse",
-  "VitalVibe",
-  "NexaCore",
-  "ZenithZone",
-  "QuantumQuest",
-  "AeroFlex",
-  "SolarSpark",
-  "OmegaOasis",
-  "CyberSync",
+  "Alexander Wang",
+  "Acne Studios",
+  "AllSaints",
+  "Apple",
+  "Aesop",
+  "Balenciaga",
+  "Burberry",
+  "Chanel",
+  "Celine",
+  "Diesel",
+  "Dolce & Gabbana",
+  "Gucci",
+  "Glossier",
+  "Hermès",
+  "Isabel Marant",
+  "John Varvatos",
+  "Kith",
+  "Lululemon",
+  "Louis Vuitton",
+  "Moncler",
+  "Nike",
+  "Off-White",
+  "Prada",
+  "Rag & Bone",
+  "Ralph Lauren",
+  "Saint Laurent",
+  "Stüssy",
+  "Supreme",
+  "The North Face",
+  "Tiffany & Co.",
+  "Uniqlo",
+  "Valentino",
+  "Vans",
+  "Versace",
+  "Zimmermann",
 ];
 
 const categoryFilters = [
-  "Clothing",
-  "Accessories",
-  "Art Galleries",
-  "Home Decor",
-  "Jewelry",
-  "Vintage & Thrift",
-  "Beauty & Cosmetics",
-  "Books & Stationery",
-  "Electronics",
-  "Footwear",
-  "Gourmet Food & Drinks",
-  "Health & Wellness",
-  "Lifestyle & Gifts",
-  "Menswear",
-  "Womenswear",
   "Designer Boutiques",
-  "Streetwear",
-  "Furniture",
-  "Eyewear",
-  "Music & Vinyl",
-  "Outdoor & Sports",
-  "Pet Supplies",
-  "Kitchenware",
-  "Toys & Games",
+  "Vintage Clothing",
+  "Contemporary Art Galleries",
+  "Streetwear Shops",
+  "High-End Furniture",
+  "Trendy Accessories",
+  "Luxury Jewelry",
+  "Indie Bookstores",
+  "Artisanal Coffee Shops",
+  "Gourmet Food Markets",
+  "Concept Stores",
+  "Sustainable Fashion",
+  "Beauty & Cosmetics",
+  "Home Decor & Design",
+  "Specialty Sneaker Stores",
+  "Avant-Garde Fashion",
+  "Handcrafted Jewelry",
+  "Organic Skincare",
+  "Pop-Up Shops",
+  "Vinyl Record Stores",
+  "Athleisure Brands",
+  "Lifestyle & Gift Boutiques",
+  "Bespoke Tailors",
+  "Artisan Chocolatiers",
+  "Designer Eyewear",
+  "Craft Cocktail Bars",
+  "Niche Perfumeries",
+  "Curated Vintage Shops",
+  "Tech & Gadget Stores",
+  "Upscale Consignment Shops",
 ];
 
-export default function Filters({ currentFilter }: { currentFilter: string }) {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { toggleFilter, filters } = useMyStores();
+type Props = {
+  toggleFilterURL: (filterType: string, value: string) => void;
+  currentFilter: string;
+  handleSearchURL: (filter: string, searchValue: string) => void;
+  getFilterValuesFromURL: (filterType: string) => string[];
+};
 
-  // toggle filter from URL
-  const toggleFilterURL = (filterType: string, value: string) => {
-    const currentParams = new URLSearchParams(searchParams);
-    const currentValues = currentParams.getAll(filterType);
-    console.log(filterType, value);
+export default function Filters({
+  currentFilter,
+  toggleFilterURL,
+  handleSearchURL,
+  getFilterValuesFromURL,
+}: Props) {
+  const { toggleFilter } = useMyStores();
 
-    if (currentValues.includes(value)) {
-      // remove  value if  exists
-      currentParams.delete(filterType);
-      currentValues
-        .filter((v) => v !== value)
-        .forEach((v) => {
-          // add search param values back after filtering
-          currentParams.append(filterType, v);
-        });
-    } else {
-      // add  value if  doesn't exist
-      currentParams.append(filterType, value);
-      console.log(currentParams.getAll("priceRange"));
-    }
-
-    setSearchParams(currentParams);
-  };
-
-  const getFilterValuesFromURL = (filterType: string): string[] => {
-    return searchParams.getAll(filterType);
-  };
-
-  const handleFilterClick = (filter: keyof Filters, filterValue: string) => {
+  const handleFilterClick = (
+    filter: keyof FiltersType,
+    filterValue: string,
+  ) => {
     toggleFilter(filter, filterValue);
     toggleFilterURL(filter, filterValue);
   };
-
-  // update search URL param
-  const handleSearchURL = (filter: string, searchValue: string) => {
-    const currentParams = new URLSearchParams(searchParams);
-    if (searchValue !== "") {
-      console.log(filter, searchValue);
-
-      currentParams.set(filter, searchValue);
-    } else {
-      currentParams.delete(filter);
-    }
-    setSearchParams(currentParams);
-  };
-
-  useEffect(() => {
-    // reapply any filters to the filter context using the URL params
-    const priceRangeFilters = getFilterValuesFromURL("priceRange");
-    priceRangeFilters.forEach((priceRange) =>
-      toggleFilter("priceRange", priceRange),
-    );
-    const brandFilters = getFilterValuesFromURL("brand");
-    brandFilters.forEach((brand) => toggleFilter("brand", brand));
-    const categoryFilters = getFilterValuesFromURL("category");
-    categoryFilters.forEach((category) => toggleFilter("category", category));
-
-    // reapply URL params from the filter context
-    if (
-      priceRangeFilters.length === 0 &&
-      brandFilters.length === 0 &&
-      categoryFilters.length === 0
-    ) {
-      const currentParams = new URLSearchParams(searchParams);
-
-      filters.brand.forEach((brand) => {
-        if (!currentParams.getAll("brand").includes(brand)) {
-          currentParams.append("brand", brand);
-        }
-      });
-
-      filters.category.forEach((category) => {
-        if (!currentParams.getAll("category").includes(category)) {
-          currentParams.append("category", category);
-        }
-      });
-
-      filters.priceRange.forEach((priceRange) => {
-        if (!currentParams.getAll("priceRange").includes(priceRange)) {
-          currentParams.append("priceRange", priceRange);
-        }
-      });
-
-      setSearchParams(currentParams);
-    }
-  }, []);
 
   if (currentFilter === "Price Range")
     return <PriceRangeFilters handleFilterClick={handleFilterClick} />;

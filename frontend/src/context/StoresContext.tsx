@@ -1,5 +1,5 @@
 import { createContext, useState, useContext } from "react";
-import type { Store, Filters } from "@/types";
+import type { Store, FiltersType, FilterStringTypes } from "@/types";
 
 type StoreContextType = {
   stores: Store[];
@@ -7,18 +7,29 @@ type StoreContextType = {
   addStore: (store: Store) => void;
   removeStore: (id: string) => void;
   clearStores: () => void;
-  filters: Filters;
-  toggleFilter: (filter: keyof Filters, value: string) => void;
-  filterIsApplied: (filter: keyof Filters, value: string) => boolean;
+  filters: FiltersType;
+  toggleFilter: (filter: keyof FiltersType, value: string) => void;
+  filterIsApplied: (filter: keyof FiltersType, value: string) => boolean;
+  clearFilters: (filterToReset: FilterStringTypes) => void;
 };
 
-// Create the context
+const defaultFilters: FiltersType = {
+  category: [],
+  priceRange: [],
+  brand: [],
+};
+
+const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
+  Brand: "brand",
+  "Price Range": "priceRange",
+  Category: "category",
+};
+
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
-// Create a provider component
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [stores, setStores] = useState<Store[]>([]);
-  const [filters, setFilters] = useState<Filters>({
+  const [filters, setFilters] = useState<FiltersType>({
     category: [],
     priceRange: [],
     brand: [],
@@ -40,30 +51,42 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return stores.some((store) => store._id === id);
   };
 
-  const addFilter = (filter: keyof Filters, value: string) => {
+  const addFilter = (filter: keyof FiltersType, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filter]: [...new Set([...prevFilters[filter], value])],
     }));
   };
 
-  const removeFilter = (filter: keyof Filters, value: string) => {
+  const removeFilter = (filter: keyof FiltersType, value: string) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
       [filter]: prevFilters[filter].filter((item) => item !== value),
     }));
   };
 
-  const filterIsApplied = (filter: keyof Filters, value: string): boolean => {
+  const filterIsApplied = (
+    filter: keyof FiltersType,
+    value: string,
+  ): boolean => {
     return filters[filter].includes(value);
   };
 
-  const toggleFilter = (filter: keyof Filters, value: string) => {
+  const toggleFilter = (filter: keyof FiltersType, value: string) => {
     if (filterIsApplied(filter, value)) {
       removeFilter(filter, value);
     } else {
       addFilter(filter, value);
     }
+  };
+
+  const clearFilters = (filterToReset: FilterStringTypes) => {
+    const filter = filterToCamelCase[filterToReset];
+    console.log(filterToReset);
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [filter]: defaultFilters[filter],
+    }));
   };
 
   return (
@@ -77,6 +100,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         filters,
         toggleFilter,
         filterIsApplied,
+        clearFilters,
       }}
     >
       {children}
@@ -84,7 +108,6 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// Custom hook to use the shop context
 export const useMyStores = () => {
   const context = useContext(StoreContext);
   if (context === undefined) {

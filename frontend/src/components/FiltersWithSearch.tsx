@@ -1,14 +1,14 @@
 import { Button } from "./ui/button";
-import type { Filters } from "@/types";
+import type { FiltersType } from "@/types";
 import { useMyStores } from "@/context/StoresContext";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
 type Props = {
-  handleFilterClick: (filter: keyof Filters, filterValue: string) => void;
+  handleFilterClick: (filter: keyof FiltersType, filterValue: string) => void;
   handleSearchURL: (filter: string, searchValue: string) => void;
-  urlFilterParam: keyof Filters;
+  urlFilterParam: keyof FiltersType;
   urlSearchParam: string;
   filters: string[];
   savedSearch: string;
@@ -24,7 +24,6 @@ export default function FiltersWithSearch({
 }: Props) {
   const { filterIsApplied } = useMyStores();
   const [search, setSearch] = useState(savedSearch);
-  console.log(urlSearchParam, savedSearch);
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     handleSearchURL(urlSearchParam, e.target.value);
@@ -40,7 +39,7 @@ export default function FiltersWithSearch({
       <Button
         key={filter}
         onClick={() => handleFilterClick(urlFilterParam, filter)}
-        className={`text-2xl block w-full active:bg-green-200 active:text-black active:border:bg-green-300 rounded-none  ${filterIsApplied(urlFilterParam, filter) ? "bg-green-600 border-green-700 hover:bg-green-600 text-white" : "bg-green-300 hover:bg-green-400 text-green-800 border-green-400"} h-[125px] py-6`}
+        className={`text-2xl text-wrap block w-full active:bg-green-200 active:text-black active:border:bg-green-300 rounded-t-sm  ${filterIsApplied(urlFilterParam, filter) ? "bg-green-600 border-green-700 hover:bg-green-600 text-white" : "bg-green-300 hover:bg-green-400 text-green-800 border-green-400"} h-[125px] py-6`}
       >
         {filter}
       </Button>

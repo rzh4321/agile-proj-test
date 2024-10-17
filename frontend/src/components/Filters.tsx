@@ -1,12 +1,10 @@
 import PriceRangeFilters from "./PriceRangeFilters";
 import FiltersWithSearch from "./FiltersWithSearch";
+import RatingFilters from "./RatingFilters";
 import { useMyStores } from "@/context/StoresContext";
 import type { FiltersType } from "@/types";
 
 const brandFilters = [
-  "Alexander Wang",
-  "Acne Studios",
-  "AllSaints",
   "Apple",
   "Aesop",
   "Balenciaga",
@@ -77,14 +75,14 @@ const categoryFilters = [
 type Props = {
   toggleFilterURL: (filterType: string, value: string) => void;
   currentFilter: string;
-  handleSearchURL: (filter: string, searchValue: string) => void;
+  handleSearchOrRatingURL: (filter: string, searchValue: string) => void;
   getFilterValuesFromURL: (filterType: string) => string[];
 };
 
 export default function Filters({
   currentFilter,
   toggleFilterURL,
-  handleSearchURL,
+  handleSearchOrRatingURL,
   getFilterValuesFromURL,
 }: Props) {
   const { toggleFilter } = useMyStores();
@@ -99,11 +97,13 @@ export default function Filters({
 
   if (currentFilter === "Price Range")
     return <PriceRangeFilters handleFilterClick={handleFilterClick} />;
+  else if (currentFilter === 'Rating')
+    return <RatingFilters handleRatingURL={handleSearchOrRatingURL} />
   else if (currentFilter === "Brand")
     return (
       <FiltersWithSearch
         handleFilterClick={handleFilterClick}
-        handleSearchURL={handleSearchURL}
+        handleSearchURL={handleSearchOrRatingURL}
         urlFilterParam="brand"
         urlSearchParam="brandSearch"
         filters={brandFilters}
@@ -115,7 +115,7 @@ export default function Filters({
       <FiltersWithSearch
         key={"category"} // needed to fix search bar being shared across filters
         handleFilterClick={handleFilterClick}
-        handleSearchURL={handleSearchURL}
+        handleSearchURL={handleSearchOrRatingURL}
         urlFilterParam="category"
         urlSearchParam="categorySearch"
         filters={categoryFilters}

@@ -29,8 +29,10 @@ export type FiltersType = {
   category: string[];
   priceRange: string[];
   brand: string[];
+  rating: number | null;
+  numRatings: number | null;
 };
 
-export type FilterStringTypes = "Brand" | "Price Range" | "Category";
+export type FilterStringTypes = "Brand" | "Price Range" | "Category" | "Rating";
 
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";

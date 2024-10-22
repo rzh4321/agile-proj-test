@@ -26,7 +26,7 @@ export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, setRatingFilter, filters } = useMyStores();
+  const { clearFilters, toggleFilter, setRatingFilter, isAnyFilterApplied, filters } = useMyStores();
 
   const navigate = useNavigate();
 
@@ -158,9 +158,12 @@ export default function FilterPage() {
           handleSearchOrRatingURL={handleSearchOrRatingURL}
           currentFilter={currentFilter}
         />
-        <div className="my-8">
+        <div className="my-8 flex gap-4">
           <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
+          </Button>
+          <Button disabled={!isAnyFilterApplied}>
+            Generate Stores
           </Button>
         </div>
       </main>

@@ -91,6 +91,7 @@ export default function Filters({
     filter: keyof FiltersType,
     filterValue: string,
   ) => {
+    // toggle both the filter context and its search param
     toggleFilter(filter, filterValue);
     toggleFilterURL(filter, filterValue);
   };

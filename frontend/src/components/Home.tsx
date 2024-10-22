@@ -22,12 +22,12 @@ export default function Home() {
         <MyStoresButton />
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-6">
         <div className="w-full h-[300px] border-2 border-black">
           <SoHoMap />
         </div>
         <Button
-          className="rounded-3xl bg-blue-400 hover:bg-blue-600 border-blue-500 h-12 font-extrabold text-lg text-white"
+          className="rounded-3xl h-12 font-extrabold text-lg"
           onClick={() => navigate("/suggest")}
         >
           Suggest Stores For Me

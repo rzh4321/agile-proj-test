@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
+import SuggestedStores from "./SuggestedStores";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Filters from "./Filters";
 import { useMyStores } from "@/context/StoresContext";
@@ -26,7 +27,7 @@ export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, setRatingFilter, isAnyFilterApplied, filters } = useMyStores();
+  const { clearFilters, toggleFilter, setRatingFilter, filters } = useMyStores();
 
   const navigate = useNavigate();
 
@@ -162,9 +163,7 @@ export default function FilterPage() {
           <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
           </Button>
-          <Button disabled={!isAnyFilterApplied}>
-            Generate Stores
-          </Button>
+          <SuggestedStores />
         </div>
       </main>
     </div>

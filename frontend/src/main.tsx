@@ -15,6 +15,7 @@ import { Toaster } from "@/components/ui/toaster";
 import Home from "./components/Home.tsx";
 import { StoreProvider } from "./context/StoresContext.tsx";
 import FilterPage from "./components/FilterPage.tsx";
+import SavedRoutesPage from "./components/SavedRoutesPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRoute requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
         <Route index path="/suggest" element={<FilterPage />} />
+        <Route index path="/saved-routes" element={<SavedRoutesPage />} />
       </Route>
     </>,
   ),

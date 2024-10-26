@@ -98,8 +98,8 @@ export default function Filters({
 
   if (currentFilter === "Price Range")
     return <PriceRangeFilters handleFilterClick={handleFilterClick} />;
-  else if (currentFilter === 'Rating')
-    return <RatingFilters handleRatingURL={handleSearchOrRatingURL} />
+  else if (currentFilter === "Rating")
+    return <RatingFilters handleRatingURL={handleSearchOrRatingURL} />;
   else if (currentFilter === "Brand")
     return (
       <FiltersWithSearch

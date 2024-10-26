@@ -36,3 +36,10 @@ export type FiltersType = {
 export type FilterStringTypes = "Brand" | "Price Range" | "Category" | "Rating";
 
 export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
+
+export type SavedRoute = {
+  id: string;
+  description: string;
+  name: string;
+  stores: Store[];
+};

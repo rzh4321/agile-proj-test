@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -7,15 +7,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export default function HelpButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="rounded-full bg-blue-400 text-white text-lg font-bold border-0 p-0 w-[30px] h-[30px]">?</Button>
+        <Button className="rounded-full bg-blue-400 text-white text-lg font-bold border-0 p-0 w-[30px] h-[30px]">
+          ?
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -51,5 +53,5 @@ export default function HelpButton() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  )
+  );
 }

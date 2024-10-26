@@ -26,7 +26,9 @@ function StatusList({ stores }: { stores: Store[] }) {
     <Command>
       <CommandInput placeholder="Search stores..." />
       <CommandList>
-        <CommandEmpty>No stores match your currently selected filters</CommandEmpty>
+        <CommandEmpty>
+          No stores match your currently selected filters
+        </CommandEmpty>
         <CommandGroup>
           {stores.map((store) => (
             <CommandList key={store._id}>
@@ -40,36 +42,48 @@ function StatusList({ stores }: { stores: Store[] }) {
 }
 
 export default function SuggestedStores() {
-    const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
-    const [loading, setLoading] = useState(false);
-  const { stores, loading : storesLoading } = useStores();
-  const {isAnyFilterApplied, filters} = useMyStores();
+  const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
+  const [loading, setLoading] = useState(false);
+  const { stores, loading: storesLoading } = useStores();
+  const { isAnyFilterApplied, filters } = useMyStores();
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
 
   const handleGenerateStores = () => {
-        setLoading(true);
-        const suggestions = suggestStores(stores, filters);
-      setSuggestedStores(suggestions);
-      setLoading(false);
-  }
+    setLoading(true);
+    const suggestions = suggestStores(stores, filters);
+    setSuggestedStores(suggestions);
+    setLoading(false);
+  };
 
   return (
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button role="combobox" onClick={handleGenerateStores} disabled={!isAnyFilterApplied || storesLoading}>
+          <Button
+            role="combobox"
+            onClick={handleGenerateStores}
+            disabled={!isAnyFilterApplied || storesLoading}
+          >
             Generate Stores
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (
-            !loading ? <StatusList stores={suggestedStores} /> : <Loader className="animate-spin m-auto" />
+            !loading ? (
+              <StatusList stores={suggestedStores} />
+            ) : (
+              <Loader className="animate-spin m-auto" />
+            )
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
                 <div className="mt-4 border-t">
-                  {!loading ? <StatusList stores={suggestedStores} /> : <Loader className="animate-spin m-auto" />}
+                  {!loading ? (
+                    <StatusList stores={suggestedStores} />
+                  ) : (
+                    <Loader className="animate-spin m-auto" />
+                  )}
                 </div>
               </DrawerContent>
             </Drawer>

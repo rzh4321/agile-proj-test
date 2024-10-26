@@ -11,23 +11,29 @@ const filterDescriptions: Record<FilterStringTypes, string> = {
   Brand: "brand desc",
   "Price Range": "price range desc",
   Category: "category desc",
-  Rating: "rating desc"
+  Rating: "rating desc",
 };
 
 const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
   Brand: "brand",
   "Price Range": "priceRange",
   Category: "category",
-  Rating: "rating"
+  Rating: "rating",
 };
 
-const filterNames: FilterStringTypes[] = ["Brand", "Price Range", "Category", "Rating"];
+const filterNames: FilterStringTypes[] = [
+  "Brand",
+  "Price Range",
+  "Category",
+  "Rating",
+];
 
 export default function FilterPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, setRatingFilter, filters } = useMyStores();
+  const { clearFilters, toggleFilter, setRatingFilter, filters } =
+    useMyStores();
 
   const navigate = useNavigate();
 
@@ -42,16 +48,18 @@ export default function FilterPage() {
     const categoryFilters = getFilterValuesFromURL("category");
     categoryFilters.forEach((category) => toggleFilter("category", category));
     const ratingFilterArr = getFilterValuesFromURL("rating");
-    if (ratingFilterArr.length > 0) setRatingFilter('rating', +ratingFilterArr[0]);
+    if (ratingFilterArr.length > 0)
+      setRatingFilter("rating", +ratingFilterArr[0]);
     const numRatingsFilterArr = getFilterValuesFromURL("numRatings");
-    if (numRatingsFilterArr.length > 0) setRatingFilter('numRatings', +numRatingsFilterArr[0]);
+    if (numRatingsFilterArr.length > 0)
+      setRatingFilter("numRatings", +numRatingsFilterArr[0]);
 
     // reapply search params from the filter context
     if (
       priceRangeFilters.length === 0 &&
       brandFilters.length === 0 &&
       categoryFilters.length === 0 &&
-      ratingFilterArr.length === 0 && 
+      ratingFilterArr.length === 0 &&
       numRatingsFilterArr.length === 0
     ) {
       const currentParams = new URLSearchParams(searchParams);
@@ -74,8 +82,10 @@ export default function FilterPage() {
         }
       });
 
-      if (filters.rating) currentParams.set('rating', filters.rating.toString());
-      if (filters.numRatings) currentParams.set('numRatings', filters.numRatings.toString());
+      if (filters.rating)
+        currentParams.set("rating", filters.rating.toString());
+      if (filters.numRatings)
+        currentParams.set("numRatings", filters.numRatings.toString());
 
       setSearchParams(currentParams);
     }

@@ -13,7 +13,6 @@ type StoreContextType = {
   clearFilters: (filterToReset: FilterStringTypes) => void;
   setRatingFilter: (filterType: "rating" | "numRatings", value: number) => void;
   isAnyFilterApplied: boolean;
-
 };
 
 const defaultFilters: FiltersType = {
@@ -28,7 +27,7 @@ const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
   Brand: "brand",
   "Price Range": "priceRange",
   Category: "category",
-  Rating: 'rating',
+  Rating: "rating",
 };
 
 const StoreContext = createContext<StoreContextType | undefined>(undefined);
@@ -59,9 +58,12 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     return stores.some((store) => store._id === id);
   };
 
-  const addFilter = (filter: keyof FiltersType, value: string | number | null) => {
+  const addFilter = (
+    filter: keyof FiltersType,
+    value: string | number | null,
+  ) => {
     setFilters((prevFilters) => {
-      if (filter === 'rating' || filter === 'numRatings') {
+      if (filter === "rating" || filter === "numRatings") {
         return {
           ...prevFilters,
           [filter]: value,
@@ -75,9 +77,12 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const removeFilter = (filter: keyof FiltersType, value: string | number | null) => {
+  const removeFilter = (
+    filter: keyof FiltersType,
+    value: string | number | null,
+  ) => {
     setFilters((prevFilters) => {
-      if (filter === 'rating' || filter === 'numRatings') {
+      if (filter === "rating" || filter === "numRatings") {
         return {
           ...prevFilters,
           [filter]: null,
@@ -92,9 +97,9 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   };
   const filterIsApplied = (
     filter: keyof FiltersType,
-    value: string | number | null
+    value: string | number | null,
   ): boolean => {
-    if (filter === 'rating' || filter === 'numRatings') {
+    if (filter === "rating" || filter === "numRatings") {
       return filters[filter] === value;
     } else {
       return filters[filter].includes(value as string);
@@ -125,7 +130,7 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
       setFilters((prevFilters) => ({
         ...prevFilters,
         rating: defaultFilters.rating,
-        numRatings: defaultFilters.numRatings
+        numRatings: defaultFilters.numRatings,
       }));
     } else {
       const filter = filterToCamelCase[filterToReset];
@@ -136,10 +141,13 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const setRatingFilter = (filterType: 'rating' | 'numRatings', value: number) => {
-    setFilters(prevFilters => ({
+  const setRatingFilter = (
+    filterType: "rating" | "numRatings",
+    value: number,
+  ) => {
+    setFilters((prevFilters) => ({
       ...prevFilters,
-      [filterType]: value
+      [filterType]: value,
     }));
   };
 

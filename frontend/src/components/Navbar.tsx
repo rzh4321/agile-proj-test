@@ -10,14 +10,11 @@ export default function Navbar() {
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
           <HelpButton />
-        
         </div>
 
         {/* Logo in the middle */}
         <div className="w-1/3 flex justify-center">
-          <div className="text-white text-2xl font-bold">
-            LOGO
-          </div>
+          <div className="text-white text-2xl font-bold">LOGO</div>
         </div>
 
         <div className="w-1/3 flex justify-end">

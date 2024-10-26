@@ -34,7 +34,7 @@ export default function Home() {
         </Button>
         <Button
           className="rounded-3xl h-12 font-extrabold text-lg"
-          onClick={() => navigate("/suggest")}
+          onClick={() => navigate("/saved-routes")}
         >
           Saved Routes
         </Button>

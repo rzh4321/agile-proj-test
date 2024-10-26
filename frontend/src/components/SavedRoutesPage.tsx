@@ -1,9 +1,10 @@
 import useAuth from "@/context/AuthContext";
 import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
+import { Loader } from "lucide-react";
 
 export default function SavedRoutesPage() {
   const { user, loading } = useAuth();
-
+    console.log(user, loading)
   const savedRoutes = user?.routes.map((route) => (
     <div
       key={route.id}
@@ -30,7 +31,7 @@ export default function SavedRoutesPage() {
   return (
     <div className="p-5">
       <div className="text-3xl font-bold mb-8">Your Saved Routes</div>
-      <div className="flex flex-col gap-5">{savedRoutes}</div>
+      <div className="flex flex-col gap-5">{loading ? <Loader className="animate-spin m-auto" /> : savedRoutes}</div>
     </div>
   );
 }

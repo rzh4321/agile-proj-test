@@ -179,7 +179,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const verifyToken = async (): Promise<void> => {
     setLoading(true); // auth status is loading
@@ -228,15 +228,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } catch (error) {
         console.error("Token verification error:", error);
         logout();
+      } finally {
+        setLoading(false); // auth status is determined
       }
     }
-    setLoading(false); // auth status is determined
   };
 
   useEffect(() => {
-    console.log("refreshed page. calling verifytoken...");
+    if (!isAuthenticated) return;
+    console.log("calling verifytoken...");
     verifyToken();
-  }, []);
+  }, [isAuthenticated]);
 
   const login = (token: string): void => {
     console.log("login called.  token stored to localstorage");

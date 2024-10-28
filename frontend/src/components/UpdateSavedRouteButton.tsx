@@ -9,7 +9,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { SavedRoute } from "@/types";
 import { Pen } from "lucide-react";
 import { Textarea } from "./ui/textarea";
@@ -25,14 +24,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 import EditRouteStoresButton from "./EditRouteStoresButton";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Required",
-  }).max(35, {
-    message: "Name cannot exceed 35 characters"
-  }),
+  name: z
+    .string()
+    .min(1, {
+      message: "Required",
+    })
+    .max(35, {
+      message: "Name cannot exceed 35 characters",
+    }),
   description: z.string().max(250, {
     message: "Description cannot exceed 250 characters",
   }),
@@ -44,6 +47,7 @@ type Props = {
 
 export default function UpdateSavedRouteButton({ route }: Props) {
   const [pending, setPending] = useState(false);
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,9 +58,23 @@ export default function UpdateSavedRouteButton({ route }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log('HDIUABDIASUD')
     console.log(values);
+    setPending(true);
     // make call to backend
+    if (true) {
+      toast({
+        description: "✓ Successfully updated route",
+        duration: 1000,
+      });
+    } else {
+      const { message } = await response.json();
+      toast({
+        variant: "destructive",
+        title: `An error occurred`,
+        description: message,
+      });
+    }
+    setPending(false);
   }
 
   return (
@@ -65,54 +83,46 @@ export default function UpdateSavedRouteButton({ route }: Props) {
         <Pen
           width={30}
           height={30}
-          className="rounded-sm border-green-300 p-1"
+          className="rounded-sm border-green-300 p-1 cursor-pointer"
         />
       </DialogTrigger>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-        >
       <DialogContent className="sm:max-w-[425px]">
-        <DialogHeader>
-          <DialogTitle>Edit Route {route.name}</DialogTitle>
-          <DialogDescription>
-            Make changes to your route here. Click save when you're done.
-          </DialogDescription>
-        </DialogHeader>
-        <EditRouteStoresButton initialStores={route.stores} />
-        <div className="grid gap-4 pb-4">
-          <FormField
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <DialogHeader>
+              <DialogTitle>Edit Route {route.name}</DialogTitle>
+              <DialogDescription>
+                Make changes to your route here. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+              <EditRouteStoresButton initialStores={route.stores} />
+              <FormField
                 control={form.control}
                 name="name"
                 render={({ field }) => (
                   <FormItem className="grid grid-cols-4 items-center gap-4">
-                    <FormLabel
-                      htmlFor="name"
-                      className="text-right"
-                    >
+                    <FormLabel htmlFor="name" className="text-right">
                       Name
                     </FormLabel>
 
                     <FormControl>
-                        <Input
-                          {...field}
-                          className="col-span-3"
-                          id="name"
-                          type="text"
-                          name="name"
-                          defaultValue={route.name}
-                          maxLength={35}
-                          required
-                        />
-
+                      <Input
+                        {...field}
+                        className="col-span-3"
+                        id="name"
+                        type="text"
+                        name="name"
+                        defaultValue={route.name}
+                        maxLength={35}
+                        required
+                      />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
 
-
-<FormField
+              <FormField
                 control={form.control}
                 name="description"
                 render={({ field }) => (
@@ -125,27 +135,28 @@ export default function UpdateSavedRouteButton({ route }: Props) {
                     </FormLabel>
 
                     <FormControl>
-                        <Textarea
-                          {...field}
-                          className="col-span-3 max-h-[300px]"
-                          id="description"
-                          name="description"
-                          defaultValue={route.description}
-                          maxLength={250}
-                        />
-
+                      <Textarea
+                        {...field}
+                        className="col-span-3 max-h-[300px]"
+                        id="description"
+                        name="description"
+                        defaultValue={route.description}
+                        maxLength={250}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-        </div>
-        <DialogFooter>
-          <Button type="submit">Save changes</Button>
-        </DialogFooter>
-      </DialogContent>
-        </form>
+            </div>
+            <DialogFooter>
+              <Button type="submit" disabled={pending}>
+                Save changes
+              </Button>
+            </DialogFooter>
+          </form>
         </Form>
+      </DialogContent>
     </Dialog>
   );
 }

@@ -1,10 +1,11 @@
 import useAuth from "@/context/AuthContext";
 import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
+import CopyLinkButton from "./CopyLinkButton";
+import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
 
 export default function SavedRoutesPage() {
   const { user, loading } = useAuth();
-    console.log(user, loading)
   const savedRoutes = user?.routes.map((route) => (
     <div
       key={route.id}
@@ -21,9 +22,9 @@ export default function SavedRoutesPage() {
         </div>
       </div>
       <div className="flex gap-2 my-auto">
-        <span>link</span>
+        <CopyLinkButton routeId={route.id} />
         <UpdateSavedRouteButton route={route} />
-        <span>delete</span>
+        <DeleteRouteButton route={route} />
       </div>
     </div>
   ));
@@ -31,7 +32,9 @@ export default function SavedRoutesPage() {
   return (
     <div className="p-5">
       <div className="text-3xl font-bold mb-8">Your Saved Routes</div>
-      <div className="flex flex-col gap-5">{loading ? <Loader className="animate-spin m-auto" /> : savedRoutes}</div>
+      <div className="flex flex-col gap-5">
+        {loading ? <Loader className="animate-spin m-auto" /> : savedRoutes}
+      </div>
     </div>
   );
 }

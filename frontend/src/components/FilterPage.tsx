@@ -169,7 +169,7 @@ export default function FilterPage() {
           handleSearchOrRatingURL={handleSearchOrRatingURL}
           currentFilter={currentFilter}
         />
-        <div className="my-8 flex gap-4">
+        <div className="mt-6 flex gap-4">
           <Button variant={"secondary"} onClick={() => navigate("/")}>
             Go Back
           </Button>

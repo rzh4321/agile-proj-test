@@ -17,7 +17,7 @@ export default function Home() {
         ) : !loading ? (
           <StoreSearchBar stores={stores} />
         ) : (
-          <Loader className="animate-spin" />
+          <Loader className="m-auto animate-spin" />
         )}
         <MyStoresButton />
       </div>

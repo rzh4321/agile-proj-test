@@ -8,6 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import useAuth from "@/context/AuthContext";
 import { useToast } from "@/hooks/use-toast";
 import { SavedRoute } from "@/types";
 import { DialogClose } from "@radix-ui/react-dialog";
@@ -19,20 +20,40 @@ type Props = {
 
 export default function DeleteRouteButton({ route }: Props) {
   const { toast } = useToast();
+  const { user, updateRoutes } = useAuth();
 
-  const handleDelete = async () => {
-    // make call to backend
-    if (true) {
-      toast({
-        description: "✓ Successfully deleted route",
-        duration: 1000,
-      });
-    } else {
-      const { message } = await response.json();
+  const handleDelete = async() => {
+    try {
+      // make call to backend
+    //   const response = await fetch(`http://localhost:3001/routes/${route.id}`, {
+    //     method: 'DELETE',
+    //     headers: {
+    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+    //     }
+    //   });
+        // response.ok
+      if (true) {
+        // update local state by filtering out the deleted route to update UI
+        const updatedRoutes = user?.routes.filter(r => r.id !== route.id) || [];
+        updateRoutes(updatedRoutes);
+        
+        toast({
+          description: "✓ Successfully deleted route",
+          duration: 1000,
+        });
+      } else {
+        const { message } = await response.json();
+        toast({
+          variant: "destructive",
+          title: `An error occurred`,
+          description: message,
+        });
+      }
+    } catch (error) {
       toast({
         variant: "destructive",
         title: `An error occurred`,
-        description: message,
+        description: `Failed to delete route: ${error}`,
       });
     }
   };

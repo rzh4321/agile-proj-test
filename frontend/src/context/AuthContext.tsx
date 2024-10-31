@@ -14,6 +14,7 @@ type AuthContextType = {
   logout: () => void;
   verifyToken: () => Promise<void>;
   loading: boolean;
+  updateRoutes: (routes: SavedRoute[]) => void;
 };
 
 const sampleStores: Store[] = [
@@ -179,7 +180,7 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   const verifyToken = async (): Promise<void> => {
     setLoading(true); // auth status is loading
@@ -232,24 +233,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setLoading(false); // auth status is determined
       }
     }
+    else {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
-    if (!isAuthenticated) return;
-    console.log("calling verifytoken...");
+    console.log("you refreshed page. calling verifytoken...");
     verifyToken();
-  }, [isAuthenticated]);
+  }, []);
 
   const login = (token: string): void => {
     console.log("login called.  token stored to localstorage");
     localStorage.setItem("token", token);
     setIsAuthenticated(true);
+    verifyToken();
   };
 
   const logout = (): void => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
     setUser(null);
+  };
+
+  const updateRoutes = (newRoutes: SavedRoute[]): void => {
+    setUser(prev => prev ? { ...prev, routes: newRoutes } : null);
   };
 
   const contextValue: AuthContextType = {
@@ -259,6 +267,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logout,
     verifyToken,
     loading,
+    updateRoutes,
   };
 
   return (

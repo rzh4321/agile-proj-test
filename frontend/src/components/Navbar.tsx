@@ -1,24 +1,44 @@
-import useAuth from "@/context/AuthContext";
-import { Button } from "./ui/button";
 import HelpButton from "./HelpButton";
+import { Button } from "./ui/button";
+import { useNavigate, useLocation } from "react-router-dom";
+import useAuth from "@/context/AuthContext";
 
 export default function Navbar() {
-  const { logout } = useAuth();
+  const {logout} = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isSuggestPage = location.pathname === "/suggest";
+  const isHelpPage = location.pathname === "/help";
 
   return (
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
-          <HelpButton />
+          {(isSuggestPage || isHelpPage) ? (
+            <Button
+              variant={"secondary"}
+              className="border-slate-300"
+              onClick={() => navigate("/")}
+            >
+              Cancel
+            </Button>
+          ) : <HelpButton />}
         </div>
 
-        {/* Logo in the middle */}
-        <div className="w-1/3 flex justify-center">
-          <div className="text-white text-2xl font-bold">LOGO</div>
+        <div className="absolute left-1/2 transform -translate-x-1/2">
+          <div
+            className="text-white text-2xl font-bold"
+            onClick={() => navigate("/")}
+          >
+            LOGO
+          </div>
         </div>
 
         <div className="w-1/3 flex justify-end">
-          <Button variant={"destructive"} onClick={logout}>
+          <Button
+            variant={"destructive"}
+            onClick={() => logout()}
+          >
             Log Out
           </Button>
         </div>

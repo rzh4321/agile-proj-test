@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
-import SuggestedStores from "./SuggestedStores";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Filters from "./Filters";
 import { useMyStores } from "@/context/StoresContext";
 import { FiltersType } from "@/types";
 import { FilterStringTypes } from "@/types";
+import { suggestStores } from "@/lib/utils";
+import useStores from "@/hooks/useStores";
 
 const filterDescriptions: Record<FilterStringTypes, string> = {
-  Brand: "brand desc",
-  "Price Range": "price range desc",
-  Category: "category desc",
-  Rating: "rating desc",
+  Brand: "Select specific retailers and boutiques",
+  "Price Range": "Filter stores by typical price points from budget to luxury",
+  Category: "Browse by store type like clothing, accessories, beauty and more",
+  Rating:
+    "Sort by Google review ratings from 1 to 5 stars and number of ratings",
 };
 
 const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
@@ -28,14 +30,31 @@ const filterNames: FilterStringTypes[] = [
   "Rating",
 ];
 
-export default function FilterPage() {
+export default function SuggestPage() {
+  const { stores, loading, error } = useStores();
   const [searchParams, setSearchParams] = useSearchParams();
   const [currentFilter, setCurrentFilter] =
     useState<FilterStringTypes>("Brand");
-  const { clearFilters, toggleFilter, setRatingFilter, filters } =
-    useMyStores();
+  const {
+    clearFilters,
+    toggleFilter,
+    setRatingFilter,
+    isAnyFilterApplied,
+    filters,
+  } = useMyStores();
 
   const navigate = useNavigate();
+
+  const handleGenerateStores = () => {
+    if (error || loading) return;
+    const suggestedStores = suggestStores(stores, filters);
+    navigate("/", {
+      state: {
+        suggestedStores: suggestedStores,
+        openSearchBar: true,
+      },
+    });
+  };
 
   useEffect(() => {
     // reapply any filters to the filter context using search params
@@ -133,6 +152,7 @@ export default function FilterPage() {
     // delete the search param
     const currentParams = new URLSearchParams(searchParams);
     currentParams.delete(filterToCamelCase[currentFilter]);
+    if (currentFilter === "Rating") currentParams.delete("numRatings"); // also delete numRatings param
     setSearchParams(currentParams);
   };
 
@@ -153,7 +173,7 @@ export default function FilterPage() {
       </nav>
       <main className="flex-1 p-6 overflow-y-auto h-fit max-h-[calc(100vh-68px)]">
         <h1 className="text-3xl font-bold mb-4">{currentFilter}</h1>
-        <p className="text-gray-600 mb-6">
+        <p className="text-gray-600 mb-6 leading-5 text-sm font-light">
           {filterDescriptions[currentFilter]}
         </p>
         <Button
@@ -169,11 +189,14 @@ export default function FilterPage() {
           handleSearchOrRatingURL={handleSearchOrRatingURL}
           currentFilter={currentFilter}
         />
-        <div className="mt-6 flex gap-4">
-          <Button variant={"secondary"} onClick={() => navigate("/")}>
-            Go Back
+        <div className="mt-6">
+          <Button
+            className="bg-green-600 border-green-700"
+            onClick={handleGenerateStores}
+            disabled={!isAnyFilterApplied}
+          >
+            Generate Stores
           </Button>
-          <SuggestedStores />
         </div>
       </main>
     </div>

@@ -4,7 +4,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 
 export default function Navbar() {
-  const {logout} = useAuth();
+  const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isSuggestPage = location.pathname === "/suggest";
@@ -14,7 +14,7 @@ export default function Navbar() {
     <nav className="bg-gray-800 p-4">
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
-          {(isSuggestPage || isHelpPage) ? (
+          {isSuggestPage || isHelpPage ? (
             <Button
               variant={"secondary"}
               className="border-slate-300"
@@ -22,7 +22,9 @@ export default function Navbar() {
             >
               Cancel
             </Button>
-          ) : <HelpButton />}
+          ) : (
+            <HelpButton />
+          )}
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -35,10 +37,7 @@ export default function Navbar() {
         </div>
 
         <div className="w-1/3 flex justify-end">
-          <Button
-            variant={"destructive"}
-            onClick={() => logout()}
-          >
+          <Button variant={"destructive"} onClick={() => logout()}>
             Log Out
           </Button>
         </div>

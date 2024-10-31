@@ -22,21 +22,22 @@ export default function DeleteRouteButton({ route }: Props) {
   const { toast } = useToast();
   const { user, updateRoutes } = useAuth();
 
-  const handleDelete = async() => {
+  const handleDelete = async () => {
     try {
       // make call to backend
-    //   const response = await fetch(`http://localhost:3001/routes/${route.id}`, {
-    //     method: 'DELETE',
-    //     headers: {
-    //       'Authorization': `Bearer ${localStorage.getItem('token')}`
-    //     }
-    //   });
-        // response.ok
+      //   const response = await fetch(`http://localhost:3001/routes/${route.id}`, {
+      //     method: 'DELETE',
+      //     headers: {
+      //       'Authorization': `Bearer ${localStorage.getItem('token')}`
+      //     }
+      //   });
+      // response.ok
       if (true) {
         // update local state by filtering out the deleted route to update UI
-        const updatedRoutes = user?.routes.filter(r => r.id !== route.id) || [];
+        const updatedRoutes =
+          user?.routes.filter((r) => r.id !== route.id) || [];
         updateRoutes(updatedRoutes);
-        
+
         toast({
           description: "✓ Successfully deleted route",
           duration: 1000,

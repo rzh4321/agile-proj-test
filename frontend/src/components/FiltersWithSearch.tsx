@@ -12,6 +12,7 @@ type Props = {
   urlSearchParam: string;
   filters: string[];
   savedSearch: string;
+  placeholder: string;
 };
 
 export default function FiltersWithSearch({
@@ -21,6 +22,7 @@ export default function FiltersWithSearch({
   urlSearchParam, // search param for the filter itself
   filters, // array of filter options
   savedSearch, // saved search from URL param
+  placeholder,
 }: Props) {
   const { filterIsApplied } = useMyStores();
   const [search, setSearch] = useState(savedSearch);
@@ -51,7 +53,7 @@ export default function FiltersWithSearch({
         <Input
           type="search"
           className="pl-10 pr-4 py-2 w-full"
-          placeholder="Search brands..."
+          placeholder={placeholder}
           onChange={(e) => handleSearch(e)}
           value={search}
         />

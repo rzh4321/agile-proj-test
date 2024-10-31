@@ -109,6 +109,7 @@ export default function Filters({
         urlSearchParam="brandSearch"
         filters={brandFilters}
         savedSearch={getFilterValuesFromURL("brandSearch")[0] || ""}
+        placeholder="Search brands..."
       />
     );
   else if (currentFilter === "Category")
@@ -121,6 +122,7 @@ export default function Filters({
         urlSearchParam="categorySearch"
         filters={categoryFilters}
         savedSearch={getFilterValuesFromURL("categorySearch")[0] || ""}
+        placeholder="Search categories..."
       />
     );
 }

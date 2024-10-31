@@ -1,4 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Drawer, DrawerContent } from "@/components/ui/drawer";
+import { cn } from "@/lib/utils";
+import { Search } from "lucide-react";
+import { Store } from "@/types";
 import {
   Command,
   CommandEmpty,
@@ -6,17 +17,6 @@ import {
   CommandInput,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Search } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useMediaQuery } from "usehooks-ts";
-import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
-import { Store } from "@/types";
 import StoreItem from "./StoreItem";
 
 function StoreList({
@@ -36,13 +36,16 @@ function StoreList({
         {highlightedStores.length > 0 && (
           <CommandGroup heading={heading}>
             {highlightedStores.map((store) => (
-              <StoreItem key={store._id} type="myStore" store={store} />
+              <CommandList key={store._id}>
+                <StoreItem type="search" store={store} />
+              </CommandList>
             ))}
           </CommandGroup>
         )}
         <CommandGroup heading="All Stores">
           {stores.map((store) => (
             <CommandList key={store._id}>
+              <StoreItem type="search" store={store} />
               <StoreItem type="search" store={store} />
             </CommandList>
           ))}
@@ -52,9 +55,25 @@ function StoreList({
   );
 }
 
-export default function StoreSearchBar({ stores }: { stores: Store[] }) {
+export default function StoreSearchBar({ stores = [] }: { stores: Store[] }) {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  const [suggestedStores, setSuggestedStores] = useState<Store[]>([]);
+  const isDesktop =
+    typeof window !== "undefined" ? window.innerWidth >= 768 : true;
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const openSearchBar = location.state?.openSearchBar || false;
+    const newSuggestedStores = location.state?.suggestedStores || [];
+
+    if (openSearchBar) {
+      setOpen(true);
+      setSuggestedStores(newSuggestedStores);
+      // Clear the state after opening the search bar
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location.state, navigate, location.pathname]);
 
   return (
     <>
@@ -71,12 +90,20 @@ export default function StoreSearchBar({ stores }: { stores: Store[] }) {
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (
-            <StoreList stores={stores} />
+            <StoreList
+              stores={stores}
+              highlightedStores={suggestedStores}
+              heading="Suggested Stores"
+            />
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
                 <div className="mt-4 border-t">
-                  <StoreList stores={stores} />
+                  <StoreList
+                    stores={stores}
+                    highlightedStores={suggestedStores}
+                    heading="Suggested Stores"
+                  />
                 </div>
               </DrawerContent>
             </Drawer>

@@ -14,7 +14,7 @@ import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import { Toaster } from "@/components/ui/toaster";
 import Home from "./components/Home.tsx";
 import { StoreProvider } from "./context/StoresContext.tsx";
-import FilterPage from "./components/FilterPage.tsx";
+import FilterPage from "./components/SuggestPage.tsx";
 import SavedRoutesPage from "./components/SavedRoutesPage.tsx";
 
 const router = createBrowserRouter(

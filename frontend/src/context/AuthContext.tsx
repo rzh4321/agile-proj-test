@@ -232,8 +232,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       } finally {
         setLoading(false); // auth status is determined
       }
-    }
-    else {
+    } else {
       setLoading(false);
     }
   };
@@ -257,7 +256,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   const updateRoutes = (newRoutes: SavedRoute[]): void => {
-    setUser(prev => prev ? { ...prev, routes: newRoutes } : null);
+    setUser((prev) => (prev ? { ...prev, routes: newRoutes } : null));
   };
 
   const contextValue: AuthContextType = {

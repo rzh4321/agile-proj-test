@@ -75,7 +75,7 @@ export default function SignupForm() {
   }
 
   return (
-    <div className="h-screen flex items-center justify-center">
+    <div className="h-[calc(100vh-68px)] flex items-center justify-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

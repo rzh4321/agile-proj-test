@@ -13,8 +13,8 @@ type StoreContextType = {
   clearFilters: (filterToReset: FilterStringTypes) => void;
   setRatingFilter: (filterType: "rating" | "numRatings", value: number) => void;
   isAnyFilterApplied: boolean;
-  allowedLocationAccess: boolean;
-  setAllowedLocationAccess: React.Dispatch<React.SetStateAction<boolean>>;
+  // allowedLocationAccess: boolean;
+  // setAllowedLocationAccess: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const defaultFilters: FiltersType = {
@@ -36,7 +36,7 @@ const StoreContext = createContext<StoreContextType | undefined>(undefined);
 
 export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
   const [stores, setStores] = useState<Store[]>([]);
-  const [allowedLocationAccess, setAllowedLocationAccess] = useState(false);
+  // const [allowedLocationAccess, setAllowedLocationAccess] = useState(false);
   const [filters, setFilters] = useState<FiltersType>({
     category: [],
     priceRange: [],
@@ -168,8 +168,8 @@ export const StoreProvider = ({ children }: { children: React.ReactNode }) => {
         clearFilters,
         setRatingFilter,
         isAnyFilterApplied,
-        allowedLocationAccess,
-        setAllowedLocationAccess,
+        // allowedLocationAccess,
+        // setAllowedLocationAccess,
       }}
     >
       {children}

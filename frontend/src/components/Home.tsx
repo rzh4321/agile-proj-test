@@ -9,22 +9,22 @@ import { useMyStores } from "@/context/StoresContext";
 
 export default function Home() {
   const { stores, loading, error } = useStores();
-  const {
-    stores: userStores,
-    allowedLocationAccess,
-    setAllowedLocationAccess,
-  } = useMyStores();
+  const { stores: userStores } = useMyStores();
   const navigate = useNavigate();
 
   const handleClickGenerate = () => {
-    if (allowedLocationAccess) navigate("/route");
-    const allow = confirm("Allow location access?");
-    if (!allow) {
-      alert("Please allow location access to proceed.");
-    } else {
-      setAllowedLocationAccess(true);
-      navigate("/route");
-    }
+    // if (allowedLocationAccess) {
+    //   navigate("/route");
+    //   return;
+    // }
+    // const allow = confirm("Allow location access?");
+    // if (!allow) {
+    //   alert("Please allow location access to proceed.");
+    // } else {
+    //   setAllowedLocationAccess(true);
+    //   navigate("/route");
+    // }
+    navigate("/route");
   };
 
   return (

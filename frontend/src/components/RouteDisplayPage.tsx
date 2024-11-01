@@ -5,35 +5,48 @@ import SoHoMap from "./SoHoMap";
 import RouteDisplayModal from "./RouteDisplayModal";
 import { useMyStores } from "@/context/StoresContext";
 import useGeolocation from "@/hooks/useGeolocation";
+import { findOptimalRoute } from "@/lib/utils";
+import type { Store } from "@/types";
 
 export default function RouteDisplayPage() {
-  const { stores, allowedLocationAccess, setAllowedLocationAccess } =
-    useMyStores();
+  const { stores } = useMyStores();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
+  const [route, setRoute] = useState<Store[]>([]);
+  const [totalDistance, setTotalDistance] = useState(0);
   const params = useParams();
   const { coordinates, error, loading } = useGeolocation();
+
+  console.log(coordinates);
 
   // if routeId doesnt exist in database, return to home
   //   if (params.routeId === undefined) navigate('/')
 
   useEffect(() => {
-    if (coordinates) console.log(coordinates);
-    else if (error)
+    if (coordinates) {
+      const result = findOptimalRoute(coordinates.lat, coordinates.lng, stores);
+      console.log("Optimal route:");
+      result.path.forEach((store, index) => {
+        console.log(`${index + 1}. ${store.name}`);
+      });
+      setRoute(result.path);
+      setTotalDistance(result.totalDistance);
+    } else if (error)
       alert(`An error occurred while tracking your location: ${error}`);
+    // navigate("/");
   }, [loading, error]);
 
-  useEffect(() => {
-    if (!allowedLocationAccess) {
-      const allow = confirm("Allow location access?");
-      if (!allow) {
-        alert("Please allow location access to proceed.");
-        navigate("/");
-      } else {
-        setAllowedLocationAccess(true);
-      }
-    }
-  }, []);
+  //   useEffect(() => {
+  //     if (!allowedLocationAccess) {
+  //       const allow = confirm("Allow location access?");
+  //       if (!allow) {
+  //         alert("Please allow location access to proceed.");
+  //         navigate("/");
+  //       } else {
+  //         setAllowedLocationAccess(true);
+  //       }
+  //     }
+  //   }, []);
 
   const handleSaveList = (name: string, description: string) => {
     console.log("saved route:", { name, description, stores: stores });
@@ -43,17 +56,19 @@ export default function RouteDisplayPage() {
   const routeDisplay = stores.map((route, index) => (
     <div
       key={route._id}
-      className="flex justify-center items-center text-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 rounded-md p-2 mb-1"
+      className="flex cursor-pointer relative flex-col min-w-[100px] max-w-[100px] justify-center items-center text-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 rounded-md p-2 mb-1"
     >
-      <span className="text-sm font-medium">
-        {index + 1}. {route.name}
+      <span className="absolute top-1 left-1 rounded-full bg-green-500 text-white text-lg font-bold border-0 p-0 w-[30px] h-[30px]">
+        {" "}
+        {index + 1}.{" "}
       </span>
+      <span className="text-md font-bold">{route.name}</span>
     </div>
   ));
 
   const SaveButton = (
     <Button
-      className="bg-green-500 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-600"
+      className="bg-green-600 border-green-700 text-white hover:bg-green-700 hover:text-slate-200"
       onClick={() => {
         setModalOpen(true);
         console.log("Save Button Clicked; modal open");
@@ -64,25 +79,31 @@ export default function RouteDisplayPage() {
   );
 
   const BackButton = (
-    <Button
-      className="bg-gray-300 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-400"
-      onClick={() => navigate("/")}
-    >
+    <Button variant={"destructive"} onClick={() => navigate("/")}>
       Back to Start
     </Button>
   );
 
-  return (
-    <div className="p-5">
-      <div className="text-3xl font-bold mb-6 text-center">
-        Your Shopping Route
+  if (error) {
+    return (
+      <div className="flex h-[calc(100vh-68px)] m-auto justify-center items-center flex-col gap-8">
+        <div>{error}</div>
+        {BackButton}
       </div>
+    );
+  }
+
+  return (
+    <div className="p-5 flex flex-col gap-4">
+      <div className="text-3xl font-bold text-center">Your Shopping Route</div>
 
       <div className="w-full h-[300px] border-2 border-black">
         <SoHoMap />
       </div>
-
-      <div className="mb-6">{routeDisplay}</div>
+      <div>{totalDistance.toFixed(0)}</div>
+      <div className="mb-6 overflow-auto h-[150px] flex gap-[1px]">
+        {routeDisplay}
+      </div>
 
       <div className="flex justify-between">
         {BackButton}

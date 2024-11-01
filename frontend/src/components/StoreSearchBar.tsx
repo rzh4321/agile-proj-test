@@ -46,7 +46,6 @@ function StoreList({
           {stores.map((store) => (
             <CommandList key={store._id}>
               <StoreItem type="search" store={store} />
-              <StoreItem type="search" store={store} />
             </CommandList>
           ))}
         </CommandGroup>

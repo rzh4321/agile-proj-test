@@ -9,6 +9,8 @@ export default function Navbar() {
   const navigate = useNavigate();
   const isSuggestPage = location.pathname === "/suggest";
   const isHelpPage = location.pathname === "/help";
+  const isAuthPage =
+    location.pathname === "/login" || location.pathname === "/signup";
 
   return (
     <nav className="bg-gray-800 p-4">
@@ -36,14 +38,16 @@ export default function Navbar() {
           </div>
         </div>
 
-        <div className="w-1/3 flex justify-end">
-          <Button
-            variant={isAuthenticated ? "destructive" : "default"}
-            onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
-          >
-            {isAuthenticated ? "Log Out" : "Sign In"}
-          </Button>
-        </div>
+        {!isAuthPage && (
+          <div className="w-1/3 flex justify-end">
+            <Button
+              variant={isAuthenticated ? "destructive" : "default"}
+              onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+            >
+              {isAuthenticated ? "Log Out" : "Sign In"}
+            </Button>
+          </div>
+        )}
       </div>
     </nav>
   );

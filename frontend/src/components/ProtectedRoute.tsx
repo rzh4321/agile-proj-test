@@ -21,17 +21,19 @@ const ProtectedRoute = ({ requiresAuth }: { requiresAuth: boolean }) => {
     return <Navigate to="/login" replace />;
   }
   // logged in user attempting to go back to auth page
-  else if (isAuthenticated && (location.pathname === '/login' || location.pathname === '/signup')) {
+  else if (
+    isAuthenticated &&
+    (location.pathname === "/login" || location.pathname === "/signup")
+  ) {
     return <Navigate to="/" replace />;
   }
 
-    return (
-      <>
-        <Navbar />
-        <Outlet />
-      </>
-    );
-
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
 };
 
 export default ProtectedRoute;

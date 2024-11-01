@@ -24,7 +24,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRoute requiresAuth={false} />}>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
-        <Route path="/route/:routeId" element={<RouteDisplayPage />} />
+        <Route path="/route/:routeId?" element={<RouteDisplayPage />} />
       </Route>
       <Route element={<ProtectedRoute requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />
@@ -36,12 +36,12 @@ const router = createBrowserRouter(
 );
 
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <AuthProvider>
-      <StoreProvider>
-        <Toaster />
-        <RouterProvider router={router} />
-      </StoreProvider>
-    </AuthProvider>
-  </StrictMode>,
+  // <StrictMode>
+  <AuthProvider>
+    <StoreProvider>
+      <Toaster />
+      <RouterProvider router={router} />
+    </StoreProvider>
+  </AuthProvider>,
+  // </StrictMode>,
 );

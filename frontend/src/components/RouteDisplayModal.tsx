@@ -40,7 +40,9 @@ export default function RouteDisplayModal({
           />
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-medium mb-1">Description (optional):</label>
+          <label className="block text-sm font-medium mb-1">
+            Description (optional):
+          </label>
           <input
             type="text"
             value={description}
@@ -50,10 +52,18 @@ export default function RouteDisplayModal({
           />
         </div>
         <div className="flex justify-between">
-          <Button variant="outline" onClick={onClose} className="bg-gray-300 text-gray-700">
+          <Button
+            variant="outline"
+            onClick={onClose}
+            className="bg-gray-300 text-gray-700"
+          >
             Cancel
           </Button>
-          <Button variant="outline" onClick={handleSave} className="bg-gray-300 text-gray-700">
+          <Button
+            variant="outline"
+            onClick={handleSave}
+            className="bg-gray-300 text-gray-700"
+          >
             Save
           </Button>
         </div>

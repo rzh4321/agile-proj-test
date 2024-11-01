@@ -37,8 +37,11 @@ export default function Navbar() {
         </div>
 
         <div className="w-1/3 flex justify-end">
-          <Button variant={isAuthenticated ? "destructive" : "default"} onClick={() => isAuthenticated ? logout() : navigate('/login')}>
-            {isAuthenticated ? 'Log Out' : 'Sign In'}
+          <Button
+            variant={isAuthenticated ? "destructive" : "default"}
+            onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+          >
+            {isAuthenticated ? "Log Out" : "Sign In"}
           </Button>
         </div>
       </div>

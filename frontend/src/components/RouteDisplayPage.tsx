@@ -1,17 +1,39 @@
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SoHoMap from "./SoHoMap";
 import RouteDisplayModal from "./RouteDisplayModal";
 import { useMyStores } from "@/context/StoresContext";
+import useGeolocation from "@/hooks/useGeolocation";
 
 export default function RouteDisplayPage() {
-    const {stores} = useMyStores();
+  const { stores, allowedLocationAccess, setAllowedLocationAccess } =
+    useMyStores();
   const navigate = useNavigate();
   const [isModalOpen, setModalOpen] = useState(false);
   const params = useParams();
+  const { coordinates, error, loading } = useGeolocation();
 
-  if (params.routeId === undefined) navigate('/')
+  // if routeId doesnt exist in database, return to home
+  //   if (params.routeId === undefined) navigate('/')
+
+  useEffect(() => {
+    if (coordinates) console.log(coordinates);
+    else if (error)
+      alert(`An error occurred while tracking your location: ${error}`);
+  }, [loading, error]);
+
+  useEffect(() => {
+    if (!allowedLocationAccess) {
+      const allow = confirm("Allow location access?");
+      if (!allow) {
+        alert("Please allow location access to proceed.");
+        navigate("/");
+      } else {
+        setAllowedLocationAccess(true);
+      }
+    }
+  }, []);
 
   const handleSaveList = (name: string, description: string) => {
     console.log("saved route:", { name, description, stores: stores });
@@ -23,7 +45,9 @@ export default function RouteDisplayPage() {
       key={route._id}
       className="flex justify-center items-center text-center border-2 border-gray-300 bg-gray-100 hover:bg-gray-200 rounded-md p-2 mb-1"
     >
-      <span className="text-sm font-medium">{index + 1}. {route.name}</span>
+      <span className="text-sm font-medium">
+        {index + 1}. {route.name}
+      </span>
     </div>
   ));
 
@@ -50,15 +74,15 @@ export default function RouteDisplayPage() {
 
   return (
     <div className="p-5">
-      <div className="text-3xl font-bold mb-6 text-center">Your Shopping Route</div>
+      <div className="text-3xl font-bold mb-6 text-center">
+        Your Shopping Route
+      </div>
 
       <div className="w-full h-[300px] border-2 border-black">
-          <SoHoMap />
+        <SoHoMap />
       </div>
 
-      <div className="mb-6">
-        {routeDisplay}
-      </div>
+      <div className="mb-6">{routeDisplay}</div>
 
       <div className="flex justify-between">
         {BackButton}

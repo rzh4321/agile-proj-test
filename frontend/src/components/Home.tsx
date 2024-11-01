@@ -5,10 +5,28 @@ import MyStoresButton from "./MyStoresButton";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import SoHoMap from "./SoHoMap";
+import { useMyStores } from "@/context/StoresContext";
 
 export default function Home() {
   const { stores, loading, error } = useStores();
+  const {
+    stores: userStores,
+    allowedLocationAccess,
+    setAllowedLocationAccess,
+  } = useMyStores();
   const navigate = useNavigate();
+
+  const handleClickGenerate = () => {
+    if (allowedLocationAccess) navigate("/route");
+    const allow = confirm("Allow location access?");
+    if (!allow) {
+      alert("Please allow location access to proceed.");
+    } else {
+      setAllowedLocationAccess(true);
+      navigate("/route");
+    }
+  };
+
   return (
     <main className="flex flex-col gap-10 px-5">
       <div className="flex flex-col gap-5">
@@ -37,6 +55,13 @@ export default function Home() {
           onClick={() => navigate("/saved-routes")}
         >
           Saved Routes
+        </Button>
+        <Button
+          className="rounded-3xl h-12 font-extrabold text-lg"
+          onClick={handleClickGenerate}
+          disabled={userStores.length === 0}
+        >
+          Generate Route
         </Button>
       </div>
     </main>

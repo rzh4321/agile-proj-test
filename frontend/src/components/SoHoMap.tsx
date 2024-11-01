@@ -1,50 +1,38 @@
 import { useEffect, useState, useRef } from "react";
-import {
-  APIProvider,
-  Map,
-  AdvancedMarker,
-  useMap,
-  Pin,
-} from "@vis.gl/react-google-maps";
+import { Map, AdvancedMarker, useMap, Pin } from "@vis.gl/react-google-maps";
 import { Dialog } from "./ui/dialog";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
 import type { Marker } from "@googlemaps/markerclusterer";
-import useStores from "@/hooks/useStores";
-import { Loader } from "lucide-react";
 import StoreDialog from "./StoreDialog";
 import type { Store } from "@/types";
 
-export default function SoHoMap() {
-  const { stores, loading, error } = useStores();
-
-  if (loading) {
-    return (
-      <div className="h-full w-full flex justify-center items-center">
-        <Loader className="animate-spin w-[40px] h-[40px]" />
-      </div>
-    );
-  }
-  if (error) {
-    return <div>Something went wrong when loading the map : {error}</div>;
-  }
-
+export default function SoHoMap({
+  stores,
+  type,
+}: {
+  stores: Store[];
+  type: "Route Display" | "Home";
+}) {
   return (
-    <APIProvider
-      apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
-      onLoad={() => console.log("Maps API has loaded.")}
+    // <APIProvider
+    //   apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
+    //   onLoad={() => console.log("Maps API has loaded.")}
+    // >
+    <Map
+      defaultZoom={16}
+      defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
+      mapId="b9b9aae2738373ca"
     >
-      <Map
-        defaultZoom={16}
-        defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
-        mapId="b9b9aae2738373ca"
-      >
-        <PoiMarkers stores={stores} />
-      </Map>
-    </APIProvider>
+      <PoiMarkers stores={stores} type={type} />
+    </Map>
+    // </APIProvider>
   );
 }
 
-const PoiMarkers = (props: { stores: Store[] }) => {
+const PoiMarkers = (props: {
+  stores: Store[];
+  type: "Route Display" | "Home";
+}) => {
   const map = useMap();
   const [selectedStore, setSelectedStore] = useState<Store | null>(null);
 
@@ -105,7 +93,12 @@ const PoiMarkers = (props: { stores: Store[] }) => {
         open={!!selectedStore}
         onOpenChange={(open) => !open && setSelectedStore(null)}
       >
-        {selectedStore && <StoreDialog store={selectedStore} />}
+        {selectedStore && (
+          <StoreDialog
+            store={selectedStore}
+            allowAddRemove={props.type === "Home"}
+          />
+        )}
       </Dialog>
     </>
   );

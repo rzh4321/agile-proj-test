@@ -20,12 +20,18 @@ const priceRangeToDollarIcons: Record<PriceRange, number> = {
   Luxury: 5,
 };
 
-export default function StoreDialog({ store }: { store: Store }) {
+export default function StoreDialog({
+  store,
+  allowAddRemove,
+}: {
+  store: Store;
+  allowAddRemove: boolean;
+}) {
   return (
     <DialogContent className="sm:max-w-[425px] max-h-[85vh] overflow-hidden flex flex-col">
       <StickyHeader store={store} />
       <ScrollableContent store={store} />
-      <StickyFooter store={store} />
+      <StickyFooter store={store} allowAddRemove={allowAddRemove} />
     </DialogContent>
   );
 }
@@ -65,7 +71,13 @@ function ScrollableContent({ store }: { store: Store }) {
   );
 }
 
-function StickyFooter({ store }: { store: Store }) {
+function StickyFooter({
+  store,
+  allowAddRemove,
+}: {
+  store: Store;
+  allowAddRemove: boolean;
+}) {
   // TODO: add a confirm prompt for removing store
   const { hasStore, addStore, removeStore } = useMyStores();
 
@@ -77,13 +89,15 @@ function StickyFooter({ store }: { store: Store }) {
   return (
     <div className="sticky bottom-0 bg-white pt-2">
       <DialogFooter className="flex flex-col gap-1">
-        <Button
-          onClick={() => handleClick(store)}
-          type="button"
-          variant={hasStore(store._id as string) ? "destructive" : "add"}
-        >
-          {hasStore(store._id as string) ? "Remove Store" : "Add Store"}
-        </Button>
+        {allowAddRemove && (
+          <Button
+            onClick={() => handleClick(store)}
+            type="button"
+            variant={hasStore(store._id as string) ? "destructive" : "add"}
+          >
+            {hasStore(store._id as string) ? "Remove Store" : "Add Store"}
+          </Button>
+        )}
         <DialogClose asChild>
           <Button type="button" variant="destructive">
             Close

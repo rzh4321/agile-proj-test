@@ -42,7 +42,15 @@ export default function Home() {
 
       <div className="flex flex-col gap-6">
         <div className="w-full h-[300px] border-2 border-black">
-          <SoHoMap />
+          {loading ? (
+            <div className="h-full w-full flex justify-center items-center">
+              <Loader className="animate-spin w-[40px] h-[40px]" />
+            </div>
+          ) : error ? (
+            <div>Something went wrong when loading the map : {error}</div>
+          ) : (
+            <SoHoMap stores={stores} type="Home" />
+          )}
         </div>
         <Button
           className="rounded-3xl h-12 font-extrabold text-lg"

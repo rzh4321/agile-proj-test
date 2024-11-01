@@ -16,6 +16,7 @@ import Home from "./components/Home.tsx";
 import { StoreProvider } from "./context/StoresContext.tsx";
 import FilterPage from "./components/SuggestPage.tsx";
 import SavedRoutesPage from "./components/SavedRoutesPage.tsx";
+import RouteDisplayPage from "./components/RouteDisplayPage.tsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,7 @@ const router = createBrowserRouter(
       <Route element={<ProtectedRoute requiresAuth={false} />}>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignupForm />} />
+        <Route path="/route/:routeId" element={<RouteDisplayPage />} />
       </Route>
       <Route element={<ProtectedRoute requiresAuth={true} />}>
         <Route index path="/" element={<Home />} />

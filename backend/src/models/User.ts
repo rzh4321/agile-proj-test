@@ -6,7 +6,15 @@ const UserSchema = new Schema({
     required: [true, "Username is required!"],
     unique: [true, "Username already exists!"],
   },
-  password: { type: String },
+  password: {
+    type: String,
+  },
+  saved_routes: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Route",
+    },
+  ],
 });
 
 const User = models.User || model("User", UserSchema);

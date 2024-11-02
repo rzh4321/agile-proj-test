@@ -43,3 +43,9 @@ export type SavedRoute = {
   name: string;
   stores: Store[];
 };
+
+export type User = {
+  id: string;
+  username: string;
+  routes: SavedRoute[];
+};

@@ -1,11 +1,6 @@
 import { Store, SavedRoute } from "@/types";
 import React, { useState, useEffect, createContext, useContext } from "react";
-
-type User = {
-  id: string;
-  username: string;
-  routes: SavedRoute[];
-};
+import type { User } from "@/types";
 
 type AuthContextType = {
   isAuthenticated: boolean;

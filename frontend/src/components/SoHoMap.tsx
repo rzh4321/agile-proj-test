@@ -14,10 +14,6 @@ export default function SoHoMap({
   type: "Route Display" | "Home";
 }) {
   return (
-    // <APIProvider
-    //   apiKey={"AIzaSyBX6VqkGXWxsNGmZ45gHz4CGWHiRSgyhzI"}
-    //   onLoad={() => console.log("Maps API has loaded.")}
-    // >
     <Map
       defaultZoom={16}
       defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
@@ -25,7 +21,6 @@ export default function SoHoMap({
     >
       <PoiMarkers stores={stores} type={type} />
     </Map>
-    // </APIProvider>
   );
 }
 

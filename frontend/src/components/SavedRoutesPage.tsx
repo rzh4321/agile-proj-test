@@ -1,14 +1,24 @@
-import useAuth from "@/context/AuthContext";
+import useSavedRoutes from "@/hooks/useSavedRoutes";
 import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
 
 export default function SavedRoutesPage() {
-  const { user, loading } = useAuth();
-  const savedRoutes = user?.saved_routes.map((route) => (
+  const { routes, loading, error, refetch } = useSavedRoutes();
+
+  if (error) {
+    return (
+      <div className="h-[calc(100vh-68px)] flex justify-center items-center">
+        Error: {error}
+        {error.includes("token") ? ". Please log back in." : ""}
+      </div>
+    );
+  }
+
+  const savedRoutes = routes.map((route) => (
     <div
-      key={route.id}
+      key={route._id}
       className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
     >
       <div className="flex flex-col gap-2">
@@ -17,15 +27,24 @@ export default function SavedRoutesPage() {
         <div className="text-xs text-wrap">
           {route.stores.slice(0, 3).map((store, i) => (
             <span key={store._id} className=" font-light">
-              {store.name}, {i === 2 && route.stores.length > 3 ? "..." : ""}
+              {store.name}
+              {i === 2 && route.stores.length > 3
+                ? "..."
+                : i === route.stores.length - 1
+                  ? ""
+                  : ", "}
             </span>
           ))}
         </div>
       </div>
       <div className="flex flex-col gap-4 justify-center">
-        <CopyLinkButton routeId={route.id} />
-        <AddUpdateRouteButton route={route} type="Update" />
-        <DeleteRouteButton route={route} />
+        <CopyLinkButton routeId={route._id} />
+        <AddUpdateRouteButton
+          route={route}
+          type="Update"
+          onRouteUpdate={refetch}
+        />
+        <DeleteRouteButton route={route} onRouteDelete={refetch} />
       </div>
     </div>
   ));

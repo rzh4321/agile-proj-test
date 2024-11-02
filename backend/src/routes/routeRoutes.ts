@@ -47,6 +47,40 @@ router.get(
   },
 );
 
+// get all saved routes for a specific user
+router.get(
+  "/user/:userId",
+  verifyToken,
+  async (req: any, res: Response): Promise<any> => {
+    try {
+      const { userId } = req.params;
+      console.log("requesting ", userId);
+      console.log("your user id is ", req.userId);
+      // verify that the requesting user is accessing their own routes
+      if (userId !== req.userId) {
+        return res
+          .status(403)
+          .json({ message: "Not authorized to access these routes" });
+      }
+
+      const user = await User.findById(userId).populate({
+        path: "saved_routes",
+        populate: {
+          path: "stores",
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json(user.saved_routes);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching saved routes", error });
+    }
+  },
+);
+
 // Create new route
 router.post("/", verifyToken, async (req: any, res: Response) => {
   try {

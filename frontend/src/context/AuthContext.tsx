@@ -1,4 +1,3 @@
-import { Store, SavedRoute } from "@/types";
 import React, { useState, useEffect, createContext, useContext } from "react";
 import type { User } from "@/types";
 
@@ -9,7 +8,6 @@ type AuthContextType = {
   logout: () => void;
   verifyToken: () => Promise<void>;
   loading: boolean;
-  updateRoutes: (routes: SavedRoute[]) => void;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -73,10 +71,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(null);
   };
 
-  const updateRoutes = (newRoutes: SavedRoute[]): void => {
-    setUser((prev) => (prev ? { ...prev, routes: newRoutes } : null));
-  };
-
   const contextValue: AuthContextType = {
     isAuthenticated,
     user,
@@ -84,7 +78,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     logout,
     verifyToken,
     loading,
-    updateRoutes,
   };
 
   return (

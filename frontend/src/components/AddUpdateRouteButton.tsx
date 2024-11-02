@@ -44,9 +44,14 @@ const formSchema = z.object({
 type Props = {
   route: SavedRoute | Store[];
   type: "Add" | "Update";
+  onRouteUpdate?: () => Promise<void> | undefined;
 };
 
-export default function AddUpdateRouteButton({ route, type }: Props) {
+export default function AddUpdateRouteButton({
+  route,
+  type,
+  onRouteUpdate,
+}: Props) {
   const [pending, setPending] = useState(false);
   const [stores, setStores] = useState<Store[]>(
     Array.isArray(route) ? route : route.stores,
@@ -83,18 +88,21 @@ export default function AddUpdateRouteButton({ route, type }: Props) {
     const token = localStorage.getItem("token");
     const storeIds = stores.map((store) => store._id);
 
-    const response = await fetch("http://localhost:3001/routes", {
-      method: type === "Add" ? "POST" : "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `http://localhost:3001/routes${type === "Update" ? `/${(route as SavedRoute)._id}` : ""}`,
+      {
+        method: type === "Add" ? "POST" : "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          name: values.name,
+          description: values.description,
+          stores: storeIds,
+        }),
       },
-      body: JSON.stringify({
-        name: values.name,
-        description: values.description,
-        stores: storeIds,
-      }),
-    });
+    );
 
     // make call to backend
     if (response.ok) {
@@ -102,6 +110,7 @@ export default function AddUpdateRouteButton({ route, type }: Props) {
         description: `✓ Successfully ${type === "Update" ? "updated" : "added"} route`,
         duration: 1000,
       });
+      onRouteUpdate!();
       if (type === "Add") {
         // refresh page to render name, desc, share link
         setTimeout(() => {

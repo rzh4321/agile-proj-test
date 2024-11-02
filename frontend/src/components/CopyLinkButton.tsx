@@ -13,7 +13,9 @@ export default function CopyLinkButton({ routeId }: { routeId: string }) {
   };
 
   return isAdding ? (
-    <span className="text-sm m-auto">Copied!</span>
+    <span className="text-sm m-auto h-[30px] w-[30px] relative right-4 top-1">
+      Copied!
+    </span>
   ) : (
     <Link
       onClick={handleCopy}

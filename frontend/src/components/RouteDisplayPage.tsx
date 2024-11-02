@@ -13,7 +13,6 @@ import AddUpdateRouteButton from "./AddUpdateRouteButton";
 export default function RouteDisplayPage() {
   const { stores } = useMyStores();
   const navigate = useNavigate();
-  const [isModalOpen, setModalOpen] = useState(false);
   const [selectedStore, setSelectedStore] = useState<null | Store>(null);
   const [route, setRoute] = useState<Store[]>([]);
   const [totalDistance, setTotalDistance] = useState(0);
@@ -47,23 +46,6 @@ export default function RouteDisplayPage() {
       alert(`An error occurred while tracking your location: ${error}`);
     // navigate("/");
   }, [geolocationLoading, error]);
-
-  //   useEffect(() => {
-  //     if (!allowedLocationAccess) {
-  //       const allow = confirm("Allow location access?");
-  //       if (!allow) {
-  //         alert("Please allow location access to proceed.");
-  //         navigate("/");
-  //       } else {
-  //         setAllowedLocationAccess(true);
-  //       }
-  //     }
-  //   }, []);
-
-  const handleSaveList = (name: string, description: string) => {
-    console.log("saved route:", { name, description, stores: stores });
-    alert("route will be saved to database when database is connected");
-  };
 
   const routeDisplay = route?.map((store, index) => (
     <div
@@ -122,12 +104,6 @@ export default function RouteDisplayPage() {
         {BackButton}
         <AddUpdateRouteButton type="Add" route={stores} />
       </div>
-
-      <RouteDisplayModal
-        isOpen={isModalOpen}
-        onClose={() => setModalOpen(false)}
-        onSave={handleSaveList}
-      />
     </div>
   );
 }

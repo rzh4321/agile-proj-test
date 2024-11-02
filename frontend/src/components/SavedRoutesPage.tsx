@@ -6,7 +6,6 @@ import { Loader } from "lucide-react";
 
 export default function SavedRoutesPage() {
   const { user, loading } = useAuth();
-  console.log(user);
   const savedRoutes = user?.saved_routes.map((route) => (
     <div
       key={route.id}

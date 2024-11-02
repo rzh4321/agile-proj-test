@@ -51,6 +51,7 @@ router.get(
 router.post("/", verifyToken, async (req: any, res: Response) => {
   try {
     const { name, description, stores } = req.body;
+    console.log(name, description, stores);
 
     const newRoute = new Route({
       name,
@@ -71,7 +72,7 @@ router.post("/", verifyToken, async (req: any, res: Response) => {
     );
     res.status(201).json(populatedRoute);
   } catch (error) {
-    res.status(500).json({ message: "Error creating route", error });
+    res.status(500).json({ message: `Error creating route: ${error}` });
   }
 });
 

@@ -17,8 +17,7 @@ const RouteSchema = new Schema({
     },
   ],
   created_by: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
+    type: String,
     required: true,
   },
 });

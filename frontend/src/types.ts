@@ -42,6 +42,7 @@ export type SavedRoute = {
   description: string;
   name: string;
   stores: Store[];
+  created_by: User;
 };
 
 export type User = {

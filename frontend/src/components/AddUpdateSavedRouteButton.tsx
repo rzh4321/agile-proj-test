@@ -43,9 +43,10 @@ const formSchema = z.object({
 
 type Props = {
   route: SavedRoute;
+  type: 'Add' | 'Update';
 };
 
-export default function UpdateSavedRouteButton({ route }: Props) {
+export default function AddUpdateSavedRouteButton({ route, type }: Props) {
   const [pending, setPending] = useState(false);
   const { toast } = useToast();
 

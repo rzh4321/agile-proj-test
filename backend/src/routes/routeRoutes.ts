@@ -25,6 +25,29 @@ const verifyToken = (req: any, res: Response, next: Function): any => {
   );
 };
 
+// getting a specific route
+router.get(
+  "/:routeId",
+  verifyToken,
+  async (req: any, res: Response): Promise<any> => {
+    try {
+      const { routeId } = req.params;
+
+      const route = await Route.findById(routeId)
+        .populate("stores")
+        .populate("created_by", "-password"); // Exclude password field from created_by user
+
+      if (!route) {
+        return res.status(404).json({ message: "Route not found" });
+      }
+
+      res.json(route);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching route", error });
+    }
+  },
+);
+
 // Create new route
 router.post("/", verifyToken, async (req: any, res: Response) => {
   try {
@@ -34,6 +57,7 @@ router.post("/", verifyToken, async (req: any, res: Response) => {
       name,
       description,
       stores,
+      created_by: req.userId,
     });
 
     await newRoute.save();
@@ -43,10 +67,9 @@ router.post("/", verifyToken, async (req: any, res: Response) => {
       $push: { saved_routes: newRoute._id },
     });
 
-    const populatedRoute = await Route.findById(newRoute._id).populate(
-      "stores",
-    );
-
+    const populatedRoute = await Route.findById(newRoute._id)
+      .populate("stores")
+      .populate("created_by", "-password");
     res.status(201).json(populatedRoute);
   } catch (error) {
     res.status(500).json({ message: "Error creating route", error });
@@ -70,8 +93,9 @@ router.put(
           stores,
         },
         { new: true },
-      ).populate("stores");
-
+      )
+        .populate("stores")
+        .populate("created_by", "-password");
       if (!updatedRoute) {
         return res.status(404).json({ message: "Route not found" });
       }

@@ -1,5 +1,5 @@
 import useAuth from "@/context/AuthContext";
-import UpdateSavedRouteButton from "./UpdateSavedRouteButton";
+import AddUpdateSavedRouteButton from "./AddUpdateSavedRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
@@ -24,7 +24,7 @@ export default function SavedRoutesPage() {
       </div>
       <div className="flex flex-col gap-4 justify-center">
         <CopyLinkButton routeId={route.id} />
-        <UpdateSavedRouteButton route={route} />
+        <AddUpdateSavedRouteButton route={route} />
         <DeleteRouteButton route={route} />
       </div>
     </div>

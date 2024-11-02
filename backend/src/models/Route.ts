@@ -16,6 +16,11 @@ const RouteSchema = new Schema({
       ref: "Store",
     },
   ],
+  created_by: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 const Route = models.Route || model("Route", RouteSchema);

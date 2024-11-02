@@ -61,6 +61,7 @@ export default function LoginForm() {
         duration: 1000,
       });
       login(token);
+      // TODO: change this to navigate to last page they were on
       navigate("/");
     } else {
       const { message } = await response.json();

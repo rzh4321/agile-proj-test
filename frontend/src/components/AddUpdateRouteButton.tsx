@@ -9,7 +9,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { SavedRoute } from "@/types";
+import { SavedRoute, Store } from "@/types";
 import { Pen } from "lucide-react";
 import { Textarea } from "./ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,21 +42,40 @@ const formSchema = z.object({
 });
 
 type Props = {
-  route: SavedRoute;
-  type: 'Add' | 'Update';
+  route: SavedRoute | Store[];
+  type: "Add" | "Update";
 };
 
-export default function AddUpdateSavedRouteButton({ route, type }: Props) {
+export default function AddUpdateRouteButton({ route, type }: Props) {
   const [pending, setPending] = useState(false);
+  const [stores, setStores] = useState<Store[]>(
+    Array.isArray(route) ? route : route.stores,
+  );
+
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: route.name,
-      description: route.description,
+      // if route is an array of stores, this route isn't saved, so no default values
+      name: Array.isArray(route) ? "" : route.name,
+      description: Array.isArray(route) ? "" : route.description,
     },
   });
+
+  const removeStore = async (removedStore: Store) => {
+    const newStores = stores.filter((store) => store._id != removedStore._id);
+    setStores(newStores);
+  };
+
+  const addStore = async (addedStore: Store) => {
+    const newStores = [...stores, addedStore];
+    setStores(newStores);
+  };
+
+  const isSavedStore = (store: Store) => {
+    return stores.includes(store);
+  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
@@ -64,7 +83,7 @@ export default function AddUpdateSavedRouteButton({ route, type }: Props) {
     // make call to backend
     if (true) {
       toast({
-        description: "✓ Successfully updated route",
+        description: `✓ Successfully ${type === "Update" ? "updated" : "added"} route`,
         duration: 1000,
       });
     } else {
@@ -81,23 +100,39 @@ export default function AddUpdateSavedRouteButton({ route, type }: Props) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Pen
-          width={30}
-          height={30}
-          className="rounded-sm border-green-300 p-1 cursor-pointer"
-        />
+        {type === "Update" ? (
+          <Pen
+            width={30}
+            height={30}
+            className="rounded-sm border-green-300 p-1 cursor-pointer"
+          />
+        ) : (
+          <Button variant={"add"}>Save Route</Button>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
             <DialogHeader>
-              <DialogTitle>Edit Route {route.name}</DialogTitle>
+              <DialogTitle>
+                {type === "Update"
+                  ? `Edit ${(route as SavedRoute).name}`
+                  : "Enter Route Details"}
+              </DialogTitle>
               <DialogDescription>
-                Make changes to your route here. Click save when you're done.
+                {type === "Update"
+                  ? `Make changes to your route here.`
+                  : "Enter the details of this new route."}{" "}
+                Click save when you're done.
               </DialogDescription>
             </DialogHeader>
             <div className="grid gap-4 py-4">
-              <EditRouteStoresButton initialStores={route.stores} />
+              <EditRouteStoresButton
+                stores={stores}
+                addStore={addStore}
+                removeStore={removeStore}
+                isSavedStore={isSavedStore}
+              />
               <FormField
                 control={form.control}
                 name="name"
@@ -114,7 +149,7 @@ export default function AddUpdateSavedRouteButton({ route, type }: Props) {
                         id="name"
                         type="text"
                         name="name"
-                        defaultValue={route.name}
+                        defaultValue={Array.isArray(route) ? "" : route.name}
                         maxLength={35}
                         required
                       />
@@ -141,7 +176,9 @@ export default function AddUpdateSavedRouteButton({ route, type }: Props) {
                         className="col-span-3 max-h-[300px]"
                         id="description"
                         name="description"
-                        defaultValue={route.description}
+                        defaultValue={
+                          Array.isArray(route) ? "" : route.description
+                        }
                         maxLength={250}
                       />
                     </FormControl>

@@ -196,26 +196,26 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           console.log("token authenticated. ur now authenticated");
           const userData: User = await response.json();
           // TODO: delete this later
-          const temp = {
-            ...userData,
-            routes: [
-              {
-                id: "1",
-                description: "desc",
-                name: "saved route 1",
-                stores: sampleStores,
-              },
-              {
-                id: "2",
-                description: "desc",
-                name: "saved route 2",
-                stores: sampleStores,
-              },
-            ],
-          };
+          // const temp = {
+          //   ...userData,
+          //   routes: [
+          //     {
+          //       id: "1",
+          //       description: "desc",
+          //       name: "saved route 1",
+          //       stores: sampleStores,
+          //     },
+          //     {
+          //       id: "2",
+          //       description: "desc",
+          //       name: "saved route 2",
+          //       stores: sampleStores,
+          //     },
+          //   ],
+          // };
           setIsAuthenticated(true);
-          // setUser(userData);
-          setUser(temp);
+          setUser(userData);
+          // setUser(temp);
         } else {
           console.log("token NOT authenticaed. ur logged out now");
           // Token is invalid or expired

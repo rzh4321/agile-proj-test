@@ -22,7 +22,7 @@ router.get("/verify-token", async (req: any, res: any) => {
           return res.status(401).json({ message: "Invalid or expired token" });
         }
 
-        // token is valid, fetch user data. Decoded is the _id. Exclude the password
+        // token is valid, fetch user data. Decoded is the _id and username. Exclude the password
         // populate the stores in each saved route
         const user = await User.findById((decoded as any).userId)
           .select("-password")
@@ -66,7 +66,7 @@ router.post("/signup", async (req: any, res: any) => {
 
     // Create and sign JWT
     const token = jwt.sign(
-      { userId: newUser._id },
+      { userId: newUser._id, username: newUser.username },
       process.env.JWT_SECRET as string,
       { expiresIn: "1h" },
     );
@@ -97,7 +97,7 @@ router.post("/login", async (req: any, res: any) => {
 
     // Create and sign JWT
     const token = jwt.sign(
-      { userId: user._id },
+      { userId: user._id, username: user.username },
       process.env.JWT_SECRET as string,
       { expiresIn: "1h" },
     );

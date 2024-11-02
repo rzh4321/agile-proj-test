@@ -59,7 +59,7 @@ export default function RouteStoreItem({
           </CommandItem>
         </div>
       </DialogTrigger>
-      <StoreDialog store={store} />
+      <StoreDialog store={store} allowAddRemove={false} />
     </Dialog>
   );
 }

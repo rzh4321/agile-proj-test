@@ -42,11 +42,11 @@ export type SavedRoute = {
   description: string;
   name: string;
   stores: Store[];
-  created_by: User;
+  created_by: string;
 };
 
 export type User = {
   id: string;
   username: string;
-  routes: SavedRoute[];
+  saved_routes: SavedRoute[];
 };

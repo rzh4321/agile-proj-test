@@ -8,6 +8,7 @@ import useGeolocation from "@/hooks/useGeolocation";
 import { findOptimalRoute } from "@/lib/utils";
 import type { Store } from "@/types";
 import { useMap } from "@vis.gl/react-google-maps";
+import AddUpdateRouteButton from "./AddUpdateRouteButton";
 
 export default function RouteDisplayPage() {
   const { stores } = useMyStores();
@@ -78,18 +79,6 @@ export default function RouteDisplayPage() {
     </div>
   ));
 
-  const SaveButton = (
-    <Button
-      className="bg-green-600 border-green-700 text-white hover:bg-green-700 hover:text-slate-200"
-      onClick={() => {
-        setModalOpen(true);
-        console.log("Save Button Clicked; modal open");
-      }}
-    >
-      Save This List
-    </Button>
-  );
-
   const BackButton = (
     <Button variant={"destructive"} onClick={() => navigate("/")}>
       Back to Start
@@ -131,7 +120,7 @@ export default function RouteDisplayPage() {
 
       <div className="flex justify-between">
         {BackButton}
-        {SaveButton}
+        <AddUpdateRouteButton type="Add" route={stores} />
       </div>
 
       <RouteDisplayModal

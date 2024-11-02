@@ -72,31 +72,22 @@ function StoreList({
   );
 }
 
+type Props = {
+  stores: Store[];
+  removeStore: (removedStore: Store) => Promise<void>;
+  addStore: (addedStore: Store) => Promise<void>;
+  isSavedStore: (store: Store) => boolean;
+};
+
 export default function EditRouteStoresButton({
-  initialStores,
-}: {
-  initialStores: Store[];
-}) {
+  stores,
+  removeStore,
+  addStore,
+  isSavedStore,
+}: Props) {
   const [open, setOpen] = useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const [stores, setStores] = useState<Store[]>(initialStores);
   const { stores: allStores, loading } = useStores();
-
-  const removeStore = async (removedStore: Store) => {
-    // make call to backend
-    const newStores = stores.filter((store) => store._id != removedStore._id);
-    setStores(newStores);
-  };
-
-  const addStore = async (addedStore: Store) => {
-    // make call to backend
-    const newStores = [...stores, addedStore];
-    setStores(newStores);
-  };
-
-  const isSavedStore = (store: Store) => {
-    return stores.includes(store);
-  };
 
   return (
     <>

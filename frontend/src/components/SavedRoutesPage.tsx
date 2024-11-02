@@ -1,12 +1,13 @@
 import useAuth from "@/context/AuthContext";
-import AddUpdateSavedRouteButton from "./AddUpdateSavedRouteButton";
+import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
 
 export default function SavedRoutesPage() {
   const { user, loading } = useAuth();
-  const savedRoutes = user?.routes.map((route) => (
+  console.log(user);
+  const savedRoutes = user?.saved_routes.map((route) => (
     <div
       key={route.id}
       className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
@@ -24,7 +25,7 @@ export default function SavedRoutesPage() {
       </div>
       <div className="flex flex-col gap-4 justify-center">
         <CopyLinkButton routeId={route.id} />
-        <AddUpdateSavedRouteButton route={route} />
+        <AddUpdateRouteButton route={route} type="Update" />
         <DeleteRouteButton route={route} />
       </div>
     </div>
@@ -38,7 +39,15 @@ export default function SavedRoutesPage() {
         its optimized path.
       </div>
       <div className="flex flex-col gap-5">
-        {loading ? <Loader className="animate-spin" /> : savedRoutes}
+        {loading ? (
+          <Loader className="animate-spin" />
+        ) : savedRoutes && savedRoutes.length > 0 ? (
+          savedRoutes
+        ) : (
+          <div className="text-center mt-10 font-poppins">
+            You have no saved routes.
+          </div>
+        )}
       </div>
     </div>
   );

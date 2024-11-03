@@ -1,7 +1,14 @@
 import { useEffect, useState, useRef } from "react";
-import { Map, AdvancedMarker, useMap, Pin } from "@vis.gl/react-google-maps";
+import {
+  Map,
+  AdvancedMarker,
+  useMap,
+  Pin,
+  MapCameraChangedEvent,
+} from "@vis.gl/react-google-maps";
 import { Dialog } from "./ui/dialog";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
+import { Circle } from "./circle";
 import type { Marker } from "@googlemaps/markerclusterer";
 import StoreDialog from "./StoreDialog";
 import type { Store } from "@/types";
@@ -9,17 +16,41 @@ import type { Store } from "@/types";
 export default function SoHoMap({
   stores,
   type,
+  userCoordinates,
 }: {
   stores: Store[];
   type: "Route Display" | "Home";
+  userCoordinates?: { lat: number; lng: number };
 }) {
+  const [zoom, setZoom] = useState(16);
+  // base values
+  const baseZoom = 16;
+  const baseRadius = 20;
+
+  // Calculate radius based on zoom
+  // Each zoom level will double/halve the radius
+  const radius = baseRadius * Math.pow(1.9, baseZoom - zoom);
   return (
     <Map
       defaultZoom={16}
       defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
       mapId="b9b9aae2738373ca"
+      onCameraChanged={(ev: MapCameraChangedEvent) => setZoom(ev.detail.zoom)}
     >
       <PoiMarkers stores={stores} type={type} />
+      {userCoordinates && (
+        <Circle
+          radius={radius}
+          center={userCoordinates}
+          strokeColor={"#0c4cb3"}
+          strokeOpacity={1}
+          strokeWeight={3}
+          fillColor={"#3b82f6"}
+          fillOpacity={0.3}
+          enablePing={true}
+          zoom={zoom}
+        />
+      )}
     </Map>
   );
 }

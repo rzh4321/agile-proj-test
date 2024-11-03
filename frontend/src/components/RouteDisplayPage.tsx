@@ -2,7 +2,6 @@ import { Button } from "./ui/button";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import SoHoMap from "./SoHoMap";
-import RouteDisplayModal from "./RouteDisplayModal";
 import { useMyStores } from "@/context/StoresContext";
 import useGeolocation from "@/hooks/useGeolocation";
 import { findOptimalRoute } from "@/lib/utils";
@@ -19,8 +18,6 @@ export default function RouteDisplayPage() {
   const params = useParams();
   const { coordinates, error, loading: geolocationLoading } = useGeolocation();
   const map = useMap();
-
-  console.log(coordinates);
 
   // if routeId doesnt exist in database, return to home
   //   if (params.routeId === undefined) navigate('/')
@@ -81,7 +78,11 @@ export default function RouteDisplayPage() {
       <div className="text-3xl font-bold text-center">Your Shopping Route</div>
 
       <div className="w-full h-[300px] border-2 border-black">
-        <SoHoMap stores={stores} type="Route Display" />
+        <SoHoMap
+          stores={stores}
+          type="Route Display"
+          userCoordinates={coordinates || undefined}
+        />
       </div>
       {totalDistance ? (
         <>

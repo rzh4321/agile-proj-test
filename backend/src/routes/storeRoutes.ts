@@ -15,6 +15,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req: any, res: any) => {
   try {
     const {
+      placeId,
       name,
       address,
       reviews,
@@ -33,16 +34,18 @@ router.post("/", async (req: any, res: any) => {
       lat,
       lng,
     } = req.body;
-
+    console.log(typeof placeId);
     // check if a store with the same name already exists
-    const existingStore = await Store.findOne({ name: name });
+    const existingStore = await Store.findById(placeId);
+    // const existingStore = await Store.findOne({ name: name });
     if (existingStore) {
       return res
         .status(409)
-        .json({ message: "A store with this name already exists" });
+        .json({ message: "A store with this place ID already exists" });
     }
 
     const newStore = new Store({
+      _id: placeId,
       name: name || "Unnamed Store",
       address: address || "Address not provided",
       reviews: reviews || [
@@ -93,7 +96,7 @@ Sunday: 9:30 AM – 5:00 PM`,
     const savedStore = await newStore.save();
     res.status(201).json(savedStore);
   } catch (error) {
-    res.status(500).json({ message: "Error creating store", error });
+    res.status(500).json({ message: `Error creating store ${error}` });
   }
 });
 

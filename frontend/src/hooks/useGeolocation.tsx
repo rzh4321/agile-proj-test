@@ -1,5 +1,27 @@
 import { useState, useEffect } from "react";
 
+const DISTANCE_THRESHOLD = 50; // meters
+
+function calculateDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number,
+) {
+  const R = 6371e3; // Earth's radius in meters
+  const φ1 = (lat1 * Math.PI) / 180;
+  const φ2 = (lat2 * Math.PI) / 180;
+  const Δφ = ((lat2 - lat1) * Math.PI) / 180;
+  const Δλ = ((lon2 - lon1) * Math.PI) / 180;
+
+  const a =
+    Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  return R * c;
+}
+
 export default function useGeolocation(intervalMs: number = 5000) {
   const [coordinates, setCoordinates] = useState<{
     lat: number;
@@ -19,10 +41,25 @@ export default function useGeolocation(intervalMs: number = 5000) {
     const getCurrentPosition = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setCoordinates({
+          const newCoords = {
             lat: position.coords.latitude,
             lng: position.coords.longitude,
+          };
+
+          setCoordinates((prevCoords) => {
+            if (!prevCoords) return newCoords;
+
+            const distance = calculateDistance(
+              prevCoords.lat,
+              prevCoords.lng,
+              newCoords.lat,
+              newCoords.lng,
+            );
+
+            // only update coordinates if distance has changed significantly
+            return distance > DISTANCE_THRESHOLD ? newCoords : prevCoords;
           });
+
           setLoading(false);
         },
         (error) => {
@@ -43,19 +80,14 @@ export default function useGeolocation(intervalMs: number = 5000) {
         },
         {
           enableHighAccuracy: true,
-          timeout: 5000,
+          timeout: 10000,
           maximumAge: 0,
         },
       );
     };
 
-    // Get initial position
     getCurrentPosition();
-
-    // Set up interval to update position
     const intervalId = setInterval(getCurrentPosition, intervalMs);
-
-    // Cleanup function
     return () => clearInterval(intervalId);
   }, [intervalMs]);
 

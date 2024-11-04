@@ -25,7 +25,7 @@ export default function StoreItem({
           )}
         </div>
       </DialogTrigger>
-      <StoreDialog store={store} />
+      <StoreDialog store={store} allowAddRemove={true} />
     </Dialog>
   );
 }

@@ -17,10 +17,12 @@ export default function SoHoMap({
   stores,
   type,
   userCoordinates,
+  defaultCenter,
 }: {
   stores: Store[];
   type: "Route Display" | "Home";
   userCoordinates?: { lat: number; lng: number };
+  defaultCenter?: { lat: number; lng: number };
 }) {
   const [zoom, setZoom] = useState(16);
   // base values
@@ -28,12 +30,19 @@ export default function SoHoMap({
   const baseRadius = 20;
 
   // Calculate radius based on zoom
-  // Each zoom level will double/halve the radius
   const radius = baseRadius * Math.pow(1.9, baseZoom - zoom);
+
+  const initialCenter = defaultCenter || {
+    lat: 40.723115351278075,
+    lng: -73.99867417832154,
+  };
+  const mapKey = `map-${initialCenter.lat}-${initialCenter.lng}`;
+
   return (
     <Map
+      key={mapKey}
       defaultZoom={16}
-      defaultCenter={{ lat: 40.723115351278075, lng: -73.99867417832154 }}
+      defaultCenter={initialCenter}
       mapId="b9b9aae2738373ca"
       onCameraChanged={(ev: MapCameraChangedEvent) => setZoom(ev.detail.zoom)}
     >

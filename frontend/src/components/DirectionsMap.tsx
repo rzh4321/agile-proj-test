@@ -1,45 +1,61 @@
 import { useEffect, useRef, memo } from "react";
 
-interface DirectionsMapProps {
+type DirectionsMapProps = {
   directionResult: google.maps.DirectionsResult;
   center: google.maps.LatLngLiteral;
   zoom?: number;
-}
+  mapRef: React.MutableRefObject<google.maps.Map | null>;
+};
 
 const DirectionsMap = memo(
-  ({ directionResult, center, zoom = 7 }: DirectionsMapProps) => {
+  ({ directionResult, mapRef, center, zoom = 12 }: DirectionsMapProps) => {
     const mapDivRef = useRef<HTMLDivElement>(null);
-    const mapRef = useRef<google.maps.Map | null>(null);
     const directionsRendererRef = useRef<google.maps.DirectionsRenderer | null>(
       null,
     );
 
+    // Initialize map
     useEffect(() => {
-      if (!mapDivRef.current) return;
+      if (!mapDivRef.current || mapRef.current) return;
 
-      // Only create new map if it doesn't exist
-      if (!mapRef.current) {
-        mapRef.current = new google.maps.Map(mapDivRef.current, {
-          zoom,
-          center,
-        });
+      mapRef.current = new google.maps.Map(mapDivRef.current, {
+        zoom,
+        center,
+      });
+
+      // Clean up
+      return () => {
+        mapRef.current = null;
+      };
+    }, []); // Empty dependency array as we only want to create the map once
+
+    // Handle directions
+    useEffect(() => {
+      if (!mapRef.current) return;
+
+      // Clean up previous renderer
+      if (directionsRendererRef.current) {
+        directionsRendererRef.current.setMap(null);
+        directionsRendererRef.current = null;
       }
 
-      // Initialize DirectionsRenderer if it hasn't been created yet
-      if (!directionsRendererRef.current) {
-        directionsRendererRef.current = new google.maps.DirectionsRenderer();
-        directionsRendererRef.current.setMap(mapRef.current);
-      }
+      // Create new renderer
+      directionsRendererRef.current = new google.maps.DirectionsRenderer({
+        preserveViewport: true,
+        map: mapRef.current,
+      });
 
-      // Update directions
+      // Set new directions
       directionsRendererRef.current.setDirections(directionResult);
 
+      // Clean up
       return () => {
         if (directionsRendererRef.current) {
           directionsRendererRef.current.setMap(null);
+          directionsRendererRef.current = null;
         }
       };
-    }, [directionResult]); // Only depend on directionResult
+    }, [directionResult, mapRef]);
 
     return <div ref={mapDivRef} style={{ width: "100%", height: "300px" }} />;
   },

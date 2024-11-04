@@ -80,14 +80,14 @@ type RouteResult = {
   totalDistance: number;
 };
 
-function calculateDistance(
+export function calculateDistance(
   lat1: number,
   lng1: number,
   lat2: number,
   lng2: number,
 ): number {
   // Using Haversine formula to calculate distance between two coordinates
-  const R = 6371; // Earth's radius in kilometers
+  const R = 3958.8; // Earth's radius in miles
   const dLat = ((lat2 - lat1) * Math.PI) / 180;
   const dLng = ((lng2 - lng1) * Math.PI) / 180;
 
@@ -100,6 +100,28 @@ function calculateDistance(
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c; // Distance in kilometers
+}
+
+// Function to calculate appropriate zoom level based on distance
+export function calculateZoomLevel(
+  userLat: number,
+  userLng: number,
+  storeLat: number,
+  storeLng: number,
+): number {
+  const distance = calculateDistance(userLat, userLng, storeLat, storeLng);
+
+  // Zoom level mapping based on distance in miles
+  // Converting previous kilometer thresholds to miles (1 km ≈ 0.621371 miles)
+  if (distance < 0.31) return 15; // Very close (500m ≈ 0.31 miles)
+  if (distance < 0.62) return 14; // 1km ≈ 0.62 miles
+  if (distance < 1.24) return 13; // 2km ≈ 1.24 miles
+  if (distance < 3.11) return 12; // 5km ≈ 3.11 miles
+  if (distance < 6.21) return 11; // 10km ≈ 6.21 miles
+  if (distance < 12.43) return 10; // 20km ≈ 12.43 miles
+  if (distance < 31.07) return 9; // 50km ≈ 31.07 miles
+  if (distance < 62.14) return 8; // 100km ≈ 62.14 miles
+  return 7; // Very far
 }
 
 function getAllPermutations<T>(array: T[]): T[][] {
@@ -175,6 +197,6 @@ export function findOptimalRoute(
 
   return {
     path: optimalPath,
-    totalDistance: shortestDistance * 0.621371,
+    totalDistance: shortestDistance,
   };
 }

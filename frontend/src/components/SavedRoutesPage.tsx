@@ -7,11 +7,14 @@ import { Loader } from "lucide-react";
 export default function SavedRoutesPage() {
   const { routes, loading, error, refetch } = useSavedRoutes();
 
-  if (error) {
+  if (error || loading) {
     return (
       <div className="h-[calc(100vh-68px)] flex justify-center items-center">
-        Error: {error}
-        {error.includes("token") ? ". Please log back in." : ""}
+        {error ? (
+          `Error: ${error}${error.includes("token") ? ". Please log back in." : ""}`
+        ) : (
+          <Loader className="animate-spin w-[40px] h-[40px]" />
+        )}
       </div>
     );
   }

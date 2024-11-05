@@ -30,10 +30,12 @@ export default function useSavedRoutes() {
         setRoutes(routes);
       } else {
         const { message } = await res.json();
+        console.error(message);
         setError(message);
       }
     } catch (err) {
       setError(err.message);
+      console.error(err.message);
     } finally {
       setLoading(false);
     }

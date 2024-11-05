@@ -50,3 +50,10 @@ export type User = {
   username: string;
   saved_routes: SavedRoute[];
 };
+
+export type TravelMode = "DRIVING" | "WALKING" | "BICYCLING";
+
+export type SelectedStore = {
+  store: Store;
+  index: number;
+};

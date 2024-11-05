@@ -12,7 +12,7 @@ const RouteSchema = new Schema({
   },
   stores: [
     {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: "Store",
     },
   ],

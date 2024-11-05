@@ -83,10 +83,18 @@ export default function AddUpdateRouteButton({
   };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    if (stores.length === 0) {
+      toast({
+        variant: "destructive",
+        title: `An error occurred`,
+        description: "A route must have at least one store.",
+      });
+      return;
+    }
     setPending(true);
     const token = localStorage.getItem("token");
     const storeIds = stores.map((store) => store._id);
+    console.log({ ...values, storeIds });
 
     const response = await fetch(
       `http://localhost:3001/routes${type === "Update" ? `/${(route as SavedRoute)._id}` : ""}`,
@@ -112,9 +120,11 @@ export default function AddUpdateRouteButton({
       });
       onRouteUpdate!();
       if (type === "Add") {
+        const savedRoute = await response.json();
+        console.log(savedRoute);
         // refresh page to render name, desc, share link
         setTimeout(() => {
-          // refresh page
+          // refresh page with the returned id
         }, 2000);
       }
     } else {

@@ -16,7 +16,7 @@ import Home from "./components/Home.tsx";
 import { StoreProvider } from "./context/StoresContext.tsx";
 import FilterPage from "./components/SuggestPage.tsx";
 import SavedRoutesPage from "./components/SavedRoutesPage.tsx";
-import RouteDisplayPage from "./components/RouteDisplayPage.tsx";
+import RouteDisplayPage from "./components/RouteDisplay/RouteDisplayPage.tsx";
 import { APIProvider } from "@vis.gl/react-google-maps";
 
 const router = createBrowserRouter(

@@ -200,3 +200,11 @@ export function findOptimalRoute(
     totalDistance: shortestDistance,
   };
 }
+
+export const getDescriptionFontSize = (length: number): string => {
+  if (length === 0) return "text-base";
+  if (length <= 50) return "text-lg";
+  if (length <= 100) return "text-base";
+  if (length <= 150) return "text-sm";
+  return "text-xs";
+};

@@ -61,6 +61,7 @@ export default function DeleteRouteButton({ route, onRouteDelete }: Props) {
     <Dialog>
       <DialogTrigger asChild>
         <Trash2
+          onClick={(e) => e.stopPropagation()}
           width={30}
           height={30}
           className="rounded-sm border-green-300 p-1 cursor-pointer"

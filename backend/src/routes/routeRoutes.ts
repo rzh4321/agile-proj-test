@@ -87,11 +87,9 @@ router.post("/", verifyToken, async (req: any, res: Response) => {
     const { name, description, stores } = req.body;
 
     if (stores.length === 0) {
-      res
-        .status(500)
-        .json({
-          message: `Error creating route: A route must have at least one store.`,
-        });
+      res.status(500).json({
+        message: `Error creating route: A route must have at least one store.`,
+      });
     }
 
     const newRoute = new Route({
@@ -128,11 +126,9 @@ router.put(
       const { routeId } = req.params;
 
       if (stores.length === 0) {
-        res
-          .status(500)
-          .json({
-            message: `Error creating route: A route must have at least one store.`,
-          });
+        res.status(500).json({
+          message: `Error creating route: A route must have at least one store.`,
+        });
       }
 
       const updatedRoute = await Route.findByIdAndUpdate(

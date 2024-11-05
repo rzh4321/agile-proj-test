@@ -3,6 +3,7 @@ import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
+import { Link } from "react-router-dom";
 
 export default function SavedRoutesPage() {
   const { routes, loading, error, refetch } = useSavedRoutes();
@@ -20,36 +21,38 @@ export default function SavedRoutesPage() {
   }
 
   const savedRoutes = routes.map((route) => (
-    <div
-      key={route._id}
-      className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
-    >
-      <div className="flex flex-col gap-2">
-        <span className="text-2xl font-semibold">{route.name}</span>
-        <div className="text-sm">{route.description}</div>
-        <div className="text-xs text-wrap">
-          {route.stores.slice(0, 3).map((store, i) => (
-            <span key={store._id} className=" font-light">
-              {store.name}
-              {i === 2 && route.stores.length > 3
-                ? "..."
-                : i === route.stores.length - 1
-                  ? ""
-                  : ", "}
-            </span>
-          ))}
+    <Link to={`/route/${route._id}`}>
+      <div
+        key={route._id}
+        className="flex justify-between border-2 bg-green-200 hover:bg-green-300  border-green-400 rounded-sm p-2"
+      >
+        <div className="flex flex-col gap-2">
+          <span className="text-2xl font-semibold">{route.name}</span>
+          <div className="text-sm">{route.description}</div>
+          <div className="text-xs text-wrap">
+            {route.stores.slice(0, 3).map((store, i) => (
+              <span key={store._id} className=" font-light">
+                {store.name}
+                {i === 2 && route.stores.length > 3
+                  ? "..."
+                  : i === route.stores.length - 1
+                    ? ""
+                    : ", "}
+              </span>
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 justify-center">
+          <CopyLinkButton routeId={route._id} />
+          <AddUpdateRouteButton
+            route={route}
+            type="Update"
+            onRouteUpdate={refetch}
+          />
+          <DeleteRouteButton route={route} onRouteDelete={refetch} />
         </div>
       </div>
-      <div className="flex flex-col gap-4 justify-center">
-        <CopyLinkButton routeId={route._id} />
-        <AddUpdateRouteButton
-          route={route}
-          type="Update"
-          onRouteUpdate={refetch}
-        />
-        <DeleteRouteButton route={route} onRouteDelete={refetch} />
-      </div>
-    </div>
+    </Link>
   ));
 
   return (

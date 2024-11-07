@@ -21,8 +21,9 @@ export default function CopyLinkButton({ routeId }: { routeId: string }) {
     }, 500);
   };
 
+  // isAdding && isSavedRoutesPage
   return isAdding && isSavedRoutesPage ? (
-    <span className="text-sm m-auto h-[30px] w-[30px] relative right-4 top-1">
+    <span className="text-sm h-[30px] w-[30px] relative right-4 top-1">
       Copied!
     </span>
   ) : isSavedRoutesPage ? (

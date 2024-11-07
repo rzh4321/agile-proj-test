@@ -27,7 +27,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       );
       try {
         const response = await fetch(
-          "http://localhost:3001/auth/verify-token",
+          "http://localhost:3001/user/verify-token",
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -54,7 +54,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   useEffect(() => {
-    console.log("you refreshed page. calling verifytoken...");
     verifyToken();
   }, []);
 

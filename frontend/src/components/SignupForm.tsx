@@ -47,7 +47,7 @@ export default function SignupForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
     setPending(true);
-    const response = await fetch("http://localhost:3001/auth/signup", {
+    const response = await fetch("http://localhost:3001/user/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

@@ -34,11 +34,11 @@ router.post("/", async (req: any, res: any) => {
       lat,
       lng,
     } = req.body;
-    console.log(typeof placeId);
     // check if a store with the same name already exists
     const existingStore = await Store.findById(placeId);
     // const existingStore = await Store.findOne({ name: name });
     if (existingStore) {
+      return res.status(201).json(existingStore);
       return res
         .status(409)
         .json({ message: "A store with this place ID already exists" });

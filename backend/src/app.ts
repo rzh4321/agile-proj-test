@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 
 // Routes
-app.use("/auth", authRoutes);
+app.use("/user", authRoutes);
 app.use("/stores", storeRoutes);
 app.use("/routes", routeRoutes);
 

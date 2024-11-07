@@ -14,16 +14,13 @@ export default function useSavedRoutes() {
     setLoading(true);
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(
-        `http://localhost:3001/routes/user/${user?._id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+      const res = await fetch(`http://localhost:3001/user/saved-routes`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
-      );
+      });
       if (res.ok) {
         const routes = await res.json();
         console.log("user's saved routes are ", routes);

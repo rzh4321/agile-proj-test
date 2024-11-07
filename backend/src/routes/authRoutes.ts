@@ -5,6 +5,28 @@ import User from "../models/User";
 
 const router = Router();
 
+// Middleware to verify token
+const verifyToken = (req: any, res: Response, next: Function): any => {
+  const token = req.headers.authorization?.split(" ")[1];
+  console.log(token);
+  if (!token) {
+    return res.status(401).json({ message: "No JWT provided" });
+  }
+
+  jwt.verify(
+    token,
+    process.env.JWT_SECRET as string,
+    (err: any, decoded: any) => {
+      if (err) {
+        return res.status(401).json({ message: "Invalid or expired JWT" });
+      }
+      req.userId = decoded.userId;
+      req.username = decoded.username;
+      next();
+    },
+  );
+};
+
 // verify token route
 router.get("/verify-token", async (req: any, res: any) => {
   try {
@@ -43,6 +65,39 @@ router.get("/verify-token", async (req: any, res: any) => {
     res.status(500).json({ message: "Error verifying token", error });
   }
 });
+
+// get all saved routes for a specific user
+router.get(
+  "/saved-routes",
+  verifyToken,
+  async (req: any, res: Response): Promise<any> => {
+    try {
+      console.log("your user id is ", req.userId);
+      const userId = req.userId;
+      // verify that the requesting user is accessing their own routes
+      if (userId !== req.userId) {
+        return res
+          .status(403)
+          .json({ message: "Not authorized to access these routes" });
+      }
+
+      const user = await User.findById(userId).populate({
+        path: "saved_routes",
+        populate: {
+          path: "stores",
+        },
+      });
+
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res.json(user.saved_routes);
+    } catch (error) {
+      res.status(500).json({ message: "Error fetching saved routes", error });
+    }
+  },
+);
 
 // Signup route
 router.post("/signup", async (req: any, res: any) => {

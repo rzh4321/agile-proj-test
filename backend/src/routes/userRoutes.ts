@@ -92,6 +92,8 @@ router.get(
         return res.status(404).json({ message: "User not found" });
       }
 
+      console.log(user.saved_routes)
+
       res.json(user.saved_routes);
     } catch (error) {
       res.status(500).json({ message: "Error fetching saved routes", error });

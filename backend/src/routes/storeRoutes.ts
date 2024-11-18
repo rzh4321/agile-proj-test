@@ -38,7 +38,7 @@ router.post("/", async (req: any, res: any) => {
     const existingStore = await Store.findById(placeId);
     // const existingStore = await Store.findOne({ name: name });
     if (existingStore) {
-      return res.status(201).json(existingStore);
+      // return res.status(201).json(existingStore);
       return res
         .status(409)
         .json({ message: "A store with this place ID already exists" });

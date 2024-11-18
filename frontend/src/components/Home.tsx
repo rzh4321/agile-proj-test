@@ -13,17 +13,6 @@ export default function Home() {
   const navigate = useNavigate();
 
   const handleClickGenerate = () => {
-    // if (allowedLocationAccess) {
-    //   navigate("/route");
-    //   return;
-    // }
-    // const allow = confirm("Allow location access?");
-    // if (!allow) {
-    //   alert("Please allow location access to proceed.");
-    // } else {
-    //   setAllowedLocationAccess(true);
-    //   navigate("/route");
-    // }
     navigate("/route");
   };
 

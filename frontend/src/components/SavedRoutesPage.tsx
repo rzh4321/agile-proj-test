@@ -3,7 +3,7 @@ import AddUpdateRouteButton from "./AddUpdateRouteButton";
 import CopyLinkButton from "./CopyLinkButton";
 import DeleteRouteButton from "./DeleteRouteButton";
 import { Loader } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function SavedRoutesPage() {
   const navigate = useNavigate();

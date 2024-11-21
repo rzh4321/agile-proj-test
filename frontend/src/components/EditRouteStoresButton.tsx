@@ -99,7 +99,12 @@ export default function EditRouteStoresButton({
             className={cn("justify-between w-60 m-auto mt-2")}
             disabled={loading}
           >
-            Edit Stores
+            <div className="flex items-center gap-2">
+              <span>Edit Stores</span>
+              <span className="rounded-full border-2 bg-green-500 text-white w-[25px] h-[25px] font-bold">
+                {stores.length}
+              </span>
+            </div>
             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>

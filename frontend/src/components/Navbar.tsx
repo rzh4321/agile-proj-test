@@ -13,7 +13,7 @@ export default function Navbar() {
     location.pathname === "/login" || location.pathname === "/signup";
 
   return (
-    <nav className="bg-gray-800 p-4">
+    <nav className="bg-gray-800 p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
         <div className="w-1/3">
           {isSuggestPage || isHelpPage ? (

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useMyStores } from "@/context/StoresContext";
 import useGeolocation from "@/hooks/useGeolocation";
 import {
@@ -18,6 +18,7 @@ import AddUpdateRouteButton from "../AddUpdateRouteButton";
 import type { Store, TravelMode, SelectedStore } from "@/types";
 import { useParams } from "react-router-dom";
 import CopyLinkButton from "../CopyLinkButton";
+import useAuth from "@/context/AuthContext";
 
 export default function RouteDisplayPage() {
   const mapRef = useRef<google.maps.Map | null>(null);
@@ -33,6 +34,7 @@ export default function RouteDisplayPage() {
   const { routeId } = useParams();
   // if routeId is given, fetch route details from backend
   const { routeDetails, isLoading: isLoadingRoute } = useRouteDetails(routeId);
+  const { isAuthenticated } = useAuth();
 
   // Use routeDetails.stores if routeId exists, otherwise use stores from start page
   const storeList = useMemo(() => {
@@ -207,10 +209,22 @@ export default function RouteDisplayPage() {
 
       <div className="sticky bottom-0 left-0 right-0 bg-white py-4 mt-auto border-t">
         <div className="max-w-[calc(100vw-2.5rem)] mx-auto flex justify-between">
-          <Button variant={"destructive"} onClick={() => navigate("/")}>
-            Back to Start
-          </Button>
-          <AddUpdateRouteButton type="Add" route={stores} />
+          {isAuthenticated && (
+            <>
+              <Button variant={"destructive"} onClick={() => navigate("/")}>
+                Back to Start
+              </Button>
+              <AddUpdateRouteButton type="Add" route={storeList} />
+            </>
+          )}
+          {!isAuthenticated && (
+            <Link
+              to={"/login"}
+              className="m-auto underline text-gray-500 tracking-wide"
+            >
+              Log in to save this route
+            </Link>
+          )}
         </div>
       </div>
     </div>

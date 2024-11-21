@@ -27,25 +27,21 @@ const verifyToken = (req: any, res: Response, next: Function): any => {
 };
 
 // getting a specific route
-router.get(
-  "/:routeId",
-  verifyToken,
-  async (req: any, res: Response): Promise<any> => {
-    try {
-      const { routeId } = req.params;
+router.get("/:routeId", async (req: any, res: Response): Promise<any> => {
+  try {
+    const { routeId } = req.params;
 
-      const route = await Route.findById(routeId).populate("stores");
+    const route = await Route.findById(routeId).populate("stores");
 
-      if (!route) {
-        return res.status(404).json({ message: "Route not found" });
-      }
-
-      res.json(route);
-    } catch (error) {
-      res.status(500).json({ message: "Error fetching route", error });
+    if (!route) {
+      return res.status(404).json({ message: "Route not found" });
     }
-  },
-);
+
+    res.json(route);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching route", error });
+  }
+});
 
 // Create new route
 router.post("/", verifyToken, async (req: any, res: Response) => {

@@ -12,15 +12,7 @@ export default function useRouteDetails(routeId: string | undefined) {
 
       setIsLoading(true);
       try {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `http://localhost:3001/routes/${routeId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        );
+        const response = await fetch(`http://localhost:3001/routes/${routeId}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch route details");

@@ -35,7 +35,7 @@ export type FiltersType = {
 
 export type FilterStringTypes = "Brand" | "Price Range" | "Category" | "Rating";
 
-export type PriceRange = "Budget" | "Mid-Range" | "Premium" | "Luxury";
+export type PriceRange = "Budget" | "Mid-Range" | "High-end" | "Premium";
 
 export type SavedRoute = {
   _id: string;

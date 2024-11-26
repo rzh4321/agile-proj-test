@@ -16,9 +16,17 @@ import { useMyStores } from "@/context/StoresContext";
 const priceRangeToDollarIcons: Record<PriceRange, number> = {
   Budget: 1,
   "Mid-Range": 2,
-  Premium: 3,
-  Luxury: 5,
+  "High-end": 3,
+  Premium: 5,
+}
+
+const valueToPriceRange: Record<string, PriceRange> = {
+  "1": "Budget",
+  "2": "Mid-Range",
+  "3": "High-end",
+  "4": "Premium",
 };
+
 
 export default function StoreDialog({
   store,
@@ -62,7 +70,7 @@ function ScrollableContent({ store }: { store: Store }) {
         <GoogleRating rating={store.rating} ratingCount={store.ratingCount} />
         <Reviews reviews={store.reviews} />
         <PhoneNumber phoneNumber={store.phoneNumber} />
-        <PriceRange priceRange={store.priceRange as PriceRange} />
+        <PriceRange priceRange={valueToPriceRange[store.priceRange] as PriceRange} />
         <PaymentOptions paymentOptions={store.paymentOptions} />
         <Categories categories={store.categories} />
         <Brand brand={store.brand} />
@@ -214,7 +222,7 @@ function PriceRange({ priceRange }: { priceRange: PriceRange }) {
       ? "text-green-500"
       : priceRange === "Mid-Range"
         ? "text-slate-400"
-        : priceRange === "Luxury"
+        : priceRange === "High-end"
           ? "text-red-500"
           : "text-red-700";
 

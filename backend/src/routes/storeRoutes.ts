@@ -53,7 +53,7 @@ router.post("/", async (req: any, res: any) => {
         "5_This is definitely world class zoo and a great way to close and personal with animals. Usually a zoo this size is far away from the city center but this zoo is just a short ferry away. The zoo itself is like a scenic hike with a great view of the city. The seal show definitely is the headliner but there are so many different animals to make a great day trip._World Explorer",
       ],
       categories: categories || ["Uncategorized"],
-      priceRange: priceRange || "Mid-Range",
+      priceRange: priceRange || "2",
       description:
         description ||
         "Retail chain selling a range of grocery items, meat & dairy.",

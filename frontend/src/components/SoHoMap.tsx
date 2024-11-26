@@ -121,6 +121,7 @@ const PoiMarkers = (props: {
             background={"#FBBC04"}
             glyphColor={"#000"}
             borderColor={"#000"}
+            scale={0.5}
           />
         </AdvancedMarker>
       ))}

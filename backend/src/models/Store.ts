@@ -42,7 +42,7 @@ const StoreSchema = new Schema({
   websiteURI: { type: String },
   lat: { type: Number },
   lng: { type: Number },
-  lastUpdated: {type: Date}
+  lastUpdated: { type: Date },
 });
 
 const Store = models.Store || model("Store", StoreSchema);

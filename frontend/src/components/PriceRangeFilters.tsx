@@ -7,7 +7,7 @@ const priceRangeToDollarIcons: Record<PriceRange, number> = {
   "Mid-Range": 2,
   "High-end": 3,
   Premium: 5,
-}
+};
 
 type Props = {
   handleFilterClick: (filter: keyof FiltersType, filterValue: string) => void;

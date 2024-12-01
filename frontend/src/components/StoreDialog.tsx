@@ -18,7 +18,7 @@ const priceRangeToDollarIcons: Record<PriceRange, number> = {
   "Mid-Range": 2,
   "High-end": 3,
   Premium: 5,
-}
+};
 
 const valueToPriceRange: Record<string, PriceRange> = {
   "1": "Budget",
@@ -26,7 +26,6 @@ const valueToPriceRange: Record<string, PriceRange> = {
   "3": "High-end",
   "4": "Premium",
 };
-
 
 export default function StoreDialog({
   store,
@@ -70,7 +69,9 @@ function ScrollableContent({ store }: { store: Store }) {
         <GoogleRating rating={store.rating} ratingCount={store.ratingCount} />
         <Reviews reviews={store.reviews} />
         <PhoneNumber phoneNumber={store.phoneNumber} />
-        <PriceRange priceRange={valueToPriceRange[store.priceRange] as PriceRange} />
+        <PriceRange
+          priceRange={valueToPriceRange[store.priceRange] as PriceRange}
+        />
         <PaymentOptions paymentOptions={store.paymentOptions} />
         <Categories categories={store.categories} />
         <Brand brand={store.brand} />

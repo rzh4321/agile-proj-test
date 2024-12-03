@@ -12,6 +12,14 @@ export default function Navbar() {
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
 
+  const handleAuthClick = () => {
+    if (isAuthenticated) {
+      logout();
+    } else {
+      navigate("/login", { state: { from: location.pathname } });
+    }
+  };
+
   return (
     <nav className="bg-gray-800 p-4 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
@@ -42,7 +50,7 @@ export default function Navbar() {
           <div className="w-1/3 flex justify-end">
             <Button
               variant={isAuthenticated ? "destructive" : "default"}
-              onClick={() => (isAuthenticated ? logout() : navigate("/login"))}
+              onClick={handleAuthClick}
             >
               {isAuthenticated ? "Log Out" : "Sign In"}
             </Button>

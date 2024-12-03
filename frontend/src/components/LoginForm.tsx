@@ -17,7 +17,7 @@ import { Loader } from "lucide-react";
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -31,6 +31,8 @@ const formSchema = z.object({
 
 export default function LoginForm() {
   const [pending, setPending] = useState(false);
+  const location = useLocation();
+  const from = location.state?.from || "/"; // Default to home if no previous location
   const navigate = useNavigate();
   const { login } = useAuth();
   const { toast } = useToast();
@@ -44,7 +46,6 @@ export default function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     setPending(true);
     const response = await fetch("http://localhost:3001/user/login", {
       method: "POST",
@@ -61,8 +62,7 @@ export default function LoginForm() {
         duration: 1000,
       });
       login(token);
-      // TODO: change this to navigate to last page they were on
-      navigate("/");
+      navigate(from); // Navigate to the previous page or home
     } else {
       const { message } = await response.json();
       toast({
@@ -152,6 +152,7 @@ export default function LoginForm() {
 
           <Link
             to="/signup"
+            state={{ from: from }} // Pass the same 'from' location
             className="flex flex-row gap-1 text-sm text-zinc-400"
           >
             No account yet?{" "}

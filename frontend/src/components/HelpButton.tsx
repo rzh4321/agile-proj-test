@@ -2,14 +2,13 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
+  DialogClose,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Separator } from "./ui/separator";
 
 export default function HelpButton() {
   return (
@@ -21,35 +20,61 @@ export default function HelpButton() {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
+          <DialogTitle className="text-2xl text-blue-600">Help</DialogTitle>
+          <Separator className=" bg-black" />
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
-            </Label>
-            <Input
-              id="name"
-              defaultValue="Pedro Duarte"
-              className="col-span-3"
-            />
+        <div className="space-y-4">
+          <div>
+            <h2 className="font-semibold mb-1 text-lg text-blue-600">
+              What is SoHo Shopper?
+            </h2>
+            <p className="text-gray-600 text-justify font-light text-sm leading-6">
+              SoHo Shopper optimizes your shopping experience by generating the
+              most efficient route between stores you want to visit. Select
+              stores via search or map, and we'll calculate the best path based
+              on your current location.
+            </p>
           </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
-            </Label>
-            <Input
-              id="username"
-              defaultValue="@peduarte"
-              className="col-span-3"
-            />
+
+          <div>
+            <h2 className="font-semibold mb-1 text-lg text-blue-600">
+              How do I create a route?
+            </h2>
+            <p className="text-gray-600 text-justify font-light text-sm leading-6">
+              Add stores using the search bar or by clicking locations on the
+              map. Once you've selected your stores, we'll automatically
+              calculate the most efficient path from your current location.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-semibold mb-1 text-lg text-blue-600">
+              What's the store suggestion feature?
+            </h2>
+            <p className="text-gray-600 text-justify font-light text-sm leading-6">
+              Set filters like brands, categories, price range, and ratings, and
+              we'll recommend stores that match your preferences. Add suggested
+              stores directly to your route.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="font-semibold mb-1 text-lg text-blue-600">
+              Can I save and share my routes?
+            </h2>
+            <p className="text-gray-600 text-justify font-light text-sm leading-6">
+              Yes! Save your selected stores as a named route with an optional
+              description. Share your route with others using a unique link -
+              they'll get the same stores but optimized for their location.
+            </p>
           </div>
         </div>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <DialogClose asChild>
+            <Button type="button" variant="destructive">
+              Close
+            </Button>
+          </DialogClose>{" "}
         </DialogFooter>
       </DialogContent>
     </Dialog>

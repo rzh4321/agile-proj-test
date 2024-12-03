@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Form,
   FormControl,
@@ -33,6 +33,8 @@ const formSchema = z.object({
 export default function SignupForm() {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from || "/"; // Get the original location
   const [pending, setPending] = useState(false);
   const { toast } = useToast();
 
@@ -62,7 +64,7 @@ export default function SignupForm() {
         duration: 1000,
       });
       login(token);
-      navigate("/");
+      navigate(from); // Navigate to the original location
     } else {
       const { message } = await response.json();
       toast({
@@ -162,6 +164,7 @@ export default function SignupForm() {
 
           <Link
             to="/login"
+            state={{ from: from }} // Pass the location back to login if they switch again
             className="flex flex-row gap-1 text-sm text-zinc-400"
           >
             Have an account?{" "}

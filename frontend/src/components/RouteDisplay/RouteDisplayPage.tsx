@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useLocation } from "react-router-dom";
 import { useMyStores } from "@/context/StoresContext";
 import useGeolocation from "@/hooks/useGeolocation";
 import {
@@ -35,6 +35,7 @@ export default function RouteDisplayPage() {
   // if routeId is given, fetch route details from backend
   const { routeDetails, isLoading: isLoadingRoute } = useRouteDetails(routeId);
   const { isAuthenticated } = useAuth();
+  const location = useLocation();
 
   // Use routeDetails.stores if routeId exists, otherwise use stores from start page
   const storeList = useMemo(() => {
@@ -220,6 +221,7 @@ export default function RouteDisplayPage() {
           {!isAuthenticated && (
             <Link
               to={"/login"}
+              state={{ from: location.pathname }} // to redirect them back to this page
               className="m-auto underline text-gray-500 tracking-wide"
             >
               Log in to save this route

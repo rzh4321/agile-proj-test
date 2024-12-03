@@ -26,7 +26,7 @@ export default function SoHoMap({
   return (
     <Map
       key={mapKey}
-      defaultZoom={16}
+      defaultZoom={17}
       defaultCenter={initialCenter}
       mapId="b9b9aae2738373ca"
     >
@@ -142,7 +142,7 @@ const PoiMarkersForSelectedStores = (props: { stores: Store[] }) => {
             background={"#FBBC04"}
             glyphColor={"#000"}
             borderColor={"#000"}
-            scale={0.5}
+            scale={0.8}
           />
         </AdvancedMarker>
       ))}

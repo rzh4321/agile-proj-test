@@ -81,7 +81,7 @@ export default function StoreSearchBar({ stores = [] }: { stores: Store[] }) {
           <Button
             variant="outline"
             role="combobox"
-            className={cn("justify-between w-60 m-auto mt-10")}
+            className={cn("justify-between w-60 m-auto mt-8")}
           >
             Search Stores
             <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />

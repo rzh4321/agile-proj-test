@@ -6,39 +6,59 @@ import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
 import SoHoMap from "./SoHoMap";
 import { useMyStores } from "@/context/StoresContext";
+import { Switch } from "./ui/switch";
+import { Label } from "./ui/label";
+import { useState } from "react";
 
 export default function Home() {
   const { stores, loading, error } = useStores();
   const { stores: userStores } = useMyStores();
+  const [showOnlyUserStores, setShowOnlyUserStores] = useState(false);
   const navigate = useNavigate();
 
   const handleClickGenerate = () => {
     navigate("/route");
   };
-
   return (
-    <main className="flex flex-col gap-10 px-5">
+    <main className="flex flex-col gap-12 px-5">
       <div className="flex flex-col gap-5">
         {error ? (
-          <span>an error: {error}</span>
+          <span className="text-center mt-2 font-bold">
+            An error occurred: {error}
+          </span>
         ) : !loading ? (
           <StoreSearchBar stores={stores} />
         ) : (
-          <Loader className="m-auto animate-spin" />
+          <Loader className="m-auto mt-5 animate-spin" />
         )}
         <MyStoresButton />
       </div>
 
-      <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-6 relative">
+        <div className="absolute top-[-30px] flex gap-1 items-center">
+          <Switch
+            id="display"
+            checked={showOnlyUserStores}
+            onClick={() => setShowOnlyUserStores((prev) => !prev)}
+          />
+          <Label htmlFor="display" className="font-light text-sm">
+            Show only selected stores
+          </Label>
+        </div>
         <div className="w-full h-[300px] border-2 border-black">
           {loading ? (
             <div className="h-full w-full flex justify-center items-center">
               <Loader className="animate-spin w-[40px] h-[40px]" />
             </div>
           ) : error ? (
-            <div>Something went wrong when loading the map : {error}</div>
+            <div>Something went wrong when loading the map: {error}</div>
           ) : (
-            <SoHoMap stores={stores} type="Home" />
+            <SoHoMap
+              key={showOnlyUserStores.toString()}
+              stores={stores}
+              userStores={userStores}
+              showOnlyUserStores={showOnlyUserStores}
+            />
           )}
         </div>
         <Button

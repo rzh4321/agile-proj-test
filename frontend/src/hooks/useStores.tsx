@@ -11,8 +11,10 @@ export default function useStores() {
       const res = await fetch("http://localhost:3001/stores");
       if (res.ok) {
         const stores = await res.json();
-        console.log("stores is ", stores);
-        setStores(stores);
+        const sortedStores = stores.sort((a: Store, b: Store) =>
+          a.name.localeCompare(b.name),
+        );
+        setStores(sortedStores);
       } else {
         const { message } = await res.json();
         setError(message);

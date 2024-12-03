@@ -70,9 +70,29 @@ export const suggestStores = (
     .filter((item) => item.score !== null);
 
   // sort stores by their match score
-  const sortedStores = scoredStores.sort((a, b) => b.score! - a.score!);
+  const sortedStores = scoredStores.sort((a, b) => {
+    if (b.score && a.score && b.score! !== a.score!) {
+      return b.score - a.score;
+    }
+    // use weighted store rating as tiebreaker
+    // Using a minimum vote threshold of 10 to prevent low count, high rating items from ranking too high
+    const minVotes = 10;
+    const avgRating = 4.11; // average google rating
 
-  return sortedStores.map((item) => item.store);
+    const weightedA =
+      (a.store.rating * a.store.ratingCount + avgRating * minVotes) /
+      (a.store.ratingCount + minVotes);
+    const weightedB =
+      (b.store.rating * b.store.ratingCount + avgRating * minVotes) /
+      (b.store.ratingCount + minVotes);
+
+    return weightedB - weightedA;
+  });
+  const finalStores = sortedStores
+    .filter((store) => store.score && store.score >= 3)
+    .slice(0, 10);
+  console.log(finalStores);
+  return finalStores.map((item) => item.store);
 };
 
 type RouteResult = {

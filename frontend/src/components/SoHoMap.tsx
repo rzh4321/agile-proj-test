@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, memo } from "react";
 import { Map, AdvancedMarker, useMap, Pin } from "@vis.gl/react-google-maps";
 import { Dialog } from "./ui/dialog";
 import { MarkerClusterer } from "@googlemaps/markerclusterer";
@@ -6,14 +6,12 @@ import type { Marker } from "@googlemaps/markerclusterer";
 import StoreDialog from "./StoreDialog";
 import type { Store } from "@/types";
 
-export default function SoHoMap({
+const SoHoMap = memo(function SoHoMap({
   stores,
-  userStores,
   showOnlyUserStores,
   defaultCenter,
 }: {
   stores: Store[];
-  userStores: Store[];
   showOnlyUserStores: boolean;
   defaultCenter?: { lat: number; lng: number };
 }) {
@@ -22,7 +20,7 @@ export default function SoHoMap({
     lng: -73.99867417832154,
   };
   const mapKey = `map-${initialCenter.lat}-${initialCenter.lng}`;
-
+  console.log("MAP", showOnlyUserStores, stores.length);
   return (
     <Map
       key={mapKey}
@@ -31,14 +29,14 @@ export default function SoHoMap({
       mapId="b9b9aae2738373ca"
     >
       {showOnlyUserStores ? (
-        <PoiMarkersForSelectedStores stores={userStores} />
+        <PoiMarkersForSelectedStores stores={stores} />
       ) : (
         <PoiMarkers stores={stores} />
       )}
       {/* <PoiMarkers stores={stores} /> */}
     </Map>
   );
-}
+});
 
 const PoiMarkers = (props: { stores: Store[] }) => {
   const map = useMap();
@@ -157,3 +155,5 @@ const PoiMarkersForSelectedStores = (props: { stores: Store[] }) => {
     </>
   );
 };
+
+export default SoHoMap;

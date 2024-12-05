@@ -18,6 +18,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import StoreItem from "./StoreItem";
+import { Separator } from "./ui/separator";
 
 function StoreList({
   stores,
@@ -40,8 +41,10 @@ function StoreList({
                 <StoreItem type="search" store={store} />
               </CommandList>
             ))}
+            <Separator className="h-[5px]" />
           </CommandGroup>
         )}
+
         <CommandGroup heading="All Stores">
           {stores.map((store) => (
             <CommandList key={store._id}>

@@ -15,11 +15,12 @@ export function RouteCards({
     const length = name.length;
     if (length <= 10) return "text-lg";
     if (length <= 15) return "text-md";
-    return "text-sm";
+    if (length <= 20) return "text-sm";
+    return "text-xs";
   };
 
   return (
-    <div className="overflow-auto flex gap-[1px]">
+    <div className="overflow-x-auto flex gap-[1px]">
       {route.map((store, index) => (
         <div
           key={store._id}

@@ -55,8 +55,7 @@ export default function Home() {
           ) : (
             <SoHoMap
               key={showOnlyUserStores.toString()}
-              stores={stores}
-              userStores={userStores}
+              stores={showOnlyUserStores ? userStores : stores}
               showOnlyUserStores={showOnlyUserStores}
             />
           )}

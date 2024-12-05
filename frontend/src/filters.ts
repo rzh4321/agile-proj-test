@@ -227,8 +227,8 @@ export const brandFilters = [
   "G-Shock",
   "Rapha",
   "MacKenzie-Childs",
-  "Salomon"
-]
+  "Salomon",
+];
 
 export const categoryFilters = [
   "Luxury Fashion",
@@ -259,5 +259,4 @@ export const categoryFilters = [
   "Bridal & Wedding",
   "Swimwear",
   "Sporting Goods",
-  
 ];

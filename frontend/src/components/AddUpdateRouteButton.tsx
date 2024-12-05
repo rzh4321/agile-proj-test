@@ -26,6 +26,7 @@ import {
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import EditRouteStoresButton from "./EditRouteStoresButton";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   name: z
@@ -56,7 +57,7 @@ export default function AddUpdateRouteButton({
   const [stores, setStores] = useState<Store[]>(
     Array.isArray(route) ? route : route.stores,
   );
-
+  const navigate = useNavigate();
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -94,7 +95,6 @@ export default function AddUpdateRouteButton({
     setPending(true);
     const token = localStorage.getItem("token");
     const storeIds = stores.map((store) => store._id);
-    console.log({ ...values, storeIds });
 
     const response = await fetch(
       `http://localhost:3001/routes${type === "Update" ? `/${(route as SavedRoute)._id}` : ""}`,
@@ -118,14 +118,17 @@ export default function AddUpdateRouteButton({
         description: `✓ Successfully ${type === "Update" ? "updated" : "added"} route`,
         duration: 1000,
       });
-      onRouteUpdate!();
       if (type === "Add") {
         const savedRoute = await response.json();
-        console.log(savedRoute);
+        const routeId = savedRoute._id;
         // refresh page to render name, desc, share link
         setTimeout(() => {
           // refresh page with the returned id
-        }, 2000);
+          navigate(`/route/${routeId}`);
+        }, 1000);
+      } else {
+        // callback function is provided if type is "Update"
+        onRouteUpdate!();
       }
     } else {
       const { message } = await response.json();
@@ -135,7 +138,6 @@ export default function AddUpdateRouteButton({
         description: message,
       });
     }
-    setPending(false);
   }
 
   return (

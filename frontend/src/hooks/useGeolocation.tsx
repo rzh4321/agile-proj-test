@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { calculateDistance } from "@/lib/utils";
 
-const DISTANCE_THRESHOLD = 0.031; // 50 meters converted to miles (50/1609.344)
+const DISTANCE_THRESHOLD = 0.031; // 50 meters
 
 export default function useGeolocation(intervalMs: number = 5000) {
   const [coordinates, setCoordinates] = useState<{

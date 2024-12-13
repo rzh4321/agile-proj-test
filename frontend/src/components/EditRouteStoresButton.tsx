@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/popover";
 import { Search } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useMediaQuery } from "usehooks-ts";
+// import { useMediaQuery } from "usehooks-ts";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Store } from "@/types";
@@ -86,7 +86,7 @@ export default function EditRouteStoresButton({
   isSavedStore,
 }: Props) {
   const [open, setOpen] = useState(false);
-  const isDesktop = useMediaQuery("(min-width: 768px)");
+  // const isDesktop = useMediaQuery("(min-width: 768px)");
   const { stores: allStores, loading } = useStores();
 
   return (
@@ -109,31 +109,20 @@ export default function EditRouteStoresButton({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
-          {isDesktop ? (
-            <StoreList
-              allStores={allStores}
-              highlightedStores={stores}
-              heading="Saved Stores"
-              addStore={addStore}
-              removeStore={removeStore}
-              isSavedStore={isSavedStore}
-            />
-          ) : (
-            <Drawer open={open} onOpenChange={setOpen}>
-              <DrawerContent>
-                <div className="mt-4 border-t">
-                  <StoreList
-                    allStores={allStores}
-                    highlightedStores={stores}
-                    heading="Saved Stores"
-                    addStore={addStore}
-                    removeStore={removeStore}
-                    isSavedStore={isSavedStore}
-                  />
-                </div>
-              </DrawerContent>
-            </Drawer>
-          )}
+          <Drawer open={open} onOpenChange={setOpen}>
+            <DrawerContent>
+              <div className="mt-4 border-t">
+                <StoreList
+                  allStores={allStores}
+                  highlightedStores={stores}
+                  heading="Saved Stores"
+                  addStore={addStore}
+                  removeStore={removeStore}
+                  isSavedStore={isSavedStore}
+                />
+              </div>
+            </DrawerContent>
+          </Drawer>
         </PopoverContent>
       </Popover>
     </>

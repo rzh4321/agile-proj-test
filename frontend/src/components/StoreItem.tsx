@@ -44,7 +44,7 @@ function SearchItemDialogTrigger({ store }: { store: Store }) {
   };
   return (
     <CommandItem className="h-[100px] flex justify-between px-5">
-      <div className="text-2xl font-extrabold">{store.name}</div>
+      <div className="text-2xl sm:text-xl font-extrabold">{store.name}</div>
       {isAdding ? (
         <Check className="text-green-500 w-[86px] animate-ping" />
       ) : hasStore(store._id as string) ? (

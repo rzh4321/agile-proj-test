@@ -27,6 +27,7 @@ const DirectionsMap = memo(
       return () => {
         mapRef.current = null;
       };
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Empty dependency array as we only want to create the map once
 
     // Handle directions

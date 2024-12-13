@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import type { SavedRoute } from "@/types";
+import { API_URL } from "@/config";
 
 export default function useRouteDetails(routeId: string | undefined) {
   const [routeDetails, setRouteDetails] = useState<SavedRoute | null>(null);
@@ -12,7 +13,7 @@ export default function useRouteDetails(routeId: string | undefined) {
 
       setIsLoading(true);
       try {
-        const response = await fetch(`http://localhost:3001/routes/${routeId}`);
+        const response = await fetch(`${API_URL}/routes/${routeId}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch route details");

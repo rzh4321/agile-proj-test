@@ -1,3 +1,4 @@
+import { API_URL } from "@/config";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -97,7 +98,7 @@ export default function AddUpdateRouteButton({
     const storeIds = stores.map((store) => store._id);
 
     const response = await fetch(
-      `http://localhost:3001/routes${type === "Update" ? `/${(route as SavedRoute)._id}` : ""}`,
+      `${API_URL}/routes${type === "Update" ? `/${(route as SavedRoute)._id}` : ""}`,
       {
         method: type === "Add" ? "POST" : "PUT",
         headers: {

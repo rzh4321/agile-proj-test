@@ -91,7 +91,6 @@ export const suggestStores = (
   const finalStores = sortedStores
     .filter((store) => store.score && store.score >= 3)
     .slice(0, 10);
-  console.log(finalStores);
   return finalStores.map((item) => item.store);
 };
 
@@ -173,8 +172,6 @@ function nearestNeighborRoute(
   let currentLng = userLng;
 
   while (unvisited.length > 0) {
-    console.log("2");
-
     // Find nearest unvisited store
     let minDistance = Infinity;
     let nearestIndex = -1;
@@ -247,7 +244,6 @@ export function findOptimalRoute(
       );
 
       for (let i = 0; i < permutation.length - 1; i++) {
-        console.log("BRUTE FORCE");
         totalDistance += calculateDistance(
           permutation[i].lat,
           permutation[i].lng,

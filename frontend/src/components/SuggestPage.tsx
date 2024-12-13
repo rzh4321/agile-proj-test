@@ -1,20 +1,15 @@
 import { useState, useEffect } from "react";
 import { Button } from "./ui/button";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Filters from "./Filters";
 import { useMyStores } from "@/context/StoresContext";
-import { FiltersType } from "@/types";
-import { FilterStringTypes } from "@/types";
+import type { FiltersType, FilterStringTypes } from "@/types";
 import { suggestStores } from "@/lib/utils";
 import useStores from "@/hooks/useStores";
-
-const filterDescriptions: Record<FilterStringTypes, string> = {
-  Brand: "Select specific retailers and boutiques",
-  "Price Range": "Filter stores by typical price points from budget to luxury",
-  Category: "Browse by store type like clothing, accessories, beauty and more",
-  Rating:
-    "Sort by Google review ratings from 1 to 5 stars and number of ratings",
-};
+import PriceRangeFilters from "./PriceRangeFilters";
+import FiltersWithSearch from "./FiltersWithSearch";
+import RatingFilters from "./RatingFilters";
+import { categoryFilters, brandFilters } from "@/filters";
+import { X } from "lucide-react";
 
 const filterToCamelCase: Record<FilterStringTypes, keyof FiltersType> = {
   Brand: "brand",
@@ -42,22 +37,15 @@ export default function SuggestPage() {
     isAnyFilterApplied,
     filters,
   } = useMyStores();
-
   const navigate = useNavigate();
 
   const handleGenerateStores = () => {
     if (error || loading) return;
     const suggestedStores = suggestStores(stores, filters);
-    navigate("/", {
-      state: {
-        suggestedStores: suggestedStores,
-        openSearchBar: true,
-      },
-    });
+    navigate("/", { state: { suggestedStores, openSearchBar: true } });
   };
 
   useEffect(() => {
-    // reapply any filters to the filter context using search params
     const priceRangeFilters = getFilterValuesFromURL("priceRange");
     priceRangeFilters.forEach((priceRange) =>
       toggleFilter("priceRange", priceRange),
@@ -73,7 +61,6 @@ export default function SuggestPage() {
     if (numRatingsFilterArr.length > 0)
       setRatingFilter("numRatings", +numRatingsFilterArr[0]);
 
-    // reapply search params from the filter context
     if (
       priceRangeFilters.length === 0 &&
       brandFilters.length === 0 &&
@@ -110,22 +97,18 @@ export default function SuggestPage() {
     }
   }, []);
 
-  // toggle filter search param
   const toggleFilterURL = (filterType: string, value: string) => {
     const currentParams = new URLSearchParams(searchParams);
     const currentValues = currentParams.getAll(filterType);
 
     if (currentValues.includes(value)) {
-      // remove param if it exists
       currentParams.delete(filterType);
       currentValues
         .filter((v) => v !== value)
         .forEach((v) => {
-          // add search params back after filtering
           currentParams.append(filterType, v);
         });
     } else {
-      // add param if doesn't exist
       currentParams.append(filterType, value);
     }
 
@@ -136,7 +119,6 @@ export default function SuggestPage() {
     return searchParams.getAll(filterType);
   };
 
-  // update search or rating param
   const handleSearchOrRatingURL = (filter: string, value: string) => {
     const currentParams = new URLSearchParams(searchParams);
     if (value !== "") {
@@ -149,55 +131,293 @@ export default function SuggestPage() {
 
   const handleClearFilters = () => {
     clearFilters(currentFilter);
-    // delete the search param
     const currentParams = new URLSearchParams(searchParams);
     currentParams.delete(filterToCamelCase[currentFilter]);
-    if (currentFilter === "Rating") currentParams.delete("numRatings"); // also delete numRatings param
+    if (currentFilter === "Rating") currentParams.delete("numRatings");
     setSearchParams(currentParams);
   };
 
-  return (
-    <div className="flex">
-      <nav className="w-32 bg-blue-400 overflow-y-auto h-[calc(100vh-68px)]">
-        <ul className="divide-y divide-black">
-          {filterNames.map((filter) => (
-            <li
-              key={filter}
-              onClick={() => setCurrentFilter(filter)}
-              className={`${filter === currentFilter ? "bg-green-600 font-extrabold text-xl" : "hover:bg-blue-500 text-lg"} p-4 py-8 font-bold text-center cursor-pointer`}
+  const ActiveFilters = () => {
+    const activeFilters = {
+      brand: filters.brand,
+      priceRange: filters.priceRange,
+      category: filters.category,
+      rating: filters.rating ? [`${filters.rating}⭐`] : [],
+      numRatings: filters.numRatings
+        ? [`Min ${filters.numRatings} reviews`]
+        : [],
+    };
+
+    const removeFilter = (type: keyof typeof activeFilters, value: string) => {
+      if (type === "rating") {
+        setRatingFilter("rating", 0);
+        handleSearchOrRatingURL("rating", "");
+      } else if (type === "numRatings") {
+        setRatingFilter("numRatings", 0);
+        handleSearchOrRatingURL("numRatings", "");
+      } else {
+        toggleFilter(type, value);
+        toggleFilterURL(type, value);
+      }
+    };
+
+    return (
+      <div className="flex flex-wrap gap-2 mb-6">
+        {Object.entries(activeFilters).map(([type, values]) =>
+          values.map((value: string) => (
+            <div
+              key={`${type}-${value}`}
+              className="flex items-center gap-1 bg-gray-100 px-3 py-1 rounded-full text-sm"
             >
-              {filter}
-            </li>
-          ))}
-        </ul>
+              <span className="text-gray-700">{value}</span>
+              <button
+                onClick={() =>
+                  removeFilter(type as keyof typeof activeFilters, value)
+                }
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X size={14} />
+              </button>
+            </div>
+          )),
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-white">
+      <nav className="flex justify-center gap-4 p-6">
+        {filterNames.map((filter) => (
+          <button
+            key={filter}
+            onClick={() => setCurrentFilter(filter)}
+            className={`px-6 py-2 text-sm font-medium rounded-full transition-all
+              ${
+                filter === currentFilter
+                  ? "bg-green-600 text-white"
+                  : "text-gray-600 hover:bg-gray-100"
+              }`}
+          >
+            {filter}
+          </button>
+        ))}
       </nav>
-      <main className="flex-1 p-6 overflow-y-auto h-fit max-h-[calc(100vh-68px)]">
-        <h1 className="text-3xl font-bold mb-4">{currentFilter}</h1>
-        <p className="text-gray-600 mb-6 leading-5 text-sm font-light">
-          {filterDescriptions[currentFilter]}
-        </p>
+
+      <main className="flex-1 max-w-3xl mx-auto w-full px-6">
+        {isAnyFilterApplied && <ActiveFilters />}
+
+        <div className="space-y-6">
+          {currentFilter === "Brand" && (
+            <div className="space-y-4">
+              <div className="relative">
+                <input
+                  type="search"
+                  placeholder="Search brands..."
+                  className="w-full p-3 pl-10 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  onChange={(e) =>
+                    handleSearchOrRatingURL("brandSearch", e.target.value)
+                  }
+                  value={getFilterValuesFromURL("brandSearch")[0] || ""}
+                />
+                <div className="absolute left-3 top-1/2 transform -translate-y-1/2">
+                  <svg
+                    className="w-5 h-5 text-gray-400"
+                    fill="none"
+                    strokeWidth="2"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  </svg>
+                </div>
+              </div>
+              <div className="relative flex">
+                <div
+                  className="flex-1 space-y-2 max-h-[60vh] overflow-y-auto pr-4"
+                  id="brandList"
+                >
+                  {/* Special Characters Section */}
+                  {(() => {
+                    const specialBrands = brandFilters.filter(
+                      (brand) =>
+                        !/^[a-zA-Z]/.test(brand) &&
+                        brand
+                          .toLowerCase()
+                          .includes(
+                            (
+                              getFilterValuesFromURL("brandSearch")[0] || ""
+                            ).toLowerCase(),
+                          ),
+                    );
+
+                    if (specialBrands.length > 0) {
+                      return (
+                        <div key="#" id="section-special">
+                          <div className="sticky top-0 bg-white py-1 text-sm font-medium text-gray-500">
+                            #
+                          </div>
+                          {specialBrands.map((brand) => (
+                            <button
+                              key={brand}
+                              onClick={() => {
+                                toggleFilter("brand", brand);
+                                toggleFilterURL("brand", brand);
+                              }}
+                              className={`w-full p-3 text-left rounded-lg transition-colors
+                                ${
+                                  filters.brand.includes(brand)
+                                    ? "bg-green-600 text-white hover:bg-green-700"
+                                    : "bg-gray-50 text-gray-700 hover:bg-gray-100"
+                                }`}
+                            >
+                              {brand}
+                            </button>
+                          ))}
+                        </div>
+                      );
+                    }
+                    return null;
+                  })()}
+
+                  {/* Alphabetical Sections */}
+                  {Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ").map((letter) => {
+                    const brandsWithLetter = brandFilters.filter(
+                      (brand) =>
+                        brand.toLowerCase().startsWith(letter.toLowerCase()) &&
+                        brand
+                          .toLowerCase()
+                          .includes(
+                            (
+                              getFilterValuesFromURL("brandSearch")[0] || ""
+                            ).toLowerCase(),
+                          ),
+                    );
+
+                    if (brandsWithLetter.length === 0) return null;
+
+                    return (
+                      <div key={letter} id={`section-${letter}`}>
+                        <div className="sticky top-0 bg-white py-1 text-sm font-medium text-gray-500">
+                          {letter}
+                        </div>
+                        {brandsWithLetter.map((brand) => (
+                          <button
+                            key={brand}
+                            onClick={() => {
+                              toggleFilter("brand", brand);
+                              toggleFilterURL("brand", brand);
+                            }}
+                            className={`w-full p-3 text-left rounded-lg transition-colors
+                              ${
+                                filters.brand.includes(brand)
+                                  ? "bg-green-600 text-white hover:bg-green-700"
+                                  : "bg-gray-50 text-gray-700 hover:bg-gray-100"
+                              }`}
+                          >
+                            {brand}
+                          </button>
+                        ))}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Index */}
+                <div className="flex flex-col justify-center text-xs font-medium text-gray-500 pl-1">
+                  {/* Special Characters Index */}
+                  <button
+                    className={`py-0.5 px-1 hover:text-gray-900 focus:text-green-600
+                      ${!brandFilters.some((brand) => !/^[a-zA-Z]/.test(brand)) ? "opacity-30 cursor-not-allowed" : ""}`}
+                    onClick={() => {
+                      const element =
+                        document.getElementById("section-special");
+                      if (element) {
+                        const container = document.getElementById("brandList");
+                        if (container) {
+                          container.scrollTop =
+                            element.offsetTop - container.offsetTop;
+                        }
+                      }
+                    }}
+                  >
+                    #
+                  </button>
+
+                  {/* Alphabetical Index */}
+                  {Array.from("ABCDEFGHIJKLMNOPQRSTUVWXYZ").map((letter) => {
+                    const hasBrands = brandFilters.some((brand) =>
+                      brand.toLowerCase().startsWith(letter.toLowerCase()),
+                    );
+
+                    return (
+                      <button
+                        key={letter}
+                        className={`py-0.5 px-1 hover:text-gray-900 focus:text-green-600
+                          ${!hasBrands ? "opacity-30 cursor-not-allowed" : ""}`}
+                        onClick={() => {
+                          if (hasBrands) {
+                            const element = document.getElementById(
+                              `section-${letter}`,
+                            );
+                            if (element) {
+                              const container =
+                                document.getElementById("brandList");
+                              if (container) {
+                                container.scrollTop =
+                                  element.offsetTop - container.offsetTop;
+                              }
+                            }
+                          }
+                        }}
+                        disabled={!hasBrands}
+                      >
+                        {letter}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {currentFilter === "Price Range" && (
+            <PriceRangeFilters handleFilterClick={toggleFilter} />
+          )}
+
+          {currentFilter === "Rating" && (
+            <RatingFilters handleRatingURL={handleSearchOrRatingURL} />
+          )}
+
+          {currentFilter === "Category" && (
+            <FiltersWithSearch
+              key="category"
+              handleFilterClick={toggleFilter}
+              handleSearchURL={handleSearchOrRatingURL}
+              urlFilterParam="category"
+              urlSearchParam="categorySearch"
+              filters={categoryFilters}
+              savedSearch={getFilterValuesFromURL("categorySearch")[0] || ""}
+              placeholder="Search categories..."
+            />
+          )}
+        </div>
+
         <Button
           onClick={handleClearFilters}
-          className="mb-5"
-          variant={"destructive"}
+          variant="outline"
+          className="mt-6 w-full border-gray-200 text-gray-600 hover:bg-gray-50"
         >
           Clear Filters
         </Button>
-        <Filters
-          getFilterValuesFromURL={getFilterValuesFromURL}
-          toggleFilterURL={toggleFilterURL}
-          handleSearchOrRatingURL={handleSearchOrRatingURL}
-          currentFilter={currentFilter}
-        />
-        <div className="mt-6">
-          <Button
-            className="bg-green-600 border-green-700"
-            onClick={handleGenerateStores}
-            disabled={!isAnyFilterApplied}
-          >
-            Generate Stores
-          </Button>
-        </div>
+
+        <Button
+          className="w-full mt-6 mb-6 bg-green-600 hover:bg-green-700 border-green-600"
+          onClick={handleGenerateStores}
+          disabled={!isAnyFilterApplied}
+        >
+          Generate Stores
+        </Button>
       </main>
     </div>
   );

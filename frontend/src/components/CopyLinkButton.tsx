@@ -2,6 +2,7 @@ import { Check, Copy, Link } from "lucide-react";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "./ui/button";
+import { FRONTEND_URL } from "@/config";
 
 export default function CopyLinkButton({ routeId }: { routeId: string }) {
   const [isAdding, setIsAdding] = useState(false);
@@ -15,7 +16,7 @@ export default function CopyLinkButton({ routeId }: { routeId: string }) {
   ) => {
     e.stopPropagation();
     setIsAdding(true);
-    navigator.clipboard.writeText(`http://localhost:5173/route/${routeId}`);
+    navigator.clipboard.writeText(`${FRONTEND_URL}/route/${routeId}`);
     setTimeout(() => {
       setIsAdding(false);
     }, 500);

@@ -1,3 +1,4 @@
+import { API_URL } from "@/config";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -24,15 +25,12 @@ export default function DeleteRouteButton({ route, onRouteDelete }: Props) {
   const handleDelete = async () => {
     try {
       // make call to backend
-      const response = await fetch(
-        `http://localhost:3001/routes/${route._id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
+      const response = await fetch(`${API_URL}/routes/${route._id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      );
+      });
       if (response.ok) {
         toast({
           description: "✓ Successfully deleted route",

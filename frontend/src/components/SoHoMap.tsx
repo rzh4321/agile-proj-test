@@ -20,7 +20,6 @@ const SoHoMap = memo(function SoHoMap({
     lng: -73.99867417832154,
   };
   const mapKey = `map-${initialCenter.lat}-${initialCenter.lng}`;
-  console.log("MAP", showOnlyUserStores, stores.length);
   return (
     <Map
       key={mapKey}

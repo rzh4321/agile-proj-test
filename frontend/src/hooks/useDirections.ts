@@ -66,7 +66,6 @@ export default function useDirections({
     const cachedEntry = directionsCache[cacheKey];
 
     if (cachedEntry) {
-      console.log("cache hit for ", cacheKey);
       const distanceFromCachedOrigin = calculateDistance(
         coordinates.lat,
         coordinates.lng,
@@ -75,7 +74,6 @@ export default function useDirections({
       );
       // user hasnt moved much from last time, return cached directions
       if (distanceFromCachedOrigin < SIGNIFICANT_DISTANCE_CHANGE) {
-        console.log("hasnt moved much from last time,r eturning cached result");
         setDirectionResult(cachedEntry.result);
         return;
       }

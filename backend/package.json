@@ -1,32 +1,47 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "dev": "nodemon src/server.ts",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/server.js",
+    "test": "NODE_ENV=test c8 mocha 'test/**/*.test.js' --recursive --exit --timeout 10000",
+    "test:watch": "NODE_ENV=test mocha --watch 'test/**/*.test.js' --recursive --timeout 10000",
+    "coverage": "c8 report --reporter=text --reporter=html",
+    "lint": "eslint ."
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/issues"
+  },
+  "homepage": "https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker#readme",
+  "description": "",
   "dependencies": {
-    "@types/mongoose": "^5.11.97",
-    "@types/node": "^22.7.5",
     "bcrypt": "^5.1.1",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.21.1",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.7.1",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.6.3"
+    "mongoose": "^8.8.2",
+    "morgan": "^1.10.0"
   },
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/jsonwebtoken": "^9.0.7",
-    "nodemon": "^3.1.7"
+    "@eslint/js": "^9.16.0",
+    "c8": "^8.0.1",
+    "chai": "^4.5.0",
+    "chai-http": "^4.4.0",
+    "eslint": "^9.16.0",
+    "esm": "^3.2.25",
+    "globals": "^15.13.0",
+    "mocha": "^10.8.2",
+    "nodemon": "^3.1.7",
+    "sinon": "^15.2.0",
+    "sinon-express-mock": "^2.2.1",
+    "supertest": "^7.0.0"
   }
 }

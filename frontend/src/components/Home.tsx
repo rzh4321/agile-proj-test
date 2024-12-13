@@ -1,4 +1,4 @@
-import StoreSearchBar from "./StoreSearchBar";
+import StoresSearchBar from "./StoresSearchBar";
 import useStores from "@/hooks/useStores";
 import { Loader } from "lucide-react";
 import MyStoresButton from "./MyStoresButton";
@@ -27,7 +27,7 @@ export default function Home() {
             An error occurred: {error}
           </span>
         ) : !loading ? (
-          <StoreSearchBar stores={stores} />
+          <StoresSearchBar stores={stores} />
         ) : (
           <Loader className="m-auto mt-5 animate-spin" />
         )}
@@ -45,7 +45,7 @@ export default function Home() {
             Show only selected stores
           </Label>
         </div>
-        <div className="w-full h-[300px] border-2 border-black">
+        <div className="w-full h-[450px] border-2 border-black">
           {loading ? (
             <div className="h-full w-full flex justify-center items-center">
               <Loader className="animate-spin w-[40px] h-[40px]" />

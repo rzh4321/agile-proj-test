@@ -30,7 +30,7 @@ function StatusList({ stores }: { stores: Store[] }) {
         {stores.length > 0 && (
           <Button
             variant={"destructive"}
-            className="my-2 font-light"
+            className="my-2 ml-1 font-light"
             onClick={() => clearStores()}
           >
             <Trash className="w-[15px] mr-1" />

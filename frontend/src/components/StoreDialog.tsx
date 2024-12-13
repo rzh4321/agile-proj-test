@@ -45,7 +45,7 @@ export default function StoreDialog({
 
 function StickyHeader({ store }: { store: Store }) {
   return (
-    <div className="sticky top-0 bg-white z-10 pb-2 max-w-[80%] mx-auto">
+    <div className="sticky top-0 bg-white z-10 pb-2 w-fit mx-auto">
       <DialogHeader>
         <DialogTitle className="text-3xl flex flex-col gap-1">
           <span>{store.name}</span>

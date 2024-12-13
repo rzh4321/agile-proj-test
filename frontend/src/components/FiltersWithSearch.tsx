@@ -5,6 +5,20 @@ import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import { useState } from "react";
 
+const styles = {
+  container: "flex flex-col gap-4 p-4 bg-gray-50 rounded-lg shadow-md",
+  searchBar: "relative flex items-center",
+  searchIcon:
+    "absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none",
+  input:
+    "pl-10 pr-4 py-2 w-full border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500",
+  buttonsContainer: "max-h-[50vh] overflow-y-auto flex flex-col gap-2",
+  button:
+    "text-lg font-semibold text-left w-full py-4 px-3 rounded-lg transition-colors border-none active:bg-green-600 active:text-white",
+  activeButton: "bg-green-600 text-white hover:bg-green-700",
+  inactiveButton: "bg-gray-200 text-gray-800 hover:bg-gray-300",
+};
+
 type Props = {
   handleFilterClick: (filter: keyof FiltersType, filterValue: string) => void;
   handleSearchURL: (filter: string, searchValue: string) => void;
@@ -18,14 +32,15 @@ type Props = {
 export default function FiltersWithSearch({
   handleFilterClick,
   handleSearchURL,
-  urlFilterParam, // search param for the search bar
-  urlSearchParam, // search param for the filter itself
-  filters, // array of filter options
-  savedSearch, // saved search from URL param
+  urlFilterParam,
+  urlSearchParam,
+  filters,
+  savedSearch,
   placeholder,
 }: Props) {
   const { filterIsApplied } = useMyStores();
   const [search, setSearch] = useState(savedSearch);
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
     handleSearchURL(urlSearchParam, e.target.value);
@@ -41,24 +56,29 @@ export default function FiltersWithSearch({
       <Button
         key={filter}
         onClick={() => handleFilterClick(urlFilterParam, filter)}
-        className={`text-2xl text-wrap block w-full active:bg-green-200 active:text-black active:border:bg-green-300 rounded-t-sm  ${filterIsApplied(urlFilterParam, filter) ? "bg-green-600 border-green-700 hover:bg-green-600 text-white" : "bg-green-300 hover:bg-green-400 text-green-800 border-green-400"} h-[125px] py-6`}
+        className={`${styles.button} ${
+          filterIsApplied(urlFilterParam, filter)
+            ? styles.activeButton
+            : styles.inactiveButton
+        }`}
       >
         {filter}
       </Button>
     ));
+
   return (
-    <div className="flex flex-col gap-3">
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none" />
+    <div className={styles.container}>
+      <div className={styles.searchBar}>
+        <Search className={styles.searchIcon} />
         <Input
           type="search"
-          className="pl-10 pr-4 py-2 w-full"
+          className={styles.input}
           placeholder={placeholder}
           onChange={(e) => handleSearch(e)}
           value={search}
         />
       </div>
-      <div className=" max-h-[57vh] overflow-y-auto py-3">{buttons}</div>
+      <div className={styles.buttonsContainer}>{buttons}</div>
     </div>
   );
 }

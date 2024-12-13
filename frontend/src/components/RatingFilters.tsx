@@ -30,7 +30,7 @@ export default function RatingFilters({ handleRatingURL }: Props) {
   };
 
   const handleNumRatingsInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    e: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     setNumRatingsInput(+e.target.value);
     setRatingFilter("numRatings", +e.target.value);
@@ -45,7 +45,7 @@ export default function RatingFilters({ handleRatingURL }: Props) {
           defaultValue={[sliderValue ?? 0]}
           value={[sliderValue ?? 0]}
           max={5}
-          step={0.1}
+          step={0.5}
           className="w-4/5"
         />
         <Input
@@ -61,13 +61,22 @@ export default function RatingFilters({ handleRatingURL }: Props) {
         <Label htmlFor="numRatings" className="text-md">
           Min no. of reviews
         </Label>
-        <Input
+        <select
           id="numRatings"
-          type="number"
           value={numRatingsInput ?? ""}
-          className="w-[75px]"
-          onChange={handleNumRatingsInputChange}
-        />
+          className="w-[75px] border border-gray-300 rounded-md p-1 overflow-y-auto max-helgith-[50px] position-absolute"
+          onChange={(e) =>
+            handleNumRatingsInputChange(
+              e as React.ChangeEvent<HTMLSelectElement>,
+            )
+          }
+        >
+          {[...Array(11).keys()].map((num) => (
+            <option key={num * 10} value={num * 10}>
+              {num * 10}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

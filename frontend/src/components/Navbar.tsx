@@ -1,6 +1,6 @@
 import HelpButton from "./HelpButton";
 import { Button } from "./ui/button";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 
 export default function Navbar() {
@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <nav className="bg-gray-800 p-4 sticky top-0 z-50">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="flex justify-between items-center">
         <div className="w-1/3">
           {isSuggestPage || isHelpPage ? (
             <Button
@@ -38,12 +38,9 @@ export default function Navbar() {
         </div>
 
         <div className="absolute left-1/2 transform -translate-x-1/2">
-          <div
-            className="text-white text-2xl font-bold"
-            onClick={() => navigate("/")}
-          >
-            LOGO
-          </div>
+          <Link to={"/"}>
+            <img src="/vite.svg" />
+          </Link>
         </div>
 
         {!isAuthPage && (

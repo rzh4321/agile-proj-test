@@ -22,25 +22,27 @@ export default function Home(): JSX.Element {
 
   return (
     <main className="flex flex-col gap-5 bg-white-100 min-h-screen px-3.5 py-3 text-gray-900">
-
       {/* Search and MyStores Section */}
       <div className="flex flex-col gap-3">
         {error ? (
           <span className="text-center mt-2 font-bold text-red-500">
-
             An error occurred: {error}
           </span>
         ) : !loading ? (
           <>
             <StoresSearchBar stores={stores} />
-            <MyStoresButton/>
+            <MyStoresButton />
           </>
         ) : (
-
-          <Loader style={{ margin: "auto", marginTop: "20px", animation: "spin 1s linear infinite" }} />
-
+          <Loader
+            style={{
+              margin: "auto",
+              marginTop: "20px",
+              animation: "spin 1s linear infinite",
+            }}
+          />
         )}
-          <Button
+        <Button
           variant="secondary"
           className="rounded-xl h-10 flex justify-center gap-1 font-medium text-lg bg-blue-600 text-white shadow-md hover:bg-blue-700 transition"
           onClick={() => navigate("/suggest")}

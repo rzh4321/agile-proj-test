@@ -74,9 +74,7 @@ export default function LoginForm() {
   }
 
   return (
-    <div
-      className="h-[calc(100vh-6rem)] flex items-center justify-center"
-    >
+    <div className="h-[calc(100vh-6rem)] flex items-center justify-center">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -88,12 +86,8 @@ export default function LoginForm() {
             width: "75vw",
           }}
         >
-          <div
-            className="w-full flex-1 rounded-lg px-6 pb-4  md:max-w-[500px]"
-          >
-            <h1 className="mb-3 text-2xl font-bold">
-              Sign in
-            </h1>
+          <div className="w-full flex-1 rounded-lg px-6 pb-4  md:max-w-[500px]">
+            <h1 className="mb-3 text-2xl font-bold">Sign in</h1>
             <div className="w-full">
               <FormField
                 control={form.control}
@@ -103,7 +97,6 @@ export default function LoginForm() {
                     <FormLabel
                       htmlFor="username"
                       className="mb-3 mt-5 block text-xs font-medium text-zinc-400"
-
                     >
                       Username
                     </FormLabel>
@@ -132,7 +125,6 @@ export default function LoginForm() {
                     <FormLabel
                       htmlFor="password"
                       className="mb-3 mt-5 block text-xs font-medium text-zinc-400"
-
                     >
                       Password
                     </FormLabel>
@@ -141,7 +133,6 @@ export default function LoginForm() {
                         <Input
                           {...field}
                           className="peer block w-full rounded-md border bg-zinc-50 px-2 py-[9px] text-sm outline-none placeholder:text-zinc-500"
-
                           id="password"
                           type="password"
                           name="password"
@@ -155,8 +146,7 @@ export default function LoginForm() {
                 )}
               />
               <Button
-                                className="my-4 flex h-10 border-blue-600 w-full flex-row items-center justify-center rounded-md bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
-
+                className="my-4 flex h-10 border-blue-600 w-full flex-row items-center justify-center rounded-md bg-[#6366f1] px-8 text-sm font-medium text-white shadow transition-colors hover:bg-[#4f46e5] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50"
                 aria-disabled={pending}
                 disabled={pending}
               >
@@ -169,7 +159,6 @@ export default function LoginForm() {
             to="/signup"
             state={{ from: from }} // Pass the same 'from' location
             className="flex flex-row gap-1 text-sm text-zinc-400"
-
           >
             No account yet?{" "}
             <div className="font-semibold underline">Sign up</div>

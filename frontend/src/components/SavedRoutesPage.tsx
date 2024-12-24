@@ -83,8 +83,8 @@ export default function SavedRoutesPage() {
               {i === 2 && route.stores.length > 3
                 ? "..."
                 : i === route.stores.length - 1
-                ? ""
-                : ", "}
+                  ? ""
+                  : ", "}
             </span>
           ))}
         </div>

@@ -41,11 +41,7 @@ export default function RouteStoreItem({
               borderBottom: "1px solid #ddd",
             }}
           >
-            <div
-              className="text-xl font-serif"
-            >
-              {store.name}
-            </div>
+            <div className="text-xl font-serif">{store.name}</div>
             {isAdding ? (
               <Check
                 style={{
@@ -61,7 +57,6 @@ export default function RouteStoreItem({
                   e.stopPropagation();
                   removeStore(store);
                 }}
-                
               >
                 Remove
               </Button>

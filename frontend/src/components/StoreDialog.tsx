@@ -54,10 +54,8 @@ export default function StoreDialog({
 function StickyHeader({ store }: { store: Store }) {
   return (
     <div className="sticky top-0 bg-white z-10 pb-2 w-fit mx-auto">
-
       <DialogHeader>
-        <DialogTitle className="text-3xl flex flex-col gap-1"
-        >
+        <DialogTitle className="text-3xl flex flex-col gap-1">
           <span>{store.name}</span>
         </DialogTitle>
       </DialogHeader>
@@ -72,7 +70,14 @@ function ScrollableContent({ store }: { store: Store }) {
       <DialogDescription style={{ textAlign: "center" }}>
         {store.description}
       </DialogDescription>
-      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "16px" }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "12px",
+          marginTop: "16px",
+        }}
+      >
         <StorePhotos photos={store.photos} />
         <OpeningHours hours={store.openingHours} />
         <Separator />
@@ -113,7 +118,9 @@ function StickyFooter({
         paddingTop: "8px",
       }}
     >
-      <DialogFooter style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+      <DialogFooter
+        style={{ display: "flex", flexDirection: "column", gap: "4px" }}
+      >
         {allowAddRemove && (
           <Button
             onClick={() => handleClick(store)}
@@ -135,7 +142,15 @@ function StickyFooter({
 
 function StoreLinks({ store }: { store: Store }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "16px", alignItems: "center" }}>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "4px",
+        marginBottom: "16px",
+        alignItems: "center",
+      }}
+    >
       <a
         href={store.googleMapsURI}
         target="_blank"
@@ -147,7 +162,14 @@ function StoreLinks({ store }: { store: Store }) {
         }}
       >
         {store.address}
-        <ExternalLink style={{ marginLeft: "4px", width: "12px", position: "relative", bottom: "2px" }} />
+        <ExternalLink
+          style={{
+            marginLeft: "4px",
+            width: "12px",
+            position: "relative",
+            bottom: "2px",
+          }}
+        />
       </a>
       <a
         href={store.websiteURI}
@@ -160,7 +182,14 @@ function StoreLinks({ store }: { store: Store }) {
         }}
       >
         Store Website
-        <ExternalLink style={{ marginLeft: "4px", width: "12px", position: "relative", bottom: "2px" }} />
+        <ExternalLink
+          style={{
+            marginLeft: "4px",
+            width: "12px",
+            position: "relative",
+            bottom: "2px",
+          }}
+        />
       </a>
     </div>
   );
@@ -168,7 +197,9 @@ function StoreLinks({ store }: { store: Store }) {
 
 function StorePhotos({ photos }: { photos: string[] }) {
   return (
-    <div style={{ display: "flex", width: "100%", overflowX: "auto", gap: "8px" }}>
+    <div
+      style={{ display: "flex", width: "100%", overflowX: "auto", gap: "8px" }}
+    >
       {photos.map((src) => (
         <img
           key={src}
@@ -188,7 +219,9 @@ function StorePhotos({ photos }: { photos: string[] }) {
 function OpeningHours({ hours }: { hours: string }) {
   return (
     <div>
-      <span style={{ fontWeight: "bold", fontSize: "18px" }}>Opening Hours</span>
+      <span style={{ fontWeight: "bold", fontSize: "18px" }}>
+        Opening Hours
+      </span>
       <br />
       <pre style={{ border: "2px solid", padding: "8px" }}>{hours}</pre>
     </div>
@@ -209,7 +242,10 @@ function GoogleRating({
         <Star style={{ marginRight: "4px" }} fill="yellow" stroke="blue" />
         {rating}
       </span>
-      <span style={{ fontSize: "14px", fontWeight: "300" }}> ({ratingCount} reviews)</span>
+      <span style={{ fontSize: "14px", fontWeight: "300" }}>
+        {" "}
+        ({ratingCount} reviews)
+      </span>
     </div>
   );
 }
@@ -277,10 +313,10 @@ function PriceRange({ priceRange }: { priceRange: PriceRange }) {
     priceRange === "Budget"
       ? "green"
       : priceRange === "Mid-Range"
-      ? "gray"
-      : priceRange === "High-end"
-      ? "red"
-      : "darkred";
+        ? "gray"
+        : priceRange === "High-end"
+          ? "red"
+          : "darkred";
 
   return (
     <div>
@@ -378,4 +414,3 @@ function Brand({ brand }: { brand: string }) {
     </div>
   );
 }
-

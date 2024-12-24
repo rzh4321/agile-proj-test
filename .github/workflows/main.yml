@@ -1,10 +1,10 @@
 name: CI/CD
 
 on:
-    push:
-        branches: [main, master, github-actions]
-    pull_request:
-            branches: [main, master]
+  push:
+    branches: [main, master, github-actions]
+  pull_request:
+    branches: [main, master]
 
 jobs:
   lint:

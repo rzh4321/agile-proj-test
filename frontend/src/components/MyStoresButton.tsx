@@ -28,7 +28,7 @@ function StatusList({ stores }: { stores: Store[] }) {
       <CommandList>
         {/* TODO: add confirm button */}
         {stores.length > 0 && (
-            <div className="flex justify-center">
+          <div className="flex justify-center">
             <Button
               variant={"destructive"}
               className="my-2 ml-1 font-light"
@@ -37,7 +37,7 @@ function StatusList({ stores }: { stores: Store[] }) {
               <Trash className="w-[15px] mr-1" />
               Clear all stores
             </Button>
-            </div>
+          </div>
         )}
         <CommandEmpty>You have not added any stores.</CommandEmpty>
         <CommandGroup>
@@ -61,17 +61,19 @@ export default function MyStoresButton() {
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-            <Button
+          <Button
             role="combobox"
             size="lg"
-            className={cn(" font-medium text-lg justify-between w-150 m-auto mt-0 flex items-center space-x-2 rounded-3xl bg-green-700 border-green text-white hover:bg-green-700 px-3")}
-            >
-                <StoreIcon className="h-5 w-5" />
-                <span className="hidden sm:block">Stores</span>
+            className={cn(
+              " font-medium text-lg justify-between w-150 m-auto mt-0 flex items-center space-x-2 rounded-3xl bg-green-700 border-green text-white hover:bg-green-700 px-3",
+            )}
+          >
+            <StoreIcon className="h-5 w-5" />
+            <span className="hidden sm:block">Stores</span>
             <span className="text-lg font-medium text-white">
               {stores.length}
             </span>
-            </Button>
+          </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (

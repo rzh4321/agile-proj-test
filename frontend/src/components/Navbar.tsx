@@ -1,16 +1,18 @@
 import HelpButton from "./HelpButton";
 import { Button } from "./ui/button";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import useAuth from "@/context/AuthContext";
 
 export default function Navbar() {
-  const { logout, isAuthenticated } = useAuth();
+  const { logout, isAuthenticated, user } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
   const isSuggestPage = location.pathname === "/suggest";
   const isHelpPage = location.pathname === "/help";
   const isAuthPage =
     location.pathname === "/login" || location.pathname === "/signup";
+  const isRoutePage = location.pathname === "/route";
+  const isSavedPage = location.pathname === "/saved-routes";
 
   const handleAuthClick = () => {
     if (isAuthenticated) {
@@ -21,32 +23,33 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-800 p-4 sticky top-0 z-50">
-      <div className="flex justify-between items-center">
-        <div className="w-1/3">
-          {isSuggestPage || isHelpPage ? (
-            <Button
-              variant={"secondary"}
-              className="border-slate-300"
-              onClick={() => navigate("/")}
-            >
-              Cancel
-            </Button>
-          ) : (
-            <HelpButton />
-          )}
-        </div>
 
-        <div className="absolute left-1/2 transform -translate-x-1/2">
-          <Link to={"/"}>
-            <img src="/vite.svg" />
-          </Link>
+    <nav className="bg-blue-950 sticky top-0 z-50" style={{ height: '6rem' }}>
+      <div className="flex justify-between items-center h-full px-4">
+        <div
+          className="text-white text-2xl font-bold cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          {isAuthenticated ? `Hello, ${user?.username}` : "SoHo Shopper"}
+
         </div>
 
         {!isAuthPage && (
-          <div className="w-1/3 flex justify-end">
+          <div className="flex justify-end items-center space-x-4">
+            {isSuggestPage || isHelpPage || isRoutePage || isSavedPage ? (
+              <Button
+                variant={"secondary"}
+                className="border-slate-300"
+                onClick={() => navigate("/")}
+              >
+                Back
+              </Button>
+            ) : (
+              <HelpButton />
+            )}
             <Button
-              variant={isAuthenticated ? "destructive" : "default"}
+              variant={"link"}
+              className="text-white bg-transparent font-poppins"
               onClick={handleAuthClick}
             >
               {isAuthenticated ? "Log Out" : "Sign In"}

@@ -7,7 +7,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Drawer, DrawerContent } from "@/components/ui/drawer";
-import { cn } from "@/lib/utils";
 import { Search } from "lucide-react";
 import { Store } from "@/types";
 import {
@@ -19,6 +18,7 @@ import {
 } from "@/components/ui/command";
 import StoreItem from "./StoreItem";
 import { Separator } from "./ui/separator";
+import { cn } from "@/lib/utils";
 
 function StoreList({
   stores,
@@ -41,10 +41,15 @@ function StoreList({
                 <StoreItem type="search" store={store} />
               </CommandList>
             ))}
-            <Separator className="h-[5px]" />
+            <Separator
+              style={{
+                height: "5px",
+                backgroundColor: "#ddd",
+                margin: "8px 0",
+              }}
+            />
           </CommandGroup>
         )}
-
         <CommandGroup heading="All Stores">
           {stores.map((store) => (
             <CommandList key={store._id}>
@@ -84,13 +89,15 @@ export default function StoresSearchBar({ stores = [] }: { stores: Store[] }) {
           <Button
             variant="outline"
             role="combobox"
-            className={cn("justify-between w-60 m-auto mt-8 sm:w-full")}
+            size="lg"
+            className={cn("justify-between italic w-full m-auto mt-0 flex items-center space-x-2 rounded-xl bg-white border-gray-300 text-gray-500 hover:bg-gray-100 px-2")}
           >
-            Search Stores
-            <Search className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          Browse all stores...
+            <Search className="ml-2 h-4 w-4 shrink-0" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[200px] p-0">
+        <PopoverContent className="w-full p-0">
+
           {isDesktop ? (
             <StoreList
               stores={stores}
@@ -100,7 +107,12 @@ export default function StoresSearchBar({ stores = [] }: { stores: Store[] }) {
           ) : (
             <Drawer open={open} onOpenChange={setOpen}>
               <DrawerContent>
-                <div className="mt-4 border-t">
+                <div
+                  style={{
+                    marginTop: "16px",
+                    borderTop: "1px solid #ddd",
+                  }}
+                >
                   <StoreList
                     stores={stores}
                     highlightedStores={suggestedStores}

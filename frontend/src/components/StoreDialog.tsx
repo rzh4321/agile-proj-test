@@ -35,7 +35,15 @@ export default function StoreDialog({
   allowAddRemove: boolean;
 }) {
   return (
-    <DialogContent className="sm:max-w-[425px] max-h-[85vh] overflow-hidden flex flex-col">
+    <DialogContent
+      style={{
+        maxWidth: "425px",
+        maxHeight: "85vh",
+        overflow: "hidden",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <StickyHeader store={store} />
       <ScrollableContent store={store} />
       <StickyFooter store={store} allowAddRemove={allowAddRemove} />
@@ -46,8 +54,10 @@ export default function StoreDialog({
 function StickyHeader({ store }: { store: Store }) {
   return (
     <div className="sticky top-0 bg-white z-10 pb-2 w-fit mx-auto">
+
       <DialogHeader>
-        <DialogTitle className="text-3xl flex flex-col gap-1">
+        <DialogTitle className="text-3xl flex flex-col gap-1"
+        >
           <span>{store.name}</span>
         </DialogTitle>
       </DialogHeader>
@@ -57,12 +67,12 @@ function StickyHeader({ store }: { store: Store }) {
 
 function ScrollableContent({ store }: { store: Store }) {
   return (
-    <div className="flex-grow overflow-y-auto px-4">
+    <div style={{ flexGrow: 1, overflowY: "auto", padding: "16px" }}>
       <StoreLinks store={store} />
-      <DialogDescription className="text-center">
+      <DialogDescription style={{ textAlign: "center" }}>
         {store.description}
       </DialogDescription>
-      <div className="flex flex-col gap-3 mt-4">
+      <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "16px" }}>
         <StorePhotos photos={store.photos} />
         <OpeningHours hours={store.openingHours} />
         <Separator />
@@ -87,7 +97,6 @@ function StickyFooter({
   store: Store;
   allowAddRemove: boolean;
 }) {
-  // TODO: add a confirm prompt for removing store
   const { hasStore, addStore, removeStore } = useMyStores();
 
   const handleClick = (store: Store) => {
@@ -96,8 +105,15 @@ function StickyFooter({
   };
 
   return (
-    <div className="sticky bottom-0 bg-white pt-2">
-      <DialogFooter className="flex flex-col gap-1">
+    <div
+      style={{
+        position: "sticky",
+        bottom: "0",
+        backgroundColor: "white",
+        paddingTop: "8px",
+      }}
+    >
+      <DialogFooter style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
         {allowAddRemove && (
           <Button
             onClick={() => handleClick(store)}
@@ -119,22 +135,32 @@ function StickyFooter({
 
 function StoreLinks({ store }: { store: Store }) {
   return (
-    <div className="flex flex-col gap-1 mb-4 items-center">
+    <div style={{ display: "flex", flexDirection: "column", gap: "4px", marginBottom: "16px", alignItems: "center" }}>
       <a
         href={store.googleMapsURI}
         target="_blank"
-        className="text-sm underline font-light text-muted-foreground"
+        style={{
+          fontSize: "14px",
+          textDecoration: "underline",
+          fontWeight: "300",
+          color: "gray",
+        }}
       >
         {store.address}
-        <ExternalLink className="inline ml-1 w-[12px] relative bottom-1" />
+        <ExternalLink style={{ marginLeft: "4px", width: "12px", position: "relative", bottom: "2px" }} />
       </a>
       <a
         href={store.websiteURI}
         target="_blank"
-        className="text-sm underline font-light text-muted-foreground"
+        style={{
+          fontSize: "14px",
+          textDecoration: "underline",
+          fontWeight: "300",
+          color: "gray",
+        }}
       >
         Store Website
-        <ExternalLink className="inline ml-1 w-[12px] relative bottom-1" />
+        <ExternalLink style={{ marginLeft: "4px", width: "12px", position: "relative", bottom: "2px" }} />
       </a>
     </div>
   );
@@ -142,12 +168,16 @@ function StoreLinks({ store }: { store: Store }) {
 
 function StorePhotos({ photos }: { photos: string[] }) {
   return (
-    <div className="flex w-full overflow-x-auto gap-2">
+    <div style={{ display: "flex", width: "100%", overflowX: "auto", gap: "8px" }}>
       {photos.map((src) => (
         <img
           key={src}
           alt="store img"
-          className="object-contain w-4/5 rounded-md"
+          style={{
+            objectFit: "contain",
+            width: "80%",
+            borderRadius: "8px",
+          }}
           src={src}
         />
       ))}
@@ -158,9 +188,9 @@ function StorePhotos({ photos }: { photos: string[] }) {
 function OpeningHours({ hours }: { hours: string }) {
   return (
     <div>
-      <span className="font-bold text-lg">Opening Hours</span>
+      <span style={{ fontWeight: "bold", fontSize: "18px" }}>Opening Hours</span>
       <br />
-      <pre className="border-2 p-2">{hours}</pre>
+      <pre style={{ border: "2px solid", padding: "8px" }}>{hours}</pre>
     </div>
   );
 }
@@ -175,28 +205,46 @@ function GoogleRating({
   return (
     <div>
       <span>Google Rating: </span>
-      <span className="text-lg font-bold">
-        <Star className="inline mr-1" fill="yellow" stroke="blue" />
+      <span style={{ fontSize: "18px", fontWeight: "bold" }}>
+        <Star style={{ marginRight: "4px" }} fill="yellow" stroke="blue" />
         {rating}
       </span>
-      <span className="text-sm font-light"> ({ratingCount} reviews)</span>
+      <span style={{ fontSize: "14px", fontWeight: "300" }}> ({ratingCount} reviews)</span>
     </div>
   );
 }
-
 function Reviews({ reviews }: { reviews: string[] }) {
   return (
-    <div className="">
-      <span className="font-bold">Most Recent Reviews</span>
-      <div className="flex overflow-x-auto w-full gap-2 border-2 p-2">
+    <div>
+      <span style={{ fontWeight: "bold" }}>Most Recent Reviews</span>
+      <div
+        style={{
+          display: "flex",
+          overflowX: "auto",
+          width: "100%",
+          gap: "8px",
+          border: "2px solid",
+          padding: "8px",
+        }}
+      >
         {reviews.map((review, i) => {
           const [userRating, userReview, user] = review.split("_");
           return (
             <div
               key={i}
-              className="flex tracking-wide leading-relaxed flex-col gap-2 min-w-[300px] max-h-[300px] overflow-y-auto text-sm"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                minWidth: "300px",
+                maxHeight: "300px",
+                overflowY: "auto",
+                fontSize: "14px",
+                lineHeight: "1.5",
+                letterSpacing: "0.5px",
+              }}
             >
-              <span className="font-semibold">
+              <span style={{ fontWeight: "600" }}>
                 {userRating} / 5 - {user}
               </span>
               <div>{userReview}</div>
@@ -212,7 +260,14 @@ function PhoneNumber({ phoneNumber }: { phoneNumber: string }) {
   return (
     <div>
       <span>Phone No. </span>
-      <span className="underline font-bold">{phoneNumber}</span>
+      <span
+        style={{
+          textDecoration: "underline",
+          fontWeight: "bold",
+        }}
+      >
+        {phoneNumber}
+      </span>
     </div>
   );
 }
@@ -220,19 +275,25 @@ function PhoneNumber({ phoneNumber }: { phoneNumber: string }) {
 function PriceRange({ priceRange }: { priceRange: PriceRange }) {
   const priceRangeColor =
     priceRange === "Budget"
-      ? "text-green-500"
+      ? "green"
       : priceRange === "Mid-Range"
-        ? "text-slate-400"
-        : priceRange === "High-end"
-          ? "text-red-500"
-          : "text-red-700";
+      ? "gray"
+      : priceRange === "High-end"
+      ? "red"
+      : "darkred";
 
   return (
     <div>
       <span>Price Range:</span>{" "}
-      <span className={`${priceRangeColor} font-bold text-lg`}>
+      <span
+        style={{
+          color: priceRangeColor,
+          fontWeight: "bold",
+          fontSize: "18px",
+        }}
+      >
         {priceRange}{" "}
-        <span className="text-base">
+        <span style={{ fontSize: "16px" }}>
           ({"$".repeat(priceRangeToDollarIcons[priceRange])})
         </span>
       </span>
@@ -265,7 +326,11 @@ function PaymentOption({ label, value }: { label: string; value: string }) {
     <div>
       <span>{label}: </span>
       <span
-        className={`font-bold text-lg ${value === "true" ? "text-green-400" : "text-red-400"}`}
+        style={{
+          fontWeight: "bold",
+          fontSize: "18px",
+          color: value === "true" ? "green" : "red",
+        }}
       >
         {value === "true" ? "Yes" : value === "false" ? "No" : value}
       </span>
@@ -280,7 +345,16 @@ function Categories({ categories }: { categories: string[] }) {
       {categories.map((category) => (
         <span
           key={category}
-          className="font-bold text-lg border-1 rounded-md bg-green-400 text-slate-100 mr-1"
+          style={{
+            fontWeight: "bold",
+            fontSize: "18px",
+            border: "1px solid",
+            borderRadius: "4px",
+            backgroundColor: "green",
+            color: "white",
+            marginRight: "4px",
+            padding: "2px 4px",
+          }}
         >
           {category}
         </span>
@@ -292,7 +366,16 @@ function Categories({ categories }: { categories: string[] }) {
 function Brand({ brand }: { brand: string }) {
   return (
     <div>
-      <span>Brand:</span> <span className="font-bold text-lg">{brand}</span>
+      <span>Brand:</span>{" "}
+      <span
+        style={{
+          fontWeight: "bold",
+          fontSize: "18px",
+        }}
+      >
+        {brand}
+      </span>
     </div>
   );
 }
+

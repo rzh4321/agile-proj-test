@@ -109,20 +109,20 @@ export default function EditRouteStoresButton({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
-          <Drawer open={open} onOpenChange={setOpen}>
-            <DrawerContent>
-              <div className="mt-4 border-t">
-                <StoreList
-                  allStores={allStores}
-                  highlightedStores={stores}
-                  heading="Saved Stores"
-                  addStore={addStore}
-                  removeStore={removeStore}
-                  isSavedStore={isSavedStore}
-                />
-              </div>
-            </DrawerContent>
-          </Drawer>
+            <Drawer open={open} onOpenChange={setOpen}>
+              <DrawerContent>
+                <div className="mt-4 border-t">
+                  <StoreList
+                    allStores={allStores}
+                    highlightedStores={stores}
+                    heading="Saved Stores"
+                    addStore={addStore}
+                    removeStore={removeStore}
+                    isSavedStore={isSavedStore}
+                  />
+                </div>
+              </DrawerContent>
+            </Drawer>
         </PopoverContent>
       </Popover>
     </>

@@ -30,7 +30,7 @@ export default function StoreItem({
   );
 }
 
-// store item for the search bar
+// Store item for the search bar
 function SearchItemDialogTrigger({ store }: { store: Store }) {
   const { addStore, removeStore, hasStore } = useMyStores();
   const [isAdding, setIsAdding] = useState(false);
@@ -44,9 +44,16 @@ function SearchItemDialogTrigger({ store }: { store: Store }) {
   };
   return (
     <CommandItem className="h-[100px] flex justify-between px-5">
-      <div className="text-2xl sm:text-xl font-extrabold">{store.name}</div>
+      <div className="text-xl sm:text-lg font-serif">{store.name}</div>
+
       {isAdding ? (
-        <Check className="text-green-500 w-[86px] animate-ping" />
+        <Check
+          style={{
+            color: "green",
+            width: "86px",
+            animation: "ping 1s linear infinite",
+          }}
+        />
       ) : hasStore(store._id as string) ? (
         <Button
           variant="destructive"
@@ -65,20 +72,20 @@ function SearchItemDialogTrigger({ store }: { store: Store }) {
             handleAdd();
           }}
         >
-          Add <Plus className="ml-1" />
+          Add <Plus style={{ marginLeft: "4px" }} />
         </Button>
       )}
     </CommandItem>
   );
 }
 
-// store item in your list of selected stores
+// Store item in your list of selected stores
 function MyStoresDialogTrigger({ store }: { store: Store }) {
   const { removeStore } = useMyStores();
 
   return (
     <CommandItem className="h-[100px] flex justify-between px-5">
-      <div className="text-2xl font-extrabold">{store.name}</div>
+      <div className="text-sm font-normal">{store.name}</div>
       <Button
         variant="destructive"
         onClick={() => removeStore(store._id as string)}

@@ -38,18 +38,38 @@ export default function RatingFilters({ handleRatingURL }: Props) {
   };
 
   return (
-    <div className="flex flex-col gap-8">
-      <div className="flex gap-3">
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        gap: "32px",
+      }}
+    >
+      <div
+        style={{
+          display: "flex",
+          gap: "12px",
+          alignItems: "center",
+        }}
+      >
         <Slider
           onValueChange={handleSliderChange}
           defaultValue={[sliderValue ?? 0]}
           value={[sliderValue ?? 0]}
           max={5}
           step={0.5}
-          className="w-4/5"
+          style={{
+            width: "80%",
+          }}
         />
         <Input
-          className="flex-grow-0 w-[75px]"
+          style={{
+            flexGrow: 0,
+            width: "75px",
+            border: "1px solid #ccc",
+            padding: "4px",
+            borderRadius: "4px",
+          }}
           type="number"
           value={sliderValue ?? ""}
           min={0}
@@ -57,19 +77,38 @@ export default function RatingFilters({ handleRatingURL }: Props) {
           onChange={handleRatingInputChange}
         />
       </div>
-      <div className="flex gap-4 items-center">
-        <Label htmlFor="numRatings" className="text-md">
+      <div
+        style={{
+          display: "flex",
+          gap: "16px",
+          alignItems: "center",
+        }}
+      >
+        <Label
+          htmlFor="numRatings"
+          style={{
+            fontSize: "16px",
+          }}
+        >
           Min no. of reviews
         </Label>
         <select
           id="numRatings"
           value={numRatingsInput ?? ""}
-          className="w-[75px] border border-gray-300 rounded-md p-1 overflow-y-auto max-helgith-[50px] position-absolute"
           onChange={(e) =>
             handleNumRatingsInputChange(
               e as React.ChangeEvent<HTMLSelectElement>,
             )
           }
+          style={{
+            width: "75px",
+            border: "1px solid #ccc",
+            borderRadius: "4px",
+            padding: "4px",
+            maxHeight: "50px",
+            overflowY: "auto",
+            position: "absolute",
+          }}
         >
           {[...Array(11).keys()].map((num) => (
             <option key={num * 10} value={num * 10}>

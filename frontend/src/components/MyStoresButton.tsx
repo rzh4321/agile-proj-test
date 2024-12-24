@@ -28,14 +28,16 @@ function StatusList({ stores }: { stores: Store[] }) {
       <CommandList>
         {/* TODO: add confirm button */}
         {stores.length > 0 && (
-          <Button
-            variant={"destructive"}
-            className="my-2 ml-1 font-light"
-            onClick={() => clearStores()}
-          >
-            <Trash className="w-[15px] mr-1" />
-            Clear
-          </Button>
+            <div className="flex justify-center">
+            <Button
+              variant={"destructive"}
+              className="my-2 ml-1 font-light"
+              onClick={() => clearStores()}
+            >
+              <Trash className="w-[15px] mr-1" />
+              Clear all stores
+            </Button>
+            </div>
         )}
         <CommandEmpty>You have not added any stores.</CommandEmpty>
         <CommandGroup>
@@ -59,17 +61,17 @@ export default function MyStoresButton() {
     <>
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button
+            <Button
             role="combobox"
-            className={cn(
-              "m-auto rounded-3xl bg-green-600 border-green-700 text-white hover:bg-green-700 hover:text-slate-200",
-            )}
-          >
-            <StoreIcon />
-            <span className="ml-2 text-lg py-[2px] font-extrabold">
+            size="lg"
+            className={cn(" font-medium text-lg justify-between w-150 m-auto mt-0 flex items-center space-x-2 rounded-3xl bg-green-700 border-green text-white hover:bg-green-700 px-3")}
+            >
+                <StoreIcon className="h-5 w-5" />
+                <span className="hidden sm:block">Stores</span>
+            <span className="text-lg font-medium text-white">
               {stores.length}
             </span>
-          </Button>
+            </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
           {isDesktop ? (

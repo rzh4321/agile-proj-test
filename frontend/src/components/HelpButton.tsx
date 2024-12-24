@@ -14,7 +14,7 @@ export default function HelpButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="rounded-full bg-blue-400 text-white text-lg font-bold border-0 p-0 w-[30px] h-[30px]">
+        <Button className="rounded-full bg-blue-600 text-white text-lg font-normal border-0 p-0 w-[30px] h-[30px]">
           ?
         </Button>
       </DialogTrigger>

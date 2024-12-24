@@ -1,50 +1,21 @@
-# React + TypeScript + Vite
+# SoHo Route Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Description
+The **SoHo Route Generator** is a mobile web application that creates custom shopping routes in SoHo, New York, based on users' fashion preferences and budgets. Users can discover stores using various filters, view detailed store information, and save their favorites. The app then generates the most time-efficient routes and provides options to save or share their shopping plan.
 
-Currently, two official plugins are available:
+This app is designed to improve the experience of shopping in a large, busy, and scattered area like SoHo, making it especially useful for shoppers with limited time or specific preferences.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## DevOps & Deployment
+- **URL:** [Deployed Site](https://sohoshopper.xyz/)
+- **DevOps (completed extra credit for sprint 4):**
+  - Docker: [View Dockerfile](https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/blob/master/docker-compose.yml)
+  - CI/CD workflows: 
+    - [![CI/CD](https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/actions/workflows/main.yml/badge.svg)](https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/actions/workflows/main.yml)
+    - [![log github events](https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/actions/workflows/event-logger.yml/badge.svg)](https://github.com/agiledev-students-fall2024/4-final-project-avocado-the-study-space-tracker/actions/workflows/event-logger.yml)
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
+## Team
+1. Ricky Zhang
+2. Vasily Belousov
+3. Ashley Liu
+4. Hannah Liang
+5. Ruoxuan Cao

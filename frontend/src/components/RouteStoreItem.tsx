@@ -31,10 +31,29 @@ export default function RouteStoreItem({
     <Dialog>
       <DialogTrigger asChild>
         <div>
-          <CommandItem className="h-[100px] flex justify-between px-5">
-            <div className="text-2xl font-extrabold">{store.name}</div>
+          <CommandItem
+            style={{
+              height: "100px",
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "0 20px",
+              alignItems: "center",
+              borderBottom: "1px solid #ddd",
+            }}
+          >
+            <div
+              className="text-xl font-serif"
+            >
+              {store.name}
+            </div>
             {isAdding ? (
-              <Check className="text-green-500 w-[86px] animate-ping" />
+              <Check
+                style={{
+                  color: "green",
+                  width: "86px",
+                  animation: "ping 1s linear infinite",
+                }}
+              />
             ) : isSavedStore(store) ? (
               <Button
                 variant="destructive"
@@ -42,6 +61,7 @@ export default function RouteStoreItem({
                   e.stopPropagation();
                   removeStore(store);
                 }}
+                
               >
                 Remove
               </Button>
@@ -53,7 +73,12 @@ export default function RouteStoreItem({
                   handleAdd();
                 }}
               >
-                Add <Plus className="ml-1" />
+                Add{" "}
+                <Plus
+                  style={{
+                    marginLeft: "4px",
+                  }}
+                />
               </Button>
             )}
           </CommandItem>

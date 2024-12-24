@@ -25,44 +25,129 @@ export default function RouteDisplayModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-80">
-        <h2 className="text-xl font-bold text-center mb-4">Save List</h2>
-        <hr className="mb-4" />
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">List Name:</label>
+    <div
+      style={{
+        position: "fixed",
+        inset: "0",
+        backgroundColor: "rgba(0, 0, 0, 0.5)",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <div
+        style={{
+          backgroundColor: "white",
+          padding: "24px",
+          borderRadius: "8px",
+          boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+          width: "320px",
+        }}
+      >
+        <h2
+          style={{
+            fontSize: "20px",
+            fontWeight: "bold",
+            textAlign: "center",
+            marginBottom: "16px",
+          }}
+        >
+          Save List
+        </h2>
+        <hr
+          style={{
+            marginBottom: "16px",
+          }}
+        />
+        <div
+          style={{
+            marginBottom: "16px",
+          }}
+        >
+          <label
+            style={{
+              display: "block",
+              fontSize: "14px",
+              fontWeight: "500",
+              marginBottom: "4px",
+            }}
+          >
+            List Name:
+          </label>
           <input
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full border p-2 rounded"
             placeholder="Sunday, Luxury, Quick Run"
+            style={{
+              width: "100%",
+              border: "1px solid #ddd",
+              padding: "8px",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </div>
-        <div className="mb-6">
-          <label className="block text-sm font-medium mb-1">
+        <div
+          style={{
+            marginBottom: "24px",
+          }}
+        >
+          <label
+            style={{
+              display: "block",
+              fontSize: "14px",
+              fontWeight: "500",
+              marginBottom: "4px",
+            }}
+          >
             Description (optional):
           </label>
           <input
             type="text"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="w-full border p-2 rounded"
             placeholder="Lots of shoe stores"
+            style={{
+              width: "100%",
+              border: "1px solid #ddd",
+              padding: "8px",
+              borderRadius: "4px",
+              boxSizing: "border-box",
+            }}
           />
         </div>
-        <div className="flex justify-between">
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
           <Button
             variant="outline"
             onClick={onClose}
-            className="bg-gray-300 text-gray-700"
+            style={{
+              backgroundColor: "#e5e7eb",
+              color: "#374151",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             Cancel
           </Button>
           <Button
             variant="outline"
             onClick={handleSave}
-            className="bg-gray-300 text-gray-700"
+            style={{
+              backgroundColor: "#e5e7eb",
+              color: "#374151",
+              padding: "8px 16px",
+              borderRadius: "4px",
+              border: "none",
+              cursor: "pointer",
+            }}
           >
             Save
           </Button>

@@ -126,8 +126,10 @@ router.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
 
-    // Find user by username
-    const user = await User.findOne({ username });
+    // Find user by username case insensitive
+    const user = await User.findOne({ 
+      username: { $regex: new RegExp(`^${username}$`, 'i') }
+    });
     if (!user) {
       return res.status(400).json({ message: "Invalid credentials" });
     }

@@ -81,7 +81,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="container absolute inset-0 -z-10">
+      <div className="container absolute inset-0 z-[0]">
         {circles.map((i) => (
           <div key={i} className="circle-container">
             <div className="circle" />
@@ -100,7 +100,7 @@ export default function LoginForm() {
               gap: "16px",
             }}
           >
-            <div className="w-4/5 flex-1 rounded-lg">
+            <div className="w-4/5 flex-1 rounded-lg z-[2]">
               <h1 className="mb-3 text-2xl font-bold">Sign in</h1>
               <div className="w-full">
                 <FormField
@@ -172,7 +172,7 @@ export default function LoginForm() {
             <Link
               to="/signup"
               state={{ from: from }} // Pass the same 'from' location
-              className="flex flex-row gap-1 text-sm text-zinc-400"
+              className="flex flex-row gap-1 text-sm text-zinc-400 z-[1]"
             >
               No account yet?{" "}
               <div className="font-semibold underline">Sign up</div>

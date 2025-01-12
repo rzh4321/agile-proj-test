@@ -82,7 +82,7 @@ export default function SignupForm() {
 
   return (
     <>
-      <div className="container absolute inset-0 -z-10">
+      <div className="container absolute inset-0 z-[0]">
         {circles.map((i) => (
           <div key={i} className="circle-container">
             <div className="circle" />
@@ -102,7 +102,7 @@ export default function SignupForm() {
               width: "75vw",
             }}
           >
-            <div className="w-full flex-1 rounded-lg px-6 pb-4  md:w-[500px]">
+            <div className="w-full flex-1 rounded-lg z-[2] px-6 pb-4  md:w-[500px]">
               <h1 className="mb-3 text-2xl font-bold">Sign Up</h1>
               <div className="w-full">
                 <FormField
@@ -183,7 +183,7 @@ export default function SignupForm() {
             <Link
               to="/login"
               state={{ from: from }}
-              className="flex flex-row gap-1 text-sm text-zinc-400"
+              className="flex flex-row gap-1 text-sm text-zinc-400 z-[1]"
             >
               Have an account?{" "}
               <div className="font-semibold underline">Log In</div>

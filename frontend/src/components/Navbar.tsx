@@ -26,10 +26,11 @@ export default function Navbar() {
     <nav className={`bg-blue-950 sticky top-0 z-50`} style={{ height: "6rem" }}>
       <div className="flex justify-between items-center h-full px-4">
         <div
-          className="text-white text-2xl font-bold cursor-pointer"
+          className="text-white text-2xl font-bold cursor-pointer flex items-center relative right-3"
           onClick={() => navigate("/")}
         >
-          {isAuthenticated ? `Hello, ${user?.username}` : "SoHo Shopper"}
+          <img src="/icon.png" className='max-h-[7rem] relative bottom-1' />
+          <span>{isAuthenticated ? `Hello, ${user?.username}` : "SoHo Shopper"}</span>
         </div>
 
         {!isAuthPage && (
@@ -54,6 +55,7 @@ export default function Navbar() {
             </Button>
           </div>
         )}
+        {isAuthPage && <HelpButton />}
       </div>
     </nav>
   );
